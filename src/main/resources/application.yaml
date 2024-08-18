@@ -1,0 +1,16 @@
+app:
+  paths:
+    login: /login.jsp
+    home: /
+  errors:
+    serviceNotInitialized: UserAuthenticationService is not initialized
+    authenticationFailed: Invalid email or password
+    errorMessage: errorMessage
+    invalidCredentials: Invalid email or password
+  attributes:
+    loginService: loginService
+    userID: userID
+    firstName: first_name
+    lastName: last_name
+    rating: rating
+    userRole: user_role
