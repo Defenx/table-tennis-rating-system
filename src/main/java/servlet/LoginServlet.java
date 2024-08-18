@@ -1,6 +1,7 @@
 package servlet;
 
-import Services.LoginService;
+import config.AppConfig;
+import dto.Credentials;
 import dto.UserDto;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -8,40 +9,51 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import services.CredentialsExtractor;
+import services.UserAuthenticationService;
 
 import java.io.IOException;
 import java.util.Optional;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    LoginService loginService;
+    private UserAuthenticationService userAuthenticationService;
+    private CredentialsExtractor credentialsExtractor;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        loginService = (LoginService) config.getServletContext().getAttribute("loginService");
+        super.init(config);
+        userAuthenticationService = (UserAuthenticationService) config.getServletContext().getAttribute(AppConfig.getUserAuthServiceAttribute());
+        credentialsExtractor = (CredentialsExtractor) config.getServletContext().getAttribute(AppConfig.getCredentialsExtractorAttribute());
+        if (userAuthenticationService == null || credentialsExtractor == null) {
+            throw new ServletException(AppConfig.getServiceNotInitializedMessage());
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/login.jsp").forward(req, resp);
+        req.getRequestDispatcher(AppConfig.getLoginPath()).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        String username = req.getParameter("email");
-        String password = req.getParameter("password");
-        Optional<UserDto> existedUser = loginService.getExistedUser(username, password);
-        if (existedUser.isPresent()) {
-            session.setAttribute("userID", existedUser.get().getId());
-            session.setAttribute("first_name", existedUser.get().getFirstName());
-            session.setAttribute("last_name", existedUser.get().getLastName());
-            session.setAttribute("rating", existedUser.get().getRating());
-            session.setAttribute("user_role", existedUser.get().getRole());
-            resp.sendRedirect("/");
-        } else {
-            resp.sendRedirect("/login");
+        try {
+            Credentials credentials = credentialsExtractor.extract(req);
+
+            if (credentials.getUsername() == null || credentials.getPassword() == null || credentials.getUsername().isEmpty() || credentials.getPassword().isEmpty()) {
+                userAuthenticationService.handleAuthenticationFailure(req, resp);
+                return;
+            }
+
+            Optional<UserDto> existedUser = userAuthenticationService.authenticate(credentials.getUsername(), credentials.getPassword());
+            if (existedUser.isPresent()) {
+                userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
+            } else {
+                userAuthenticationService.handleAuthenticationFailure(req, resp);
+            }
+        } catch (Exception e) {
+            req.setAttribute(AppConfig.getUserAuthServiceAttribute(), AppConfig.getAuthenticationFailedMessage());
+            req.getRequestDispatcher(AppConfig.getLoginPath()).forward(req, resp);
         }
     }
 }
