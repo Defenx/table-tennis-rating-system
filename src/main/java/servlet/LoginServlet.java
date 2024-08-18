@@ -48,7 +48,8 @@ public class LoginServlet extends HttpServlet {
             Optional<UserDto> existedUser = userAuthenticationService.authenticate(credentials.getUsername(), credentials.getPassword());
             if (existedUser.isPresent()) {
                 userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
-            } else {
+            }
+            else {
                 userAuthenticationService.handleAuthenticationFailure(req, resp);
             }
         } catch (Exception e) {

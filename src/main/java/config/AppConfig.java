@@ -38,7 +38,8 @@ public class AppConfig {
             paths = new PathsConfig(appConfigMap.get("paths"));
             errors = new ErrorsConfig(appConfigMap.get("errors"));
             attributes = new AttributesConfig(appConfigMap.get("attributes"));
-        } else {
+        }
+        else {
             throw new IllegalStateException("Configuration section 'app' is missing or not a Map.");
         }
     }

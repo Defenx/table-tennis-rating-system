@@ -8,7 +8,8 @@ public class AttributesConfig implements ConfigStrategy {
     public AttributesConfig(Object config) {
         if (config instanceof Map) {
             this.attributes = (Map<String, Object>) config;
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("Expected a Map for attributes configuration.");
         }
     }

@@ -8,7 +8,8 @@ public class ErrorsConfig implements ConfigStrategy {
     public ErrorsConfig(Object config) {
         if (config instanceof Map) {
             this.errors = (Map<String, Object>) config;
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("Expected a Map for errors configuration.");
         }
     }

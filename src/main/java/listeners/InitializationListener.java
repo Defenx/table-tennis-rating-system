@@ -22,11 +22,10 @@ public class InitializationListener implements ServletContextListener {
         }
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-
         LoginService loginService = new UserLoginService(bCryptPasswordEncoder);
-        CredentialsExtractor credentialsExtractor = new BasicCredentialsExtractor();
-
         UserAuthenticationService userAuthenticationService = new UserAuthManager(loginService);
+
+        CredentialsExtractor credentialsExtractor = new BasicCredentialsExtractor();
 
         servletContext.setAttribute(AppConfig.getCredentialsExtractorAttribute(), credentialsExtractor);
         servletContext.setAttribute(AppConfig.getUserAuthServiceAttribute(), userAuthenticationService);

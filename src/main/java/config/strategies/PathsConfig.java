@@ -8,7 +8,8 @@ public class PathsConfig implements ConfigStrategy {
     public PathsConfig(Object config) {
         if (config instanceof Map) {
             this.paths = (Map<String, Object>) config;
-        } else {
+        }
+        else {
             throw new IllegalArgumentException("Expected a Map for paths configuration.");
         }
     }
