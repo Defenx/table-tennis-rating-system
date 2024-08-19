@@ -1,4 +1,4 @@
-package servlet;
+package servlets;
 
 import constants.Constants;
 import dto.RegistrationDto;
@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import model.helper.RegistrationDataExtractor;
-import service.UserService;
+import services.RegistrationDataExtractor;
+import services.UserService;
 
 import java.io.IOException;
 

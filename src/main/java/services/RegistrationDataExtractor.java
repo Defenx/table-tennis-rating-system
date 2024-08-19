@@ -1,4 +1,4 @@
-package model.helper;
+package services;
 
 import dto.RegistrationDto;
 import jakarta.servlet.http.HttpServletRequest;

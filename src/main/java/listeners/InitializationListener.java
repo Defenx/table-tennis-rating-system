@@ -1,11 +1,11 @@
-package listener;
+package listeners;
 
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import service.UserService;
+import services.UserService;
 
 @WebListener
 public class InitializationListener implements ServletContextListener {
