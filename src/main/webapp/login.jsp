@@ -13,6 +13,7 @@
 </head>
 <body>
 <div class="form-auth">
+    <h2 class = "auth">Авторизация</h2>
     <form action="/login" method="post">
         <div>
             <label for="email">Email:</label>
