@@ -1,6 +1,64 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e6d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.auth{
+    position: relative;
+    text-align: center;
+    color: #ca07b1;
+
+}
 .form-auth {
-    top: 50%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+}
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 150%;
+    color: #ca07b1;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 150%;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #007BFF; /* Цвет рамки при фокусе */
+    outline: none; /* Убираем стандартный контур */
+}
+
+button {
+    width: 100px;
+    padding: 10px;
+    background-color: #bc0cd3;
+    left: 80%;
+    position: relative;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #7e077b;
 }
