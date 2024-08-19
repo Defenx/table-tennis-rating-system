@@ -40,12 +40,12 @@ public class LoginServlet extends HttpServlet {
         try {
             Credentials credentials = credentialsExtractor.extract(req);
 
-            if (credentials.getUsername() == null || credentials.getPassword() == null || credentials.getUsername().isEmpty() || credentials.getPassword().isEmpty()) {
+            if (credentials.username() == null || credentials.password() == null || credentials.username().isEmpty() || credentials.password().isEmpty()) {
                 userAuthenticationService.handleAuthenticationFailure(req, resp);
                 return;
             }
 
-            Optional<UserDto> existedUser = userAuthenticationService.authenticate(credentials.getUsername(), credentials.getPassword());
+            Optional<UserDto> existedUser = userAuthenticationService.authenticate(credentials.username(), credentials.password());
             if (existedUser.isPresent()) {
                 userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
             }
