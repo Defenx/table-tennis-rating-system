@@ -1,5 +1,6 @@
 package servlet;
 
+import constants.Constants;
 import dto.RegistrationDto;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
@@ -14,7 +15,7 @@ import service.UserService;
 
 import java.io.IOException;
 
-@WebServlet("/registration")
+@WebServlet(Constants.REGISTRATION_URL)
 public class RegistrationServlet extends HttpServlet {
     private UserService userService;
 
@@ -27,15 +28,21 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("registration.jsp").forward(req, resp);
+        req.getRequestDispatcher(Constants.REGISTRATION_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RegistrationDto userData = RegistrationDataExtractor.extract(req);
-        userService.addUser(userData);
+        boolean isAdded = userService.addUser(userData);
 
-        resp.setStatus(201);
-        resp.sendRedirect("/login");
+        if (isAdded) {
+            resp.setStatus(201);
+            resp.sendRedirect(Constants.LOGIN_URL);
+        } else {
+            resp.setStatus(500);
+            req.setAttribute("message", Constants.ERROR_USER_ADD_MESSAGE);
+            req.getRequestDispatcher(Constants.ERROR_JSP).forward(req, resp);
+        }
     }
 }
