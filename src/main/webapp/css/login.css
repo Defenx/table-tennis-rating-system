@@ -1,24 +1,27 @@
-
 body {
     font-family: Arial, sans-serif;
-    background-color: #e6d9d9;
+    background-color: #f2f2f2;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
 }
-.auth{
+
+.auth {
     position: relative;
     text-align: center;
-    color: #ca07b1;
-
+    color: #333333;
 }
+
 .form-auth {
     padding: 20px;
+    background-color: #ffffff;
     border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 400px;
 }
+
 form div {
     margin-bottom: 15px;
 }
@@ -26,39 +29,38 @@ form div {
 label {
     display: block;
     margin-bottom: 5px;
-    font-size: 150%;
-    color: #ca07b1;
+    font-size: 1.2rem;
+    color: #555555;
 }
 
 input[type="text"],
 input[type="password"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc;
     border-radius: 5px;
-    font-size: 150%;
+    font-size: 1rem;
     transition: border-color 0.3s;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #007BFF; /* Цвет рамки при фокусе */
-    outline: none; /* Убираем стандартный контур */
+    border-color: #007bff;
+    outline: none;
 }
 
 button {
-    width: 100px;
+    width: 100%;
     padding: 10px;
-    background-color: #bc0cd3;
-    left: 80%;
-    position: relative;
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 button:hover {
-    background-color: #7e077b;
+    background-color: #0056b3;
 }
