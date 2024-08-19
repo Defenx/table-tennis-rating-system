@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.UUID;
 
+/**
+ * Класс передачи данных (DTO) для пользователя.
+ */
 @Data
 @Builder
 public class UserDto {
