@@ -2,11 +2,15 @@ package listeners;
 
 import config.AppConfig;
 import jakarta.servlet.annotation.WebListener;
-import services.*;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
+import listeners.factories.DefaultServiceFactory;
+import listeners.factories.ServiceFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import services.CredentialsExtractor;
+import services.LoginService;
+import services.UserAuthenticationService;
 
 /**
  * Класс слушателя инициализации приложения.
@@ -31,13 +35,14 @@ public class InitializationListener implements ServletContextListener {
             throw new RuntimeException("Не удалось инициализировать приложение", e);
         }
 
-        // Создание и настройка необходимых сервисов
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        LoginService loginService = new UserLoginService(bCryptPasswordEncoder);
-        UserAuthenticationService userAuthenticationService = new UserAuthManager(loginService);
+        // Создание фабрики сервисов
+        ServiceFactory serviceFactory = new DefaultServiceFactory();
 
-        // Настройка извлечения учетных данных
-        CredentialsExtractor credentialsExtractor = new BasicCredentialsExtractor();
+        // Создание и настройка необходимых сервисов
+        BCryptPasswordEncoder bCryptPasswordEncoder = serviceFactory.createPasswordEncoder();
+        LoginService loginService = serviceFactory.createLoginService(bCryptPasswordEncoder);
+        UserAuthenticationService userAuthenticationService = serviceFactory.createUserAuthenticationService(loginService);
+        CredentialsExtractor credentialsExtractor = serviceFactory.createCredentialsExtractor();
 
         // Сохранение атрибутов в контексте сервлета
         servletContext.setAttribute(AppConfig.getCredentialsExtractorAttribute(), credentialsExtractor);
