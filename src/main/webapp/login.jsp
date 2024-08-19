@@ -16,12 +16,12 @@
     <h2 class = "auth">Авторизация</h2>
     <form action="/login" method="post">
         <div>
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required placeholder="Введите ваше email">
+            <label for="email">Почта</label>
+            <input type="text" id="email" name="email" required placeholder="Введите вашу почту">
         </div>
         <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required placeholder="Введите ваш password">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" required placeholder="Введите ваш пароль">
         </div>
         <div>
             <button type="submit">Войти</button>

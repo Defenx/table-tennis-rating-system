@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+    background-color: #f4e8e8;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,15 +11,16 @@ body {
 .auth {
     position: relative;
     text-align: center;
-    color: #333333;
+    color: #000000;
 }
 
 .form-auth {
-    padding: 20px;
+    padding: 5%;
+    text-align: center;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    width: 500px;
 }
 
 form div {
@@ -29,8 +30,9 @@ form div {
 label {
     display: block;
     margin-bottom: 5px;
+    text-align: left;
     font-size: 1.2rem;
-    color: #555555;
+    color: #000000;
 }
 
 input[type="text"],
@@ -50,9 +52,11 @@ input[type="password"]:focus {
 }
 
 button {
-    width: 100%;
+    position: relative;
+    left: 30%;
+    width: 50%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #710606;
     color: white;
     border: none;
     border-radius: 5px;
@@ -62,5 +66,5 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #b50606;
 }
