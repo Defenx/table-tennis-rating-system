@@ -1,0 +1,67 @@
+/* Общие стили для тела страницы */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Основной контейнер */
+#main {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    padding: 30px 25px;
+    max-width: 350px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Заголовок */
+h3 {
+    color: #222222;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    font-weight: normal;
+}
+
+/* Стили для полей ввода */
+input[type="text"], 
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 12px 0;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    color: #333333;
+}
+
+/* Стили для кнопки */
+button {
+    background-color: #4CAF50;
+    color: #ffffff;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+/* Стили для кнопки при наведении */
+button:hover {
+    background-color: #43a047;
+}
+
+/* Упрощенные стили для ввода и кнопок для удобства работы на мобильных устройствах */
+input[type="text"], 
+input[type="password"], 
+button {
+    font-size: 1.1em;
+}
