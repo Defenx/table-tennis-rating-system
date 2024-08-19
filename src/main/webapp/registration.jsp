@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Registration</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css"> <!-- Подключение CSS -->
+    <link rel="stylesheet" type="text/css" href="css/registration.css"> <!-- Подключение CSS -->
 </head>
 <body>
 <div id="main">
