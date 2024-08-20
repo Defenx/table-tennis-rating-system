@@ -43,7 +43,7 @@ public class JwtAuthenticationStrategy implements AuthenticationStrategy {
      */
     @Override
     public void setSessionAttributes(HttpServletRequest req, HttpServletResponse resp, UserDto user) throws IOException {
-        String token = jwtTokenService.generateToken(user.getUsername());
+        String token = jwtTokenService.generateToken(user.getEmail());
         resp.setHeader("Authorization", "Bearer " + token);
         resp.sendRedirect(req.getContextPath() + AppConfig.getHomePath());
     }
