@@ -1,4 +1,4 @@
-package services;
+package services.login.auth.strategies;
 
 import config.AppConfig;
 import dto.UserDto;
@@ -6,16 +6,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import services.login.LoginService;
 
 import java.io.IOException;
 import java.util.Optional;
 
 /**
  * Менеджер аутентификации пользователя.
- * Реализует интерфейс {@link UserAuthenticationService} и управляет процессами аутентификации, установкой атрибутов сессии и обработкой ошибок аутентификации.
+ * Реализует интерфейс {@link AuthenticationStrategy} и управляет процессами аутентификации, установкой атрибутов сессии и обработкой ошибок аутентификации.
  */
 @AllArgsConstructor
-public class UserAuthManager implements UserAuthenticationService {
+public class StandardAuthenticationStrategy implements AuthenticationStrategy {
     private final LoginService loginService;
 
     /**

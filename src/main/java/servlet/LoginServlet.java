@@ -9,8 +9,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import services.CredentialsExtractor;
-import services.UserAuthenticationService;
+import services.login.CredentialsExtractor;
+import services.login.auth.JwtTokenService;
+import services.login.auth.strategies.AuthenticationStrategy;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -21,8 +22,9 @@ import java.util.Optional;
  */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private UserAuthenticationService userAuthenticationService;
+    private AuthenticationStrategy authenticationStrategy;
     private CredentialsExtractor credentialsExtractor;
+    private JwtTokenService jwtTokenService;
 
     /**
      * Инициализирует сервлет, получая необходимые сервисы из контекста сервлета.
@@ -33,9 +35,13 @@ public class LoginServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        userAuthenticationService = (UserAuthenticationService) config.getServletContext().getAttribute(AppConfig.getUserAuthServiceAttribute());
-        credentialsExtractor = (CredentialsExtractor) config.getServletContext().getAttribute(AppConfig.getCredentialsExtractorAttribute());
-        if (userAuthenticationService == null || credentialsExtractor == null) {
+        authenticationStrategy = (AuthenticationStrategy) config.getServletContext()
+                .getAttribute(AppConfig.getUserAuthServiceAttribute());
+        credentialsExtractor = (CredentialsExtractor) config.getServletContext()
+                .getAttribute(AppConfig.getCredentialsExtractorAttribute());
+        jwtTokenService = (JwtTokenService) config.getServletContext()
+                .getAttribute(AppConfig.getJwtTokenServiceAttribute());
+        if (authenticationStrategy == null || credentialsExtractor == null || jwtTokenService == null) {
             throw new ServletException(AppConfig.getServiceNotInitializedMessage());
         }
     }
@@ -50,6 +56,15 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String token = req.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            String username = jwtTokenService.extractUsername(token);
+            if (username != null && jwtTokenService.validateToken(token, username)) {
+                resp.sendRedirect(req.getContextPath() + AppConfig.getHomePath());
+                return;
+            }
+        }
         req.getRequestDispatcher(AppConfig.getLoginPath()).forward(req, resp);
     }
 
@@ -66,23 +81,23 @@ public class LoginServlet extends HttpServlet {
         try {
             Credentials credentials = credentialsExtractor.extract(req);
 
-            // Проверка на наличие имени пользователя и пароля
-            if (credentials.username() == null || credentials.password() == null || credentials.username().isEmpty() || credentials.password().isEmpty()) {
-                userAuthenticationService.handleAuthenticationFailure(req, resp);
+            if (credentials.username() == null
+                    || credentials.password() == null
+                    || credentials.username().isEmpty()
+                    || credentials.password().isEmpty()) {
+                authenticationStrategy.handleAuthenticationFailure(req, resp);
                 return;
             }
 
             // Аутентификация пользователя
-            Optional<UserDto> existedUser = userAuthenticationService.authenticate(credentials.username(), credentials.password());
+            Optional<UserDto> existedUser = authenticationStrategy
+                    .authenticate(credentials.username(), credentials.password());
             if (existedUser.isPresent()) {
-                // Установка атрибутов сессии и перенаправление на домашнюю страницу
-                userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
+                authenticationStrategy.setSessionAttributes(req, resp, existedUser.get());
             } else {
-                // Обработка ошибки аутентификации
-                userAuthenticationService.handleAuthenticationFailure(req, resp);
+                authenticationStrategy.handleAuthenticationFailure(req, resp);
             }
         } catch (Exception e) {
-            // Обработка и перенаправление на страницу входа с сообщением об ошибке
             req.setAttribute(AppConfig.getUserAuthServiceAttribute(), AppConfig.getAuthenticationFailedMessage());
             req.getRequestDispatcher(AppConfig.getLoginPath()).forward(req, resp);
         }

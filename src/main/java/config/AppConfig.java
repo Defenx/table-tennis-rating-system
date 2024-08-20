@@ -172,4 +172,12 @@ public class AppConfig {
     public static String getInvalidCredentials() {
         return errors.getValue("invalidCredentials");
     }
+
+    public static String getLoginServiceAttribute() {
+        return "loginService";
+    }
+
+    public static String getJwtTokenServiceAttribute() {
+        return "jwtTokenService";
+    }
 }

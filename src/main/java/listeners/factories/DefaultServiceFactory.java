@@ -2,7 +2,14 @@
 
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import services.*;
+import services.login.BasicCredentialsExtractor;
+import services.login.CredentialsExtractor;
+import services.login.LoginService;
+import services.login.UserLoginService;
+import services.login.auth.JwtTokenService;
+import services.login.auth.strategies.AuthenticationStrategy;
+import services.login.auth.strategies.JwtAuthenticationStrategy;
+import services.login.auth.strategies.StandardAuthenticationStrategy;
 
 public class DefaultServiceFactory implements ServiceFactory {
 
@@ -16,9 +23,19 @@ public class DefaultServiceFactory implements ServiceFactory {
         return new UserLoginService(passwordEncoder);
     }
 
+    public AuthenticationStrategy createUserAuthenticationService(LoginService loginService,
+                                                                  JwtTokenService jwtTokenService,
+                                                                  String strategyType) {
+        if ("JWT".equalsIgnoreCase(strategyType)) {
+            return new JwtAuthenticationStrategy(loginService, jwtTokenService);
+        } else {
+            return new StandardAuthenticationStrategy(loginService);
+        }
+    }
+
     @Override
-    public UserAuthenticationService createUserAuthenticationService(LoginService loginService) {
-        return new UserAuthManager(loginService);
+    public JwtTokenService createJwtTokenService() {
+        return new JwtTokenService();
     }
 
     @Override
