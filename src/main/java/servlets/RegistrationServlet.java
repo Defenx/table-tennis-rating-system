@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import services.RegistrationDataExtractor;
 import services.UserService;
 
@@ -22,6 +23,7 @@ import java.io.IOException;
 public class RegistrationServlet extends HttpServlet {
     private UserService userService;
     private ConstantsConfig constantsConfig;
+    private BCryptPasswordEncoder passwordEncoder;
 
     /**
      * Initializes the servlet by loading UserService and ConstantsConfig objects from the servlet context.
@@ -35,6 +37,8 @@ public class RegistrationServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         userService = (UserService) servletContext.getAttribute("userService");
         constantsConfig = (ConstantsConfig) servletContext.getAttribute("constantsConfig");
+        passwordEncoder = (BCryptPasswordEncoder) servletContext.getAttribute("passwordEncoder");
+
     }
 
     /**
@@ -43,7 +47,7 @@ public class RegistrationServlet extends HttpServlet {
      * @param req  the HttpServletRequest object containing the client's request
      * @param resp the HttpServletResponse object containing the server's response
      * @throws ServletException if an error occurs while processing the request
-     * @throws IOException if an input-output error occurs
+     * @throws IOException      if an input-output error occurs
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -56,11 +60,11 @@ public class RegistrationServlet extends HttpServlet {
      * @param req  the HttpServletRequest object containing the client's request
      * @param resp the HttpServletResponse object containing the server's response
      * @throws ServletException if an error occurs while processing the request
-     * @throws IOException if an input-output error occurs
+     * @throws IOException      if an input-output error occurs
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RegistrationDto userData = RegistrationDataExtractor.extract(req);
+        RegistrationDto userData = RegistrationDataExtractor.extract(req, passwordEncoder);
         boolean isAdded = userService.addUser(userData);
 
         if (isAdded) {

@@ -6,6 +6,8 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import services.UserService;
 
 /**
@@ -27,7 +29,9 @@ public class InitializationListener implements ServletContextListener {
 
         ConstantsConfig constantsConfig = new ConstantsConfig();
         UserService userService = new UserService();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+        servletContext.setAttribute("passwordEncoder",passwordEncoder);
         servletContext.setAttribute("constantsConfig", constantsConfig);
         servletContext.setAttribute("userService", userService);
     }
