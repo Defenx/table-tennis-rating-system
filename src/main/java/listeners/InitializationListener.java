@@ -1,6 +1,7 @@
 package listeners;
 
 
+import config.ConstantsConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
@@ -14,8 +15,10 @@ public class InitializationListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
 
+        ConstantsConfig constantsConfig = new ConstantsConfig();
         UserService userService = new UserService();
 
+        servletContext.setAttribute("constantsConfig", constantsConfig);
         servletContext.setAttribute("userService", userService);
     }
 }

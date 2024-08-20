@@ -1,6 +1,6 @@
 package servlets;
 
-import constants.Constants;
+import config.ConstantsConfig;
 import dto.RegistrationDto;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
@@ -15,20 +15,22 @@ import services.UserService;
 
 import java.io.IOException;
 
-@WebServlet(Constants.REGISTRATION_URL)
+@WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
     private UserService userService;
+    private ConstantsConfig constantsConfig;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext servletContext = getServletContext();
         userService = (UserService) servletContext.getAttribute("userService");
+        constantsConfig = (ConstantsConfig) servletContext.getAttribute("constantsConfig");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(Constants.REGISTRATION_JSP).forward(req, resp);
+        req.getRequestDispatcher(constantsConfig.getRegistrationJsp()).forward(req, resp);
     }
 
     @Override
@@ -38,11 +40,11 @@ public class RegistrationServlet extends HttpServlet {
 
         if (isAdded) {
             resp.setStatus(201);
-            resp.sendRedirect(Constants.LOGIN_URL);
+            resp.sendRedirect(constantsConfig.getLoginURL());
         } else {
             resp.setStatus(500);
-            req.setAttribute("message", Constants.ERROR_USER_ADD_MESSAGE);
-            req.getRequestDispatcher(Constants.ERROR_JSP).forward(req, resp);
+            req.setAttribute("message", constantsConfig.getErrorUserAddMessage());
+            req.getRequestDispatcher(constantsConfig.getErrorJsp()).forward(req, resp);
         }
     }
 }
