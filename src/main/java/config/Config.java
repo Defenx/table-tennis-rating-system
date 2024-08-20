@@ -4,10 +4,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * The Config class loads and provides access to properties from a configuration file.
+ */
 public class Config {
 
     private final Properties properties = new Properties();
 
+    /**
+     * Constructor for the Config class.
+     * Loads properties from the config.properties file.
+     */
     public Config() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
             if (input != null) {
@@ -20,6 +27,13 @@ public class Config {
         }
     }
 
+    /**
+     * Returns the value of the property for the given key.
+     *
+     * @param key the property key
+     * @return the property value
+     * @throws IllegalArgumentException if the property is not found
+     */
     public String getProperty(String key) {
         String value = properties.getProperty(key);
         if (value == null) {

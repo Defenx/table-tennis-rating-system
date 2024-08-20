@@ -3,6 +3,10 @@ package dto;
 import enums.Role;
 import lombok.Data;
 
+/**
+ * The RegistrationDto class represents the data for user registration.
+ */
+
 @Data
 public class RegistrationDto {
     private String email;
