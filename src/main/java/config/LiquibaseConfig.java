@@ -1,9 +1,10 @@
 package config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import javax.sql.DataSource;
 import java.util.Properties;
 
 public class LiquibaseConfig {
@@ -11,15 +12,17 @@ public class LiquibaseConfig {
     public final static String CHANGELOG_FILE = "/db/changelog/master.xml";
 
     @SneakyThrows
-    public Connection getConnection() {
+    public DataSource getDataSource() {
+        HikariConfig config = new HikariConfig();
         Properties properties = new Properties();
         properties.load((LiquibaseConfig.class.getClassLoader().getResourceAsStream("/liquibase/liquibase.properties")));
-        Class.forName("org.postgresql.Driver");
 
-        return DriverManager.getConnection(
-                properties.getProperty("url"),
-                properties.getProperty("username"),
-                properties.getProperty("password")
-        );
+        config.setJdbcUrl(properties.getProperty("url"));
+        config.setUsername(properties.getProperty("username"));
+        config.setPassword(properties.getProperty("password"));
+        config.setDriverClassName("org.postgresql.Driver");
+
+        return new HikariDataSource(config);
     }
+
 }

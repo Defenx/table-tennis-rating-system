@@ -12,16 +12,22 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.SneakyThrows;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+
 @WebListener
 public class ContextListener implements ServletContextListener {
+    
     @Override
     @SneakyThrows
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext context = servletContextEvent.getServletContext();
 
         LiquibaseConfig liquibaseConfig = new LiquibaseConfig();
+        DataSource dataSource = liquibaseConfig.getDataSource();
         try (
-                JdbcConnection jdbcConnection = new JdbcConnection(liquibaseConfig.getConnection());
+                Connection connection = dataSource.getConnection();
+                JdbcConnection jdbcConnection = new JdbcConnection(connection);
                 Liquibase liquibase = new Liquibase(
                         LiquibaseConfig.CHANGELOG_FILE,
                         new ClassLoaderResourceAccessor(),
