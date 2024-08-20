@@ -19,6 +19,7 @@ import java.util.Optional;
 /**
  * Сервлет для обработки запросов на вход в систему.
  * Реализует методы для отображения страницы входа и обработки отправленных данных для аутентификации.
+ * Поддерживает аутентификацию с использованием JWT токенов.
  */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -30,7 +31,7 @@ public class LoginServlet extends HttpServlet {
      * Инициализирует сервлет, получая необходимые сервисы из контекста сервлета.
      *
      * @param config объект {@link ServletConfig} с конфигурацией сервлета
-     * @throws ServletException если не удается инициализировать сервлет
+     * @throws ServletException если не удается инициализировать сервлет из-за отсутствия необходимых сервисов
      */
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -48,6 +49,7 @@ public class LoginServlet extends HttpServlet {
 
     /**
      * Обрабатывает GET-запросы, перенаправляя на страницу входа.
+     * Если пользователь уже аутентифицирован с использованием JWT токена, перенаправляет на домашнюю страницу.
      *
      * @param req  HTTP-запрос
      * @param resp HTTP-ответ
@@ -70,6 +72,8 @@ public class LoginServlet extends HttpServlet {
 
     /**
      * Обрабатывает POST-запросы, выполняя аутентификацию пользователя и управляя сессией.
+     * Если аутентификация успешна, устанавливает атрибуты сессии и перенаправляет на домашнюю страницу.
+     * В случае неудачной аутентификации обрабатывает ошибку аутентификации.
      *
      * @param req  HTTP-запрос
      * @param resp HTTP-ответ
