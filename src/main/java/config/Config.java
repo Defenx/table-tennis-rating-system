@@ -8,7 +8,7 @@ import java.util.Properties;
  * The Config class loads and provides access to properties from a configuration file.
  */
 public class Config {
-
+    private static final String PROPERTIES_FILE = "config.properties";
     private final Properties properties = new Properties();
 
     /**
@@ -16,11 +16,11 @@ public class Config {
      * Loads properties from the config.properties file.
      */
     public Config() {
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
             if (input != null) {
                 properties.load(input);
             } else {
-                System.err.println("Sorry, unable to find config.properties");
+                System.err.println("Sorry, unable to find " + PROPERTIES_FILE);
             }
         } catch (IOException e) {
             e.printStackTrace(System.out);
