@@ -1,19 +1,17 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4e8e8;
+    background-image: url("https://bogatyr.club/uploads/posts/2023-03/1679524685_bogatyr-club-p-nastolnii-tennis-oboi-foni-oboi-2.jpg");
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
 }
-
 .auth {
     position: relative;
     text-align: center;
     color: #000000;
 }
-
 .form-auth {
     padding: 5%;
     text-align: center;
@@ -40,7 +38,7 @@ input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #cccccc;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 1rem;
     transition: border-color 0.3s;
 }
@@ -58,6 +56,7 @@ input[type="password"]:focus {
 }
 a{
     position: absolute;
+    color: #e13131;
     left: 50%;
     width: 50%;
     padding: 10px;
@@ -69,7 +68,7 @@ button {
     left: 1%;
     width: 50%;
     padding: 10px;
-    background-color: #710606;
+    background-color: #e13131;
     color: white;
     border: none;
     border-radius: 5px;
@@ -79,5 +78,5 @@ button {
 }
 
 button:hover {
-    background-color: #b50606;
+    background-color: #b20303;
 }
