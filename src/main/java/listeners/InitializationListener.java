@@ -8,9 +8,10 @@ import jakarta.servlet.ServletContextListener;
 import listeners.factories.DefaultServiceFactory;
 import listeners.factories.ServiceFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import services.CredentialsExtractor;
-import services.LoginService;
-import services.UserAuthenticationService;
+import services.login.CredentialsExtractor;
+import services.login.LoginService;
+import services.login.auth.JwtTokenService;
+import services.login.auth.strategies.AuthenticationStrategy;
 
 /**
  * Класс слушателя инициализации приложения.
@@ -27,9 +28,9 @@ public class InitializationListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
-
+        // Загрузка конфигурации приложения
         try {
-            // Загрузка конфигурации приложения
+
             AppConfig.loadConfig();
         } catch (Exception e) {
             throw new RuntimeException("Не удалось инициализировать приложение", e);
@@ -41,11 +42,20 @@ public class InitializationListener implements ServletContextListener {
         // Создание и настройка необходимых сервисов
         BCryptPasswordEncoder bCryptPasswordEncoder = serviceFactory.createPasswordEncoder();
         LoginService loginService = serviceFactory.createLoginService(bCryptPasswordEncoder);
-        UserAuthenticationService userAuthenticationService = serviceFactory.createUserAuthenticationService(loginService);
-        CredentialsExtractor credentialsExtractor = serviceFactory.createCredentialsExtractor();
+        JwtTokenService jwtTokenService = serviceFactory.createJwtTokenService();
+        String authStrategyType = "JWT";
+
+        AuthenticationStrategy authenticationStrategy = serviceFactory
+                .createUserAuthenticationService(loginService, jwtTokenService, authStrategyType);
+        CredentialsExtractor credentialsExtractor = serviceFactory
+                .createCredentialsExtractor();
 
         // Сохранение атрибутов в контексте сервлета
-        servletContext.setAttribute(AppConfig.getCredentialsExtractorAttribute(), credentialsExtractor);
-        servletContext.setAttribute(AppConfig.getUserAuthServiceAttribute(), userAuthenticationService);
+        servletContext.setAttribute(AppConfig
+                .getCredentialsExtractorAttribute(), credentialsExtractor);
+        servletContext.setAttribute(AppConfig
+                .getUserAuthServiceAttribute(), authenticationStrategy);
+        servletContext.setAttribute(AppConfig
+                .getJwtTokenServiceAttribute(), jwtTokenService);
     }
 }

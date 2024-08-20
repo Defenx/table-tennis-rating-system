@@ -1,4 +1,4 @@
-package services;
+package services.login.auth.strategies;
 
 import dto.UserDto;
 import jakarta.servlet.ServletException;
@@ -12,7 +12,7 @@ import java.util.Optional;
  * Интерфейс для сервиса аутентификации пользователя.
  * Обеспечивает методы для аутентификации, установки атрибутов сессии и обработки ошибок аутентификации.
  */
-public interface UserAuthenticationService {
+public interface AuthenticationStrategy {
     /**
      * Выполняет аутентификацию пользователя по имени пользователя и паролю.
      *
