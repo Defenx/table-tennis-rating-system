@@ -10,11 +10,11 @@ import java.util.UUID;
 
 /**
  * Сервис для выполнения операций входа пользователя.
- * Реализует интерфейс {@link LoginService} и обеспечивает функциональность для проверки существования пользователя
+ * Реализует интерфейс {@link UserService} и обеспечивает функциональность для проверки существования пользователя
  * на основе имени пользователя и пароля.
  */
 @AllArgsConstructor
-public class UserLoginService implements LoginService {
+public class DefaultUserService implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     /**
@@ -55,4 +55,6 @@ public class UserLoginService implements LoginService {
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()))
                 .findFirst();
     }
+
+
 }

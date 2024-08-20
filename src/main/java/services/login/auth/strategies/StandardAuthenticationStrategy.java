@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import services.login.LoginService;
+import services.login.UserService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @AllArgsConstructor
 public class StandardAuthenticationStrategy implements AuthenticationStrategy {
-    private final LoginService loginService;
+    private final UserService userService;
 
     /**
      * Выполняет аутентификацию пользователя по имени пользователя и паролю.
@@ -28,7 +28,7 @@ public class StandardAuthenticationStrategy implements AuthenticationStrategy {
      */
     @Override
     public Optional<UserDto> authenticate(String username, String password) {
-        return loginService.getExistedUser(username, password);
+        return userService.getExistedUser(username, password);
     }
 
     /**

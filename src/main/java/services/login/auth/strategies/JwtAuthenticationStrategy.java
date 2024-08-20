@@ -5,7 +5,7 @@ import dto.UserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import services.login.LoginService;
+import services.login.UserService;
 import services.login.auth.JwtTokenService;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @AllArgsConstructor
 public class JwtAuthenticationStrategy implements AuthenticationStrategy {
-    private final LoginService loginService;
+    private final UserService userService;
     private final JwtTokenService jwtTokenService;
 
     /**
@@ -29,7 +29,7 @@ public class JwtAuthenticationStrategy implements AuthenticationStrategy {
      */
     @Override
     public Optional<UserDto> authenticate(String username, String password) {
-        return loginService.getExistedUser(username, password);
+        return userService.getExistedUser(username, password);
     }
 
     /**

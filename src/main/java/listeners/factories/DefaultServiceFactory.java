@@ -3,8 +3,8 @@ package listeners.factories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import services.login.BasicCredentialsExtractor;
 import services.login.CredentialsExtractor;
-import services.login.LoginService;
-import services.login.UserLoginService;
+import services.login.UserService;
+import services.login.DefaultUserService;
 import services.login.auth.JwtTokenService;
 import services.login.auth.strategies.AuthenticationStrategy;
 import services.login.auth.strategies.JwtAuthenticationStrategy;
@@ -34,27 +34,27 @@ public class DefaultServiceFactory implements ServiceFactory {
      * @return экземпляр LoginService
      */
     @Override
-    public LoginService createLoginService(BCryptPasswordEncoder passwordEncoder) {
-        return new UserLoginService(passwordEncoder);
+    public UserService createLoginService(BCryptPasswordEncoder passwordEncoder) {
+        return new DefaultUserService(passwordEncoder);
     }
 
     /**
      * Создает и возвращает экземпляр AuthenticationStrategy для выполнения аутентификации пользователей.
      * В зависимости от переданного типа стратегии, будет создан соответствующий экземпляр стратегии.
      *
-     * @param loginService    экземпляр LoginService для выполнения операций входа в систему
+     * @param userService    экземпляр LoginService для выполнения операций входа в систему
      * @param jwtTokenService экземпляр JwtTokenService для работы с JWT токенами
      * @param strategyType    тип стратегии аутентификации ("JWT" или другой)
      * @return экземпляр AuthenticationStrategy
      */
     @Override
-    public AuthenticationStrategy createUserAuthenticationService(LoginService loginService,
+    public AuthenticationStrategy createUserAuthenticationService(UserService userService,
                                                                   JwtTokenService jwtTokenService,
                                                                   String strategyType) {
         if ("JWT".equalsIgnoreCase(strategyType)) {
-            return new JwtAuthenticationStrategy(loginService, jwtTokenService);
+            return new JwtAuthenticationStrategy(userService, jwtTokenService);
         } else {
-            return new StandardAuthenticationStrategy(loginService);
+            return new StandardAuthenticationStrategy(userService);
         }
     }
 
