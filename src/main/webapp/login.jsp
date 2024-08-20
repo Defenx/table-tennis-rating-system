@@ -23,8 +23,9 @@
             <label for="password">Пароль</label>
             <input type="password" id="password" name="password" required placeholder="Введите ваш пароль">
         </div>
-        <div>
+        <div class ="buttons">
             <button type="submit">Войти</button>
+            <a href="/registration" class="link-button">Регистрация</a>
         </div>
     </form>
 </div>
