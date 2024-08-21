@@ -12,7 +12,7 @@ public class SpecialCharacterValidator implements FieldValidator {
         this.requiredCount = requiredCount;
         this.specialCharacters = "!@#$%^&*()";
         this.errorMessages = List.of(
-                "Password must contain at least %d special character(s) (%s)".formatted(requiredCount, requiredCount)
+                "Field must contain at least %d special character(s) (%s)".formatted(requiredCount, specialCharacters)
         );
     }
 

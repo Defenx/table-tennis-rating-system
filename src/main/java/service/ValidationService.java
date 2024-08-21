@@ -2,6 +2,10 @@ package service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import service.strategy.ValidationFactory;
+import service.validator.FieldValidator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ValidationService {
     public static final String IS_VALID_REQUEST = "isValidRequest";
@@ -17,12 +21,16 @@ public class ValidationService {
         var isValidRequest = true;
 
         // "/registration" need to check fields: name, surname, password, email and etc
-        for (var validation : validations) {
-            var fieldName = validation.getFieldName();
-            var value = request.getParameter(fieldName);
-            var errorMap = validation.validate(value);
-            isValidRequest = isValidRequest && errorMap.get(fieldName).isEmpty();
-            request.setAttribute(createAttributeName(fieldName), errorMap.get(fieldName));
+        for (String fieldName : validations.keySet()) {
+
+            String value = request.getParameter(fieldName);
+            List<FieldValidator> errorMap = validations.get(fieldName);
+            List<String> poop = new ArrayList<>();
+            for (FieldValidator fieldValidator:errorMap) {
+                poop.addAll(fieldValidator.validate(value));
+            }
+            isValidRequest = isValidRequest && poop.isEmpty();
+            request.setAttribute(createAttributeName(fieldName), poop);
         }
 
         request.setAttribute(IS_VALID_REQUEST, isValidRequest);

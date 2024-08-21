@@ -10,7 +10,7 @@ public class LengthValidator implements FieldValidator {
     public LengthValidator(int minLength) {
         this.minLength = minLength;
         this.errorMessages = List.of(
-                "Password must be at least " + minLength + " characters long"
+                "Field must be at least " + minLength + " characters long"
         );
     }
 

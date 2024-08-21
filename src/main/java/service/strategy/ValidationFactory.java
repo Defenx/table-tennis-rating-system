@@ -8,33 +8,26 @@ import java.util.List;
 import java.util.Map;
 
 public class ValidationFactory {
-    private final Map<String, List<AbstractValidation>> routesToValidationMap;
+    private final Map<String, Map<String, List<FieldValidator>>> routesToValidationMap;
 
     public ValidationFactory() {
-        this.routesToValidationMap = Map.of(
-                Route.TEST_REGISTRATION_PAGE.getUri(), List.of(
-                        new PasswordValidation("password", createPasswordValidations()),
-                        new EmailValidation("email", createEmailValidations())
+        routesToValidationMap = Map.of(
+                Route.TEST_REGISTRATION_PAGE.getUri(),Map.of(
+                        "password",List.of(
+                                new EmptinessValidator(),
+                                new LengthValidator(16),
+                                new SpecialCharacterValidator(2)),
+
+                        "email", List.of(
+                                new EmptinessValidator(),
+                                new EmailValidator())
                 )
         );
     }
 
-    public List<AbstractValidation> getValidationsByContextPath(String contextPath) {
-        return routesToValidationMap.getOrDefault(contextPath, Collections.emptyList());
+    public Map<String, List<FieldValidator>> getValidationsByContextPath(String contextPath) {
+        return routesToValidationMap.getOrDefault(contextPath, Collections.emptyMap());
     }
 
-    private List<FieldValidator> createPasswordValidations() {
-        return List.of(
-                new EmptinessValidator(),
-                new LengthValidator(16),
-                new SpecialCharacterValidator(2)
-        );
-    }
 
-    private List<FieldValidator> createEmailValidations() {
-        return List.of(
-                new EmptinessValidator(),
-                new EmailValidator()
-        );
-    }
 }
