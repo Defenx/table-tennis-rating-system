@@ -1,9 +1,9 @@
-package service.validator;
+package service.validation.validator;
 
 import java.util.Collections;
 import java.util.List;
 
-public class SpecialCharacterValidator implements FieldValidator {
+public class SpecialCharacterValidator implements Validator {
     private final int requiredCount;
     private final String specialCharacters;
     private final List<String> errorMessages;
@@ -12,7 +12,7 @@ public class SpecialCharacterValidator implements FieldValidator {
         this.requiredCount = requiredCount;
         this.specialCharacters = "!@#$%^&*()";
         this.errorMessages = List.of(
-                "Field must contain at least %d special character(s) (%s)".formatted(requiredCount, specialCharacters)
+                "The field must contain at least %d special character(s) (%s)".formatted(requiredCount, specialCharacters)
         );
     }
 

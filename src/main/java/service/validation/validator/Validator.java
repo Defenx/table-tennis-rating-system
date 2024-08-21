@@ -1,7 +1,7 @@
-package service.validator;
+package service.validation.validator;
 
 import java.util.List;
 
-public interface FieldValidator {
+public interface Validator {
     List<String> validate(String value);
 }

@@ -3,8 +3,8 @@ package listener;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import service.ValidationService;
-import service.strategy.ValidationFactory;
+import service.validation.ValidationService;
+import service.validation.ValidationFactory;
 
 @WebListener
 public class AppContextListener implements ServletContextListener {

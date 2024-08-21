@@ -1,16 +1,16 @@
-package service.validator;
+package service.validation.validator;
 
 import java.util.Collections;
 import java.util.List;
 
-public class LengthValidator implements FieldValidator {
+public class LengthValidator implements Validator {
     private final int minLength;
     private final List<String> errorMessages;
 
     public LengthValidator(int minLength) {
         this.minLength = minLength;
         this.errorMessages = List.of(
-                "Field must be at least " + minLength + " characters long"
+                "The field must be at least " + minLength + " characters long"
         );
     }
 

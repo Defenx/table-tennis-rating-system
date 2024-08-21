@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import listener.AppContextListener;
-import service.ValidationService;
+import service.validation.ValidationService;
 import servlet.Route;
 
 import java.io.IOException;

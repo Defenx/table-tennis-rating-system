@@ -1,9 +1,9 @@
-package service.validator;
+package service.validation.validator;
 
 import java.util.Collections;
 import java.util.List;
 
-public class EmptinessValidator implements FieldValidator {
+public class EmptinessValidator implements Validator {
     private final List<String> errorMessages;
 
     public EmptinessValidator() {
