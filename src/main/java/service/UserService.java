@@ -15,8 +15,16 @@ public class UserService {
 
     private List<UserDto> mockedFindAllUsers() {
         return List.of(
-                new UserDto(UUID.randomUUID(), "John", "Doe", 5, Role.USER),
-                new UserDto(UUID.randomUUID(), "Jane", "Doe", 4, Role.USER)
+                new UserDto(UUID.randomUUID(),
+                        "John",
+                        "Doe",
+                        5,
+                        Role.USER),
+                new UserDto(UUID.randomUUID(),
+                        "Jane",
+                        "Doe",
+                        4,
+                        Role.USER)
         );
     }
 
