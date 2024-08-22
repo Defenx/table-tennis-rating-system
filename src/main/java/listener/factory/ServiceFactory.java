@@ -9,7 +9,6 @@ import service.login.auth.JwtTokenService;
 import service.login.auth.UserAuthenticationService;
 import service.login.auth.strategies.AuthenticationStrategy;
 import service.login.auth.strategies.JwtAuthenticationStrategy;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,21 +20,13 @@ public class ServiceFactory {
         servletContext.setAttribute(name, service);
     }
 
-    public Service getService(String name) {
-        Service service = services.get(name);
-        if (service == null) {
-            throw new IllegalArgumentException("Service not found: " + name);
-        }
-        return service;
-    }
-
     public static ServiceFactory createDefault(ServletContext servletContext) {
         ServiceFactory factory = new ServiceFactory();
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         UserService userService = new UserService(bCryptPasswordEncoder);
         JwtTokenService jwtTokenService = new JwtTokenService();
-        AuthenticationStrategy jwtAuthenticationStrategy = new JwtAuthenticationStrategy(userService, jwtTokenService);
-        Service userAuthenticationService = new UserAuthenticationService(jwtAuthenticationStrategy);
+        AuthenticationStrategy authenticationStrategy = new JwtAuthenticationStrategy(userService, jwtTokenService);
+        Service userAuthenticationService = new UserAuthenticationService(authenticationStrategy);
         Service credentialsExtractor = new BasicCredentialsExtractorService();
 
         factory.registerService("userService", userService, servletContext);

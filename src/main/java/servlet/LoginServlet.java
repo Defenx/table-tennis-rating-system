@@ -28,8 +28,8 @@ public class LoginServlet extends HttpServlet {
     private static final String JWT_TOKEN_SERVICE_ATTRIBUTE = "jwtTokenService";
     private static final String SERVICE_NOT_INITIALIZED_MESSAGE = "serviceNotInitialized";
     private static final String AUTHENTICATION_FAILED_MESSAGE = "authenticationFailed";
-    private static final String HOME_PATH = AppConfig.getConfigValue(ConfigSection.PATHS, "home");
-    private static final String LOGIN_PATH = AppConfig.getConfigValue(ConfigSection.PATHS, "login");
+    private static final String HOME_PATH = "/";
+    private static final String LOGIN_PAGE = "/login.jsp";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -44,16 +44,22 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String token = req.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-            String username = jwtTokenService.extractUsername(token);
-            if (username != null && jwtTokenService.validateToken(token, username)) {
-                resp.sendRedirect(req.getContextPath() + HOME_PATH);
-                return;
+        try {
+            String token = req.getHeader("Authorization");
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+                String username = jwtTokenService.extractUsername(token);
+                if (username != null && jwtTokenService.validateToken(token, username)) {
+
+                    resp.sendRedirect(req.getContextPath() + HOME_PATH);
+                    return;
+                }
             }
+
+            req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
+        } catch (Exception e) {
+            throw new ServletException("Error processing GET request", e);
         }
-        req.getRequestDispatcher(LOGIN_PATH).forward(req, resp);
     }
 
     @Override
@@ -78,7 +84,7 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (Exception e) {
             req.setAttribute(USER_AUTH_SERVICE_ATTRIBUTE, AUTHENTICATION_FAILED_MESSAGE);
-//            req.getRequestDispatcher(LOGIN_PATH).forward(req, resp);
+            req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
         }
     }
 }
