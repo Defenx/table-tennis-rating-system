@@ -1,0 +1,29 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">postgres</property>
+
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.highlight_sql">true</property>
+
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <property name="hibernate.listeners.create">org.liquibase.integration.hibernate.HibernateLiquibaseListener</property>
+        <property name="hibernate.liquibase.changeLog">classpath:/db/changelog/master.xml</property>
+
+        <mapping class="entity.Extension"/>
+        <mapping class="entity.Match"/>
+        <mapping class="entity.Round"/>
+        <mapping class="entity.Tournament"/>
+        <mapping class="entity.TournamentParticipant"/>
+        <mapping class="entity.User"/>
+    </session-factory>
+</hibernate-configuration>
