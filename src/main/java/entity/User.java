@@ -43,8 +43,4 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @OneToMany(mappedBy = "user")
-    @ToString.Exclude
-    private List<TournamentParticipant> tournaments;
 }
