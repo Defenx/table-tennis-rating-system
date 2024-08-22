@@ -18,8 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.UserService;
 import service.login.BasicCredentialsExtractorService;
 import service.login.UserAuthenticationService;
-import service.validation.FieldValidationFactory;
-import service.validation.ValidationService;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -49,11 +47,8 @@ public class ContextListener implements ServletContextListener {
         var userService = new UserService(bCryptPasswordEncoder);
         var userAuthenticationService = new UserAuthenticationService(userService);
         var credentialsExtractor = new BasicCredentialsExtractorService();
-        var validationFactory = new FieldValidationFactory(userDao);
-        var validationService = new ValidationService(validationFactory);
 
         Map<String, Object> attributes = Stream.of(
-                new AbstractMap.SimpleEntry<>(VALIDATION_SERVICE, validationService),
                 new AbstractMap.SimpleEntry<>(CREDENTIALS_EXTRACTOR, credentialsExtractor),
                 new AbstractMap.SimpleEntry<>(USER_AUTH_SERVICE, userAuthenticationService),
                 new AbstractMap.SimpleEntry<>(SESSION_FACTORY, sessionFactory),

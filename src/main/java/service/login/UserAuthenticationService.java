@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class UserAuthenticationService {
-    private static final String USER_ID_ATTRIBUTE = "userID";
     private static final String ERROR_MESSAGE_ATTRIBUTE = "errorMessage";
     private static final String INVALID_CREDENTIALS_MESSAGE = "invalidCredentials";
     private static final String HOME_PATH =  "/";
