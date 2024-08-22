@@ -3,59 +3,45 @@ package servlet;
 import config.AppConfig;
 import dto.Credentials;
 import dto.UserDto;
+import enums.ConfigSection;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import services.login.CredentialsExtractor;
-import services.login.auth.JwtTokenService;
-import services.login.auth.strategies.AuthenticationStrategy;
+import service.login.CredentialsExtractor;
+import service.login.auth.JwtTokenService;
+import service.login.auth.UserAuthenticationService;
 
 import java.io.IOException;
 import java.util.Optional;
 
-/**
- * Сервлет для обработки запросов на вход в систему.
- * Реализует методы для отображения страницы входа и обработки отправленных данных для аутентификации.
- * Поддерживает аутентификацию с использованием JWT токенов.
- */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private AuthenticationStrategy authenticationStrategy;
+    private UserAuthenticationService userAuthenticationService;
     private CredentialsExtractor credentialsExtractor;
     private JwtTokenService jwtTokenService;
 
-    /**
-     * Инициализирует сервлет, получая необходимые сервисы из контекста сервлета.
-     *
-     * @param config объект {@link ServletConfig} с конфигурацией сервлета
-     * @throws ServletException если не удается инициализировать сервлет из-за отсутствия необходимых сервисов
-     */
+    private static final String USER_AUTH_SERVICE_ATTRIBUTE = AppConfig.getConfigValue(ConfigSection.ATTRIBUTES, "userAuthService");
+    private static final String CREDENTIALS_EXTRACTOR_ATTRIBUTE = AppConfig.getConfigValue(ConfigSection.ATTRIBUTES, "credentialsExtractor");
+    private static final String JWT_TOKEN_SERVICE_ATTRIBUTE = AppConfig.getConfigValue(ConfigSection.ATTRIBUTES, "jwtTokenService");
+    private static final String SERVICE_NOT_INITIALIZED_MESSAGE = AppConfig.getConfigValue(ConfigSection.ERRORS, "serviceNotInitialized");
+    private static final String AUTHENTICATION_FAILED_MESSAGE = AppConfig.getConfigValue(ConfigSection.ERRORS, "authenticationFailed");
+    private static final String HOME_PATH = AppConfig.getConfigValue(ConfigSection.PATHS, "home");
+    private static final String LOGIN_PATH = AppConfig.getConfigValue(ConfigSection.PATHS, "login");
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        authenticationStrategy = (AuthenticationStrategy) config.getServletContext()
-                .getAttribute(AppConfig.getUserAuthServiceAttribute());
-        credentialsExtractor = (CredentialsExtractor) config.getServletContext()
-                .getAttribute(AppConfig.getCredentialsExtractorAttribute());
-        jwtTokenService = (JwtTokenService) config.getServletContext()
-                .getAttribute(AppConfig.getJwtTokenServiceAttribute());
-        if (authenticationStrategy == null || credentialsExtractor == null || jwtTokenService == null) {
-            throw new ServletException(AppConfig.getServiceNotInitializedMessage());
+        userAuthenticationService = (UserAuthenticationService) config.getServletContext().getAttribute(USER_AUTH_SERVICE_ATTRIBUTE);
+        credentialsExtractor = (CredentialsExtractor) config.getServletContext().getAttribute(CREDENTIALS_EXTRACTOR_ATTRIBUTE);
+        jwtTokenService = (JwtTokenService) config.getServletContext().getAttribute(JWT_TOKEN_SERVICE_ATTRIBUTE);
+        if (userAuthenticationService == null || credentialsExtractor == null || jwtTokenService == null) {
+            throw new ServletException(SERVICE_NOT_INITIALIZED_MESSAGE);
         }
     }
 
-    /**
-     * Обрабатывает GET-запросы, перенаправляя на страницу входа.
-     * Если пользователь уже аутентифицирован с использованием JWT токена, перенаправляет на домашнюю страницу.
-     *
-     * @param req  HTTP-запрос
-     * @param resp HTTP-ответ
-     * @throws ServletException если возникает ошибка обработки запроса
-     * @throws IOException      если возникает ошибка ввода-вывода
-     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = req.getHeader("Authorization");
@@ -63,23 +49,13 @@ public class LoginServlet extends HttpServlet {
             token = token.substring(7);
             String username = jwtTokenService.extractUsername(token);
             if (username != null && jwtTokenService.validateToken(token, username)) {
-                resp.sendRedirect(req.getContextPath() + AppConfig.getHomePath());
+                resp.sendRedirect(req.getContextPath() + HOME_PATH);
                 return;
             }
         }
-        req.getRequestDispatcher(AppConfig.getLoginPath()).forward(req, resp);
+        req.getRequestDispatcher(LOGIN_PATH).forward(req, resp);
     }
 
-    /**
-     * Обрабатывает POST-запросы, выполняя аутентификацию пользователя и управляя сессией.
-     * Если аутентификация успешна, устанавливает атрибуты сессии и перенаправляет на домашнюю страницу.
-     * В случае неудачной аутентификации обрабатывает ошибку аутентификации.
-     *
-     * @param req  HTTP-запрос
-     * @param resp HTTP-ответ
-     * @throws ServletException если возникает ошибка обработки запроса
-     * @throws IOException      если возникает ошибка ввода-вывода
-     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -89,21 +65,20 @@ public class LoginServlet extends HttpServlet {
                     || credentials.password() == null
                     || credentials.username().isEmpty()
                     || credentials.password().isEmpty()) {
-                authenticationStrategy.handleAuthenticationFailure(req, resp);
+                userAuthenticationService.handleAuthenticationFailure(req, resp);
                 return;
             }
 
             // Аутентификация пользователя
-            Optional<UserDto> existedUser = authenticationStrategy
-                    .authenticate(credentials.username(), credentials.password());
+            Optional<UserDto> existedUser = userAuthenticationService.authenticate(credentials.username(), credentials.password());
             if (existedUser.isPresent()) {
-                authenticationStrategy.setSessionAttributes(req, resp, existedUser.get());
+                userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
             } else {
-                authenticationStrategy.handleAuthenticationFailure(req, resp);
+                userAuthenticationService.handleAuthenticationFailure(req, resp);
             }
         } catch (Exception e) {
-            req.setAttribute(AppConfig.getUserAuthServiceAttribute(), AppConfig.getAuthenticationFailedMessage());
-            req.getRequestDispatcher(AppConfig.getLoginPath()).forward(req, resp);
+            req.setAttribute(USER_AUTH_SERVICE_ATTRIBUTE, AUTHENTICATION_FAILED_MESSAGE);
+            req.getRequestDispatcher(LOGIN_PATH).forward(req, resp);
         }
     }
 }

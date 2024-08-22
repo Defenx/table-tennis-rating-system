@@ -1,22 +1,16 @@
 package dto;
 
 import enums.Role;
-import lombok.Builder;
-import lombok.Data;
 
 import java.util.UUID;
 
 /**
- * Класс передачи данных (DTO) для пользователя.
+ * The type User dto.
  */
-@Data
-@Builder
-public class UserDto {
-    private UUID id;
-    private String password;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private Integer rating;
-    private Role role;
-}
+public record UserDto(
+        UUID id,
+        String firstName,
+        String lastName,
+        Integer rating,
+        Role role
+) {}

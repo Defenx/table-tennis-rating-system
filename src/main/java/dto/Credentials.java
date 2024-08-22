@@ -1,9 +1,10 @@
 package dto;
 
+
 /**
- * Класс для хранения учетных данных.
- *
- * @param username имя пользователя
- * @param password пароль
+ * The type Credentials.
  */
-public record Credentials(String username, String password) {}
+public record Credentials(
+        String username,
+        String password
+) {}

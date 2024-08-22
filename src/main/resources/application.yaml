@@ -1,16 +1,34 @@
 app:
   paths:
-    login: /login.jsp
+    login: /login
+    registration: /registration
     home: /
+    error: /error
+
+  pages:
+    login: /login.jsp
+    registration: /registration.jsp
+    error: /error.jsp
+
   errors:
     serviceNotInitialized: UserAuthenticationService is not initialized
     authenticationFailed: Invalid email or password
     errorMessage: errorMessage
+    errorUserAdding: Error while user adding
     invalidCredentials: Invalid email or password
-  attributes:
-    loginService: loginService
-    userID: userID
-    firstName: first_name
-    lastName: last_name
-    rating: rating
-    userRole: user_role
+
+  context:
+    services:
+      loginService: loginService
+      userService: userService
+      passwordEncoder: passwordEncoder
+      userAuthService: userAuthService
+      jwtTokenService: jwtTokenService
+      credentialsExtractor: credentialsExtractor
+
+    attributes:
+      userID: userID
+      firstName: first_name
+      lastName: last_name
+      rating: rating
+      userRole: user_role

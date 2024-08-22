@@ -1,29 +1,26 @@
 package config;
 
-import config.strategies.AttributesConfig;
-import config.strategies.ConfigStrategy;
-import config.strategies.ErrorsConfig;
-import config.strategies.PathsConfig;
+import config.strategy.*;
+import enums.ConfigSection;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Класс для загрузки и управления конфигурацией приложения.
+ * The type App config.
  */
 public class AppConfig {
     private static final String CONFIG_FILE = "application.yaml";
     private static Map<String, Object> config;
-    private static ConfigStrategy paths;
-    private static ConfigStrategy errors;
-    private static ConfigStrategy attributes;
+    private static Map<ConfigSection, ConfigStrategy> strategies;
 
     /**
-     * Загружает конфигурацию из файла.
+     * Load config.
      *
-     * @throws RuntimeException если произошла ошибка при загрузке файла конфигурации
+     * @throws RuntimeException the runtime exception
      */
     public static void loadConfig() throws RuntimeException {
         Yaml yaml = new Yaml();
@@ -38,146 +35,33 @@ public class AppConfig {
         }
     }
 
-    /**
-     * Инициализирует стратегии конфигурации на основе данных из конфигурационного файла.
-     *
-     * @throws IllegalStateException если секция 'app' отсутствует или имеет неверный формат
-     */
     private static void initializeStrategies() {
+        strategies = new HashMap<>();
         Object appConfig = config.get("app");
 
         if (appConfig instanceof Map) {
             Map<String, Object> appConfigMap = (Map<String, Object>) appConfig;
-            paths = new PathsConfig(appConfigMap.get("paths"));
-            errors = new ErrorsConfig(appConfigMap.get("errors"));
-            attributes = new AttributesConfig(appConfigMap.get("attributes"));
+            strategies.put(ConfigSection.PATHS, new PathsConfig(appConfigMap.get(ConfigSection.PATHS.getValue())));
+            strategies.put(ConfigSection.ERRORS, new ErrorsConfig(appConfigMap.get(ConfigSection.ERRORS.getValue())));
+            strategies.put(ConfigSection.ATTRIBUTES, new AttributesConfig(appConfigMap.get(ConfigSection.ATTRIBUTES.getValue())));
+            strategies.put(ConfigSection.PAGES, new PagesConfig(appConfigMap.get(ConfigSection.PAGES.getValue())));
         } else {
-            throw new IllegalStateException("Секция конфигурации 'app' отсутствует или не является картой.");
+            throw new IllegalStateException("Секция конфигурации 'app' отсутствует или не является мапой.");
         }
     }
 
     /**
-     * Возвращает путь для входа в систему.
+     * Gets config value.
      *
-     * @return путь для входа
+     * @param section the section
+     * @param key     the key
+     * @return the config value
      */
-    public static String getLoginPath() {
-        return paths.getValue("login");
-    }
-
-    /**
-     * Возвращает путь для домашней страницы.
-     *
-     * @return путь для домашней страницы
-     */
-    public static String getHomePath() {
-        return paths.getValue("home");
-    }
-
-    /**
-     * Возвращает сообщение об ошибке, если сервис не инициализирован.
-     *
-     * @return сообщение об ошибке
-     */
-    public static String getServiceNotInitializedMessage() {
-        return errors.getValue("serviceNotInitialized");
-    }
-
-    /**
-     * Возвращает сообщение об ошибке при неудачной аутентификации.
-     *
-     * @return сообщение об ошибке аутентификации
-     */
-    public static String getAuthenticationFailedMessage() {
-        return errors.getValue("authenticationFailed");
-    }
-
-    /**
-     * Возвращает атрибут сервиса аутентификации пользователя.
-     *
-     * @return атрибут сервиса аутентификации
-     */
-    public static String getUserAuthServiceAttribute() {
-        return attributes.getValue("loginService");
-    }
-
-    /**
-     * Возвращает атрибут идентификатора пользователя.
-     *
-     * @return атрибут идентификатора пользователя
-     */
-    public static String getUserIdAttribute() {
-        return attributes.getValue("userID");
-    }
-
-    /**
-     * Возвращает атрибут имени пользователя.
-     *
-     * @return атрибут имени
-     */
-    public static String getFirstNameAttribute() {
-        return attributes.getValue("firstName");
-    }
-
-    /**
-     * Возвращает атрибут фамилии пользователя.
-     *
-     * @return атрибут фамилии
-     */
-    public static String getLastNameAttribute() {
-        return attributes.getValue("lastName");
-    }
-
-    /**
-     * Возвращает атрибут рейтинга пользователя.
-     *
-     * @return атрибут рейтинга
-     */
-    public static String getRatingAttribute() {
-        return attributes.getValue("rating");
-    }
-
-    /**
-     * Возвращает атрибут роли пользователя.
-     *
-     * @return атрибут роли
-     */
-    public static String getUserRoleAttribute() {
-        return attributes.getValue("userRole");
-    }
-
-    /**
-     * Возвращает атрибут для извлечения учетных данных.
-     *
-     * @return атрибут для извлечения учетных данных
-     */
-    public static String getCredentialsExtractorAttribute() {
-        return "credentialsExtractor";
-    }
-
-    /**
-     * Возвращает сообщение об ошибке.
-     *
-     * @return сообщение об ошибке
-     */
-    public static String getErrorMessage() {
-        return errors.getValue("errorMessage");
-    }
-
-    /**
-     * Возвращает сообщение о недействительных учётных данных.
-     *
-     * @return сообщение о недействительных учётных данных
-     */
-    public static String getInvalidCredentials() {
-        return errors.getValue("invalidCredentials");
-    }
-
-    public static String getLoginServiceAttribute() {
-        return "loginService";
-    }
-
-    public static String getJwtTokenServiceAttribute() {
-        return "jwtTokenService";
+    public static String getConfigValue(ConfigSection section, String key) {
+        ConfigStrategy strategy = strategies.get(section);
+        if (strategy == null) {
+            throw new IllegalArgumentException("Секция '" + section.getValue() + "' не найдена в конфигурации.");
+        }
+        return strategy.getValue(key);
     }
 }
