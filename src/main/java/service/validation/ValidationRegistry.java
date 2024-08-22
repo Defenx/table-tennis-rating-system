@@ -7,10 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class ValidationFactory {
+public class ValidationRegistry {
     private final Map<String, Map<String, List<Validator>>> routesToValidationMap;
 
-    public ValidationFactory() {
+    public ValidationRegistry() {
         routesToValidationMap = Map.of(
                 Route.TEST_REGISTRATION_PAGE.getUri(), Map.of(
                         "password", List.of(

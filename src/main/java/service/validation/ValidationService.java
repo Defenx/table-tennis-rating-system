@@ -7,15 +7,15 @@ import java.util.ArrayList;
 
 public class ValidationService {
     public static final String IS_VALID_REQUEST = "isValidRequest";
-    private final ValidationFactory validationFactory;
+    private final ValidationRegistry validationRegistry;
 
-    public ValidationService(ValidationFactory validationFactory) {
-        this.validationFactory = validationFactory;
+    public ValidationService(ValidationRegistry validationRegistry) {
+        this.validationRegistry = validationRegistry;
     }
 
     public HttpServletRequest validate(HttpServletRequest request) {
         var contextPath = request.getRequestURI();
-        var validations = validationFactory.getValidationsByContextPath(contextPath);
+        var validations = validationRegistry.getValidationsByContextPath(contextPath);
         var isValidRequest = true;
 
         for (String fieldName : validations.keySet()) {
