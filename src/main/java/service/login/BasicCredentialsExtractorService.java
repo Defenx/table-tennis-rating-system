@@ -2,10 +2,9 @@ package service.login;
 
 import dto.Credentials;
 import jakarta.servlet.http.HttpServletRequest;
-import service.Service;
 
 
-public class BasicCredentialsExtractorService implements CredentialsExtractor, Service {
+public class BasicCredentialsExtractorService implements CredentialsExtractor {
 
     @Override
     public Credentials extract(HttpServletRequest request) {
