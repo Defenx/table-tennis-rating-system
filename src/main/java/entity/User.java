@@ -47,12 +47,4 @@ public class User {
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     private List<TournamentParticipant> tournaments;
-
-    @OneToMany(mappedBy = "user1")
-    @ToString.Exclude
-    private List<Match> matchesAsUser1;
-
-    @OneToMany(mappedBy = "user2")
-    @ToString.Exclude
-    private List<Match> matchesAsUser2;
 }
