@@ -7,7 +7,15 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+/**
+ * The type Hibernate config.
+ */
 public class HibernateConfig {
+    /**
+     * Build session factory session factory.
+     *
+     * @return the session factory
+     */
     public SessionFactory buildSessionFactory(){
         try {
             StandardServiceRegistry standardServiceRegistry = new StandardServiceRegistryBuilder()

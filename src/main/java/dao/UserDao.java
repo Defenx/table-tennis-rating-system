@@ -11,10 +11,19 @@ import org.hibernate.query.Query;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * The type User dao.
+ */
 @RequiredArgsConstructor
 public class UserDao {
     private final SessionFactory sessionFactory;
 
+    /**
+     * Gets by id.
+     *
+     * @param id the id
+     * @return the by id
+     */
     public User getById(UUID id) {
         User user = null;
         try (Session session = sessionFactory.openSession()) {
@@ -26,6 +35,11 @@ public class UserDao {
         return user;
     }
 
+    /**
+     * Create.
+     *
+     * @param user the user
+     */
     public void create(User user) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
@@ -40,6 +54,13 @@ public class UserDao {
         }
     }
 
+    /**
+     * Find by email and password optional.
+     *
+     * @param email    the email
+     * @param password the password
+     * @return the optional
+     */
     public Optional<User> findByEmailAndPassword(String email, String password) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;

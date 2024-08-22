@@ -1,0 +1,17 @@
+app:
+  paths:
+    login: /login
+    registration: /registration
+    home: /
+    error: /error
+
+  pages:
+    login: /login.jsp
+    registration: /registration.jsp
+    error: /error.jsp
+
+  errors:
+    serviceNotInitialized: UserAuthenticationService is not initialized
+    authenticationFailed: Invalid email or password
+    errorUserAdding: Error while user adding
+    invalidCredentials: Invalid email or password
