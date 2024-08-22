@@ -34,5 +34,5 @@ build/
 /out/
 /.gradle/
 
-### VS Code ###
+### Tomcat ###
 .smarttomcat/
