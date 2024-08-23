@@ -3,7 +3,7 @@ package filter;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
-import listener.AppContextListener;
+import listener.ContextListener;
 import service.validation.ValidationService;
 import servlet.Route;
 
@@ -16,7 +16,7 @@ public class ValidationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
-        validationService = (ValidationService) filterConfig.getServletContext().getAttribute(AppContextListener.VALIDATION_SERVICE);
+        validationService = (ValidationService) filterConfig.getServletContext().getAttribute(ContextListener.VALIDATION_SERVICE);
     }
 
     @Override

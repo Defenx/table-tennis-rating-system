@@ -1,5 +1,6 @@
 package service.validation;
 
+import dao.UserDao;
 import service.validation.validator.*;
 import servlet.Route;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 public class ValidationRegistry {
     private final Map<String, Map<String, List<Validator>>> routesToValidationMap;
 
-    public ValidationRegistry() {
+    public ValidationRegistry(UserDao userDao) {
         routesToValidationMap = Map.of(
                 Route.TEST_REGISTRATION_PAGE.getUri(), Map.of(
                         "password", List.of(
@@ -20,7 +21,8 @@ public class ValidationRegistry {
 
                         "email", List.of(
                                 new EmptinessValidator(),
-                                new EmailPatternValidator())
+                                new EmailPatternValidator(),
+                                new EmailRepeatValidator(userDao))
                 )
         );
     }

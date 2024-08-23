@@ -13,14 +13,16 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.SneakyThrows;
-import org.hibernate.SessionFactory;
+import org.hibernate.SessionFactory;import service.validation.ValidationRegistry;
+import service.validation.ValidationService;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 
 @WebListener
 public class ContextListener implements ServletContextListener {
-    
+    public static final String VALIDATION_SERVICE = "validationService";
+
     @Override
     @SneakyThrows
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -44,7 +46,11 @@ public class ContextListener implements ServletContextListener {
         UserDao userDao = new UserDao(sessionFactory);
 
         context.setAttribute("sessionFactory",sessionFactory);
-        context.setAttribute("userDao",userDao);
+
+
+        var validationFactory = new ValidationRegistry(userDao);
+        var validationService = new ValidationService(validationFactory);
+        context.setAttribute(VALIDATION_SERVICE, validationService);
     }
 
     @Override
@@ -53,6 +59,6 @@ public class ContextListener implements ServletContextListener {
                 .getServletContext()
                 .getAttribute("sessionFactory");
 
-            sessionFactory.close();
+        sessionFactory.close();
     }
 }
