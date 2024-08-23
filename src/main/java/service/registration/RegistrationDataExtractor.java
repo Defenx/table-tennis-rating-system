@@ -2,7 +2,6 @@ package service.registration;
 
 import dto.RegistrationDto;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * The RegistrationDataExtractor class provides a method to extract registration data from an HTTP request.
