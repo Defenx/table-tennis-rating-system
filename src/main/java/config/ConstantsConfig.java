@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 public class ConstantsConfig {
     private final ConfigProperties config;
 
+    public String getProperty(String key) {
+        return config.getProperty(key);
+    }
+
     /**
      * Returns the URL of the login page.
      *
