@@ -1,15 +1,10 @@
 package config;
 
-public class ConstantsConfig {
-    private final Config config;
+import lombok.RequiredArgsConstructor;
 
-    /**
-     * The ConstantsConfig class provides access to various URLs, JSP pages,
-     * and error messages using a configuration file.
-     */
-    public ConstantsConfig() {
-        this.config = new Config();
-    }
+@RequiredArgsConstructor
+public class ConstantsConfig {
+    private final ConfigProperties config;
 
     /**
      * Returns the URL of the login page.

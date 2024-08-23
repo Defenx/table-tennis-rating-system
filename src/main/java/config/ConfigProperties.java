@@ -5,17 +5,17 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * The Config class loads and provides access to properties from a configuration file.
+ * The ConfigProperties class loads and provides access to properties from a configuration file.
  */
-public class Config {
+public class ConfigProperties {
     private static final String PROPERTIES_FILE = "config.properties";
     private final Properties properties = new Properties();
 
     /**
-     * Constructor for the Config class.
+     * Constructor for the ConfigProperties class.
      * Loads properties from the config.properties file.
      */
-    public Config() {
+    public ConfigProperties() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
             if (input != null) {
                 properties.load(input);

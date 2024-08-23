@@ -1,4 +1,4 @@
-package services;
+package service.registration;
 
 import dto.RegistrationDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,11 +17,11 @@ public class RegistrationDataExtractor {
      * @param req the HTTP request containing the registration data
      * @return a RegistrationDto object with the extracted data
      */
-    public static RegistrationDto extract(HttpServletRequest req, BCryptPasswordEncoder passwordEncoder){
+    public static RegistrationDto extract(HttpServletRequest req){
         String email = req.getParameter("email");
-        String password = passwordEncoder.encode(req.getParameter("password"));
+        String password = req.getParameter("password");
         String firstname = req.getParameter("firstname");
-        String lastname = req.getParameter("lastname");
+        String lastname = req.getParameter("surname");
         return new RegistrationDto(email, password, firstname, lastname);
     }
 

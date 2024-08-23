@@ -1,4 +1,4 @@
-package servlets;
+package servlet;
 
 import config.ConstantsConfig;
 import dto.RegistrationDto;
@@ -10,9 +10,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import services.RegistrationDataExtractor;
-import services.UserService;
+import org.hibernate.HibernateException;
+import service.registration.RegistrationDataExtractor;
+import service.UserService;
 
 import java.io.IOException;
 
@@ -22,11 +22,10 @@ import java.io.IOException;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
     private UserService userService;
-    private ConstantsConfig constantsConfig;
-    private BCryptPasswordEncoder passwordEncoder;
+    private ConstantsConfig constants;
 
     /**
-     * Initializes the servlet by loading UserService and ConstantsConfig objects from the servlet context.
+     * Initializes the servlet from the servlet context.
      *
      * @param config the ServletConfig object containing the servlet's configuration
      * @throws ServletException if an error occurs during initialization
@@ -36,9 +35,7 @@ public class RegistrationServlet extends HttpServlet {
         super.init(config);
         ServletContext servletContext = getServletContext();
         userService = (UserService) servletContext.getAttribute("userService");
-        constantsConfig = (ConstantsConfig) servletContext.getAttribute("constantsConfig");
-        passwordEncoder = (BCryptPasswordEncoder) servletContext.getAttribute("passwordEncoder");
-
+        constants = (ConstantsConfig) servletContext.getAttribute("constants");
     }
 
     /**
@@ -51,7 +48,7 @@ public class RegistrationServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(constantsConfig.getRegistrationJsp()).forward(req, resp);
+        req.getRequestDispatcher(constants.getRegistrationJsp()).forward(req, resp);
     }
 
     /**
@@ -64,16 +61,16 @@ public class RegistrationServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RegistrationDto userData = RegistrationDataExtractor.extract(req, passwordEncoder);
-        boolean isAdded = userService.addUser(userData);
-
-        if (isAdded) {
+        RegistrationDto userData = RegistrationDataExtractor.extract(req);
+        try {
+            userService.addUser(userData);
             resp.setStatus(201);
-            resp.sendRedirect(constantsConfig.getLoginURL());
-        } else {
+            resp.sendRedirect(constants.getLoginURL());
+        } catch (HibernateException e) {
             resp.setStatus(500);
-            req.setAttribute("message", constantsConfig.getErrorUserAddMessage());
-            req.getRequestDispatcher(constantsConfig.getErrorJsp()).forward(req, resp);
+            req.setAttribute("errorMessage", constants.getErrorUserAddMessage() + " " + e.getMessage());
+
+            req.getRequestDispatcher(constants.getErrorJsp()).forward(req, resp);
         }
     }
 }
