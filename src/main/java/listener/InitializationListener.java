@@ -1,6 +1,5 @@
 package listener;
 
-import config.AppConfig;
 import config.LiquibaseConfig;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.ServletContext;
@@ -27,12 +26,13 @@ public class InitializationListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
         initializeLiquibase(servletContext);
-        initializeAppConfig();
 
-        ContextObjectCreator authentication = new ContextObjectCreator();
-        authentication.createAuthentication();
+        ContextObjectCreator objectCreator = new ContextObjectCreator();
 
-        Map<String, Object> contextServices = authentication.getServices();
+        objectCreator.createAuthentication();
+        objectCreator.cretePropertiesConfiguration();
+
+        Map<String, Object> contextServices = objectCreator.getServices();
         contextServices.forEach(servletContext::setAttribute);
     }
 
@@ -52,13 +52,6 @@ public class InitializationListener implements ServletContextListener {
         }
     }
 
-    private void initializeAppConfig() {
-        try {
-            AppConfig.loadConfig();
-        } catch (Exception e) {
-            throw new RuntimeException("Не удалось инициализировать приложение", e);
-        }
-    }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

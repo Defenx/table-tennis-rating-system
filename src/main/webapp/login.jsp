@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Вход в систему</title>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/authentication.css">
 </head>
 <body>
 <div class="form-auth">

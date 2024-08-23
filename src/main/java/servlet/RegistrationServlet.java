@@ -1,8 +1,7 @@
 package servlet;
 
-import config.AppConfig;
+import config.ConstantsConfig;
 import dto.RegistrationDto;
-import enums.ConfigSection;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -23,6 +22,7 @@ import java.io.IOException;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
     private UserService userService;
+    private ConstantsConfig constants;
 
     /**
      * Initializes the servlet from the servlet context.
@@ -35,6 +35,7 @@ public class RegistrationServlet extends HttpServlet {
         super.init(config);
         ServletContext servletContext = getServletContext();
         userService = (UserService) servletContext.getAttribute("userService");
+        constants = (ConstantsConfig) servletContext.getAttribute("constants");
     }
 
     /**
@@ -47,7 +48,7 @@ public class RegistrationServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("registration.jsp").forward(req, resp);
+        req.getRequestDispatcher(constants.getRegistrationJsp()).forward(req, resp);
     }
 
     /**
@@ -64,12 +65,12 @@ public class RegistrationServlet extends HttpServlet {
         try {
             userService.addUser(userData);
             resp.setStatus(201);
-            resp.sendRedirect("/login");
+            resp.sendRedirect(constants.getLoginURL());
         } catch (HibernateException e) {
             resp.setStatus(500);
-            req.setAttribute("errorMessage",
-                    AppConfig.getConfigValue(ConfigSection.ERRORS, "errorUserAdding") + " " + e.getMessage());
-            req.getRequestDispatcher("error.jsp").forward(req, resp);
+            req.setAttribute("errorMessage", constants.getErrorUserAddMessage() + " " + e.getMessage());
+
+            req.getRequestDispatcher(constants.getErrorJsp()).forward(req, resp);
         }
     }
 }

@@ -1,5 +1,7 @@
 package listener.ObjectCreator;
 
+import config.ConfigProperties;
+import config.ConstantsConfig;
 import config.HibernateConfig;
 import dao.UserDao;
 import lombok.Getter;
@@ -30,4 +32,13 @@ public class ContextObjectCreator {
 
         services.put("userService", userService);
     }
+
+    public void cretePropertiesConfiguration() {
+        ConfigProperties  configProperties = new ConfigProperties();
+        ConstantsConfig constants = new ConstantsConfig(configProperties);
+
+        services.put("constants", constants);
+    }
+
+
 }
