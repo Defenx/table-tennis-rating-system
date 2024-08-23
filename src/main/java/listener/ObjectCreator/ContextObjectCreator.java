@@ -12,4 +12,8 @@ public class ContextObjectCreator {
     public void addConfiguration(AppPart appPart){
         services.putAll(appPart.addPart(services));
     }
+
+    public void addAttribute(String key, Object object){
+        services.put(key, object);
+    }
 }

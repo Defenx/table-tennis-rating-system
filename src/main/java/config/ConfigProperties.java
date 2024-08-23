@@ -1,5 +1,6 @@
 package config;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -20,7 +21,7 @@ public class ConfigProperties {
             if (input != null) {
                 properties.load(input);
             } else {
-                System.err.println("Sorry, unable to find " + PROPERTIES_FILE);
+                throw new FileNotFoundException("Sorry, unable to find " + PROPERTIES_FILE);
             }
         } catch (IOException e) {
             e.printStackTrace(System.out);

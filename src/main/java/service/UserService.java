@@ -1,7 +1,7 @@
 package service;
 
 import dao.UserDao;
-import dto.RegistrationDto;
+import dto.RegistrationFormDto;
 import entity.User;
 import enums.Role;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ public class UserService implements Service{
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserDao userDao;
 
-    public void addUser(RegistrationDto userData) throws HibernateException {
+    public void addUser(RegistrationFormDto userData) throws HibernateException {
 //        throw new HibernateException("OOPSy.");
         userDao.create(User.builder()
                         .email(userData.email())

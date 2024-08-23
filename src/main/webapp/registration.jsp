@@ -8,7 +8,7 @@
 <body>
 <div class="form-auth">
     <h2 class="auth">Registration</h2>
-    <form action="/registration" onsubmit="return validateForm()" method="post">
+    <form action="/registration" method="post">
         <div>
             <label>First name
                 <input name="firstname" type="text" placeholder="Enter your firstname" required>
@@ -21,7 +21,7 @@
         </div>
         <div>
             <label>Email
-                <input name="email" type="text" placeholder="Enter your Email" required>
+                <input name="email" type="email" placeholder="Enter your Email" required>
             </label>
         </div>
         <div>
@@ -38,24 +38,6 @@
 </div>
 
 <script>
-    function validateForm() {
-        var email = document.getElementsByName("email")[0].value;
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        // var password = document.getElementsByName("password")[0].value;
-        // var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
-
-        if (!emailRegex.test(email)) {
-            alert('Please enter a valid email address with "@" and "."');
-            return false;
-        }
-        // if (!passwordRegex.test(password)) {
-        //     alert('Password must be at least 6 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character.');
-        //     return false;
-        // }
-        return true;
-    }
-
     function redirectToLogin() {
         var isConfirmed = confirm('Are you sure?');
 

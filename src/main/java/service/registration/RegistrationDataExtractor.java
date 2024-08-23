@@ -1,6 +1,6 @@
 package service.registration;
 
-import dto.RegistrationDto;
+import dto.RegistrationFormDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -11,17 +11,17 @@ import jakarta.servlet.http.HttpServletRequest;
 public class RegistrationDataExtractor {
 
     /**
-     * Extracts registration data from an HTTP request and creates a RegistrationDto object.
+     * Extracts registration data from an HTTP request and creates a RegistrationFormDto object.
      *
      * @param req the HTTP request containing the registration data
-     * @return a RegistrationDto object with the extracted data
+     * @return a RegistrationFormDto object with the extracted data
      */
-    public static RegistrationDto extract(HttpServletRequest req){
+    public static RegistrationFormDto extract(HttpServletRequest req){
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String firstname = req.getParameter("firstname");
         String lastname = req.getParameter("surname");
-        return new RegistrationDto(email, password, firstname, lastname);
+        return new RegistrationFormDto(email, password, firstname, lastname);
     }
 
 }

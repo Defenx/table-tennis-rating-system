@@ -1,7 +1,7 @@
 package servlet;
 
 import config.ConstantsConfig;
-import dto.RegistrationDto;
+import dto.RegistrationFormDto;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -61,7 +61,7 @@ public class RegistrationServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RegistrationDto userData = RegistrationDataExtractor.extract(req);
+        RegistrationFormDto userData = RegistrationDataExtractor.extract(req);
         try {
             userService.addUser(userData);
             resp.setStatus(201);
