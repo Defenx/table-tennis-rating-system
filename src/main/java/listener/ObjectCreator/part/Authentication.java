@@ -10,7 +10,7 @@ import java.util.Map;
 public class Authentication implements AppPart {
 
     @Override
-    public Map<String, Object> getAppParts(Map<String, Object> services) {
+    public Map<String, Object> addPart(Map<String, Object> services) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         UserService userService = new UserService(bCryptPasswordEncoder, (UserDao) services.get("userDao"));
 

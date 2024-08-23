@@ -8,7 +8,7 @@ import java.util.Map;
 public class ConfigProperties implements AppPart {
 
     @Override
-    public Map<String, Object> getAppParts(Map<String, Object> services) {
+    public Map<String, Object> addPart(Map<String, Object> services) {
         config.ConfigProperties configProperties = new config.ConfigProperties();
         ConstantsConfig constants = new ConstantsConfig(configProperties);
 

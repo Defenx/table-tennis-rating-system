@@ -10,6 +10,6 @@ public class ContextObjectCreator {
     private final Map<String, Object> services = new HashMap<>();
 
     public void addConfiguration(AppPart appPart){
-        services.putAll(appPart.getAppParts(services));
+        services.putAll(appPart.addPart(services));
     }
 }
