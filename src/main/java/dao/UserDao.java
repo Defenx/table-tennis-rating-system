@@ -40,7 +40,7 @@ public class UserDao {
      *
      * @param user the user
      */
-    public void create(User user) {
+    public void create(User user) throws HibernateException {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();

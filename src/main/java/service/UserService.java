@@ -1,7 +1,13 @@
 package service;
 
+import dao.UserDao;
+import dto.RegistrationDto;
 import dto.UserDto;
+import entity.User;
+import enums.Role;
+import jakarta.servlet.ServletContext;
 import lombok.AllArgsConstructor;
+import org.hibernate.HibernateException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
@@ -11,6 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserService implements Service{
     private final BCryptPasswordEncoder passwordEncoder;
+    private final UserDao userDao;
 
     private List<UserDto> mockedFindAllUsers() {
         return List.of(
@@ -29,5 +36,15 @@ public class UserService implements Service{
                 .findFirst();
     }
 
-
+    public void addUser(RegistrationDto userData) throws HibernateException {
+//        throw new HibernateException("OOPSy.");
+        userDao.create(User.builder()
+                        .email(userData.email())
+                        .password(passwordEncoder.encode(userData.password()))
+                        .firstname(userData.firstname())
+                        .surname(userData.surname())
+                        .role(Role.USER)
+                        .rating(1000)
+                .build());
+    }
 }

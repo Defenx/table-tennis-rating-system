@@ -1,9 +1,7 @@
 package listener;
 
 import config.AppConfig;
-import config.HibernateConfig;
 import config.LiquibaseConfig;
-import dao.UserDao;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
@@ -13,32 +11,29 @@ import liquibase.LabelExpression;
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import listener.factory.ServiceFactory;
+import listener.ObjectCreator.ContextObjectCreator;
 import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.util.Map;
 
 @WebListener
 public class InitializationListener implements ServletContextListener {
-
-    private ServiceFactory serviceFactory;
 
     @Override
     @SneakyThrows
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
-
         initializeLiquibase(servletContext);
         initializeAppConfig();
-        SessionFactory sessionFactory = initializeHibernate();
 
-        UserDao userDao = new UserDao(sessionFactory);
-        serviceFactory = ServiceFactory.createDefault(servletContext);
+        ContextObjectCreator authentication = new ContextObjectCreator();
+        authentication.createAuthentication();
 
-        servletContext.setAttribute("sessionFactory", sessionFactory);
-        servletContext.setAttribute("userDao", userDao);
+        Map<String, Object> contextServices = authentication.getServices();
+        contextServices.forEach(servletContext::setAttribute);
     }
 
     @SneakyThrows
@@ -63,10 +58,6 @@ public class InitializationListener implements ServletContextListener {
         } catch (Exception e) {
             throw new RuntimeException("Не удалось инициализировать приложение", e);
         }
-    }
-
-    private SessionFactory initializeHibernate() {
-        return new HibernateConfig().buildSessionFactory();
     }
 
     @Override
