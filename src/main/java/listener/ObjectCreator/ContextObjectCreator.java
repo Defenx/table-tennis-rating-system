@@ -9,7 +9,7 @@ import java.util.Map;
 public class ContextObjectCreator {
     private final Map<String, Object> services = new HashMap<>();
 
-    public void addConfiguration(AppPart appPart){
+    public void addContextObjects(AppPart appPart){
         services.putAll(appPart.addPart(services));
     }
 
