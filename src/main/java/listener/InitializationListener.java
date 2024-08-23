@@ -11,6 +11,9 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import listener.ObjectCreator.ContextObjectCreator;
+import listener.ObjectCreator.part.Authentication;
+import listener.ObjectCreator.part.ConfigProperties;
+import listener.ObjectCreator.part.DataBase;
 import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
 
@@ -25,19 +28,20 @@ public class InitializationListener implements ServletContextListener {
     @SneakyThrows
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
-        initializeLiquibase(servletContext);
+        initializeLiquibase();
 
         ContextObjectCreator objectCreator = new ContextObjectCreator();
 
-        objectCreator.createAuthentication();
-        objectCreator.cretePropertiesConfiguration();
+        objectCreator.addConfiguration(new DataBase());
+        objectCreator.addConfiguration(new ConfigProperties());
+        objectCreator.addConfiguration(new Authentication());
 
         Map<String, Object> contextServices = objectCreator.getServices();
         contextServices.forEach(servletContext::setAttribute);
     }
 
     @SneakyThrows
-    private void initializeLiquibase(ServletContext servletContext) {
+    private void initializeLiquibase() {
         LiquibaseConfig liquibaseConfig = new LiquibaseConfig();
         DataSource dataSource = liquibaseConfig.getDataSource();
         try (
