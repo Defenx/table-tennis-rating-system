@@ -1,4 +1,3 @@
-
 package dao;
 
 import entity.User;
@@ -61,20 +60,15 @@ public class UserDao {
 
         return user != null ? Optional.of(user) : Optional.empty();
     }
+
     public Optional<User> findByEmail(String email) {
-        Transaction transaction = null;
-        User user = null;
-        try(Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("FROM User u WHERE u.email = :email", User.class);
             query.setParameter("email", email);
-            user = query.uniqueResult();
-            transaction.commit();
-        } catch (HibernateException e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
+            return Optional.ofNullable(query.uniqueResult());
+        } catch (HibernateException he) {
+            he.printStackTrace();
+            throw new RuntimeException(he);
         }
-
-        return user != null ? Optional.of(user) : Optional.empty();
     }
 }

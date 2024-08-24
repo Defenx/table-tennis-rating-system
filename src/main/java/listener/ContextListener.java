@@ -13,21 +13,55 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.SneakyThrows;
-import org.hibernate.SessionFactory;import service.validation.ValidationRegistry;
+import org.hibernate.SessionFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import service.UserService;
+import service.login.BasicCredentialsExtractorService;
+import service.login.UserAuthenticationService;
 import service.validation.ValidationService;
+import service.validation.ValidationRegistry;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.util.AbstractMap;
+import java.util.Map;
 
 @WebListener
 public class ContextListener implements ServletContextListener {
     public static final String VALIDATION_SERVICE = "validationService";
+    public static final String CREDENTIALS_EXTRACTOR = "credentialsExtractor";
+    public static final String USER_AUTH_SERVICE = "userAuthService";
+    public static final String USER_SERVICE = "userService";
+    public static final String SESSION_FACTORY = "sessionFactory";
+    public static final String USER_DAO = "userDao";
 
     @Override
     @SneakyThrows
-    public void contextInitialized(ServletContextEvent servletContextEvent) {
-        ServletContext context = servletContextEvent.getServletContext();
+    public void contextInitialized(ServletContextEvent sce) {
+        ServletContext servletContext = sce.getServletContext();
 
+        initializeLiquibase(servletContext);
+        SessionFactory sessionFactory = new HibernateConfig().buildSessionFactory();
+
+        var userDao = new UserDao(sessionFactory);
+        var bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        var userService = new UserService(userDao, bCryptPasswordEncoder);
+        var userAuthenticationService = new UserAuthenticationService(userService);
+        var credentialsExtractor = new BasicCredentialsExtractorService();
+
+        Map<String, Object> attributes = Map.ofEntries(
+                new AbstractMap.SimpleEntry<>(CREDENTIALS_EXTRACTOR, credentialsExtractor),
+                new AbstractMap.SimpleEntry<>(USER_AUTH_SERVICE, userAuthenticationService),
+                new AbstractMap.SimpleEntry<>(SESSION_FACTORY, sessionFactory),
+                new AbstractMap.SimpleEntry<>(USER_DAO, userDao),
+                new AbstractMap.SimpleEntry<>(USER_SERVICE,userService)
+        );
+
+        attributes.forEach(servletContext::setAttribute);
+    }
+
+    @SneakyThrows
+    private void initializeLiquibase(ServletContext servletContext) {
         LiquibaseConfig liquibaseConfig = new LiquibaseConfig();
         DataSource dataSource = liquibaseConfig.getDataSource();
         try (
@@ -45,12 +79,12 @@ public class ContextListener implements ServletContextListener {
 
         UserDao userDao = new UserDao(sessionFactory);
 
-        context.setAttribute("sessionFactory",sessionFactory);
+        servletContext.setAttribute("sessionFactory",sessionFactory);
 
 
         var validationFactory = new ValidationRegistry(userDao);
         var validationService = new ValidationService(validationFactory);
-        context.setAttribute(VALIDATION_SERVICE, validationService);
+        servletContext.setAttribute(VALIDATION_SERVICE, validationService);
     }
 
     @Override
