@@ -1,16 +1,13 @@
 package service;
 
 import dao.UserDao;
-import dto.UserDto;
+import dto.RegistrationFormDto;
 import entity.User;
 import enums.Role;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 public class UserService {
@@ -21,5 +18,16 @@ public class UserService {
     public Optional<User> getExistedUser(String email, String password) {
         return userDao.findByEmail(email)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()));
+    }
+
+    public void addUser(RegistrationFormDto userData) {
+        userDao.create(User.builder()
+                .email(userData.email())
+                .password(passwordEncoder.encode(userData.password()))
+                .firstname(userData.firstname())
+                .surname(userData.surname())
+                .role(Role.USER)
+                .rating(1000)
+                .build());
     }
 }

@@ -23,14 +23,13 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.AbstractMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @WebListener
 public class ContextListener implements ServletContextListener {
     public static final String VALIDATION_SERVICE = "validationService";
     public static final String CREDENTIALS_EXTRACTOR = "credentialsExtractor";
     public static final String USER_AUTH_SERVICE = "userAuthService";
+    public static final String USER_SERVICE = "userService";
     public static final String SESSION_FACTORY = "sessionFactory";
     public static final String USER_DAO = "userDao";
     @Override
@@ -51,7 +50,8 @@ public class ContextListener implements ServletContextListener {
                 new AbstractMap.SimpleEntry<>(CREDENTIALS_EXTRACTOR, credentialsExtractor),
                 new AbstractMap.SimpleEntry<>(USER_AUTH_SERVICE, userAuthenticationService),
                 new AbstractMap.SimpleEntry<>(SESSION_FACTORY, sessionFactory),
-                new AbstractMap.SimpleEntry<>(USER_DAO, userDao)
+                new AbstractMap.SimpleEntry<>(USER_DAO, userDao),
+                new AbstractMap.SimpleEntry<>(USER_SERVICE,userService)
         );
 
         attributes.forEach(servletContext::setAttribute);

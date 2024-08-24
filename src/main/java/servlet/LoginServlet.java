@@ -1,7 +1,6 @@
 package servlet;
 
 import dto.Credentials;
-import dto.UserDto;
 import entity.User;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
