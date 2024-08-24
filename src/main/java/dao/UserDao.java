@@ -66,9 +66,9 @@ public class UserDao {
             Query<User> query = session.createQuery("FROM User u WHERE u.email = :email", User.class);
             query.setParameter("email", email);
             return Optional.ofNullable(query.uniqueResult());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
+        } catch (HibernateException he) {
+            he.printStackTrace();
+            throw new RuntimeException(he);
         }
     }
 }
