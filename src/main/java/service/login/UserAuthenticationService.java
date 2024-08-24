@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.UserService;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserAuthenticationService {
     private static final String ERROR_MESSAGE_ATTRIBUTE = "errorMessage";
     private static final String INVALID_CREDENTIALS_MESSAGE = "invalidCredentials";
