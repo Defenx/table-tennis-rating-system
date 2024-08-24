@@ -27,7 +27,7 @@ public class ContextListener implements ServletContextListener {
         objectCreator.addContextObjects(new ConfigProperties());
         objectCreator.addContextObjects(new Authentication());
 
-        objectCreator.getServices().forEach(servletContext::setAttribute);
+        objectCreator.addObjectsToContext(servletContext);
     }
 
     @Override
