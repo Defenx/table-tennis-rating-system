@@ -14,7 +14,7 @@ import org.hibernate.SessionFactory;
 
 
 @WebListener
-public class InitializationListener implements ServletContextListener {
+public class ContextListener implements ServletContextListener {
 
     @Override
     @SneakyThrows
