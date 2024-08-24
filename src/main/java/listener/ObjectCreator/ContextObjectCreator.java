@@ -9,11 +9,11 @@ import java.util.Map;
 public class ContextObjectCreator {
     private final Map<String, Object> services = new HashMap<>();
 
-    public void addContextObjects(AppPart appPart){
+    public void addContextObjects(AppPart appPart) {
         services.putAll(appPart.addPart(services));
     }
 
-    public void addAttribute(String key, Object object){
+    public void addAttribute(String key, Object object) {
         services.put(key, object);
     }
 }

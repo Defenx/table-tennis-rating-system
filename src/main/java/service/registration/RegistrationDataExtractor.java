@@ -23,5 +23,4 @@ public class RegistrationDataExtractor {
         String lastname = req.getParameter("surname");
         return new RegistrationFormDto(email, password, firstname, lastname);
     }
-
 }
