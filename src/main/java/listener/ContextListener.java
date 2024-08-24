@@ -44,7 +44,7 @@ public class ContextListener implements ServletContextListener {
 
         var userDao = new UserDao(sessionFactory);
         var bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        var userService = new UserService(bCryptPasswordEncoder);
+        var userService = new UserService(userDao, bCryptPasswordEncoder);
         var userAuthenticationService = new UserAuthenticationService(userService);
         var credentialsExtractor = new BasicCredentialsExtractorService();
 

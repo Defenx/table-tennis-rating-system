@@ -2,6 +2,7 @@ package servlet;
 
 import dto.Credentials;
 import dto.UserDto;
+import entity.User;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -54,7 +55,7 @@ public class LoginServlet extends HttpServlet {
             }
 
             // Аутентификация пользователя
-            Optional<UserDto> existedUser = userAuthenticationService.authenticate(credentials.username(), credentials.password());
+            Optional<User> existedUser = userAuthenticationService.authenticate(credentials.username(), credentials.password());
             if (existedUser.isPresent()) {
                 userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
             } else {

@@ -1,6 +1,8 @@
 package service;
 
+import dao.UserDao;
 import dto.UserDto;
+import entity.User;
 import enums.Role;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,30 +13,18 @@ import java.util.UUID;
 
 @AllArgsConstructor
 public class UserService {
+    private final UserDao userDao;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    private List<UserDto> mockedFindAllUsers() {
-        return List.of(
-                new UserDto(UUID.randomUUID(),
-                        "John",
-                        "Doe",
-                        5,
-                        Role.USER),
-                new UserDto(UUID.randomUUID(),
-                        "Jane",
-                        "Doe",
-                        4,
-                        Role.USER)
-        );
-    }
 
-    private List<UserDto> mockedFindUsersByEmail(String email) {
-        return mockedFindAllUsers().stream()
-                .toList();
-    }
-
-    public Optional<UserDto> getExistedUser(String email, String password) {
-        return mockedFindUsersByEmail(email).stream()
-                .findFirst();
+    public Optional<User> getExistedUser(String email, String password) {
+        Optional<User> userOptional = userDao.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
     }
 }
