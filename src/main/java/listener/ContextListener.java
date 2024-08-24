@@ -33,7 +33,6 @@ public class ContextListener implements ServletContextListener {
     public static final String USER_AUTH_SERVICE = "userAuthService";
     public static final String SESSION_FACTORY = "sessionFactory";
     public static final String USER_DAO = "userDao";
-
     @Override
     @SneakyThrows
     public void contextInitialized(ServletContextEvent sce) {
@@ -76,9 +75,10 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        SessionFactory sessionFactory = (SessionFactory) servletContextEvent.getServletContext().getAttribute(SESSION_FACTORY);
-        if (sessionFactory != null) {
+        SessionFactory sessionFactory = (SessionFactory) servletContextEvent
+                .getServletContext()
+                .getAttribute("sessionFactory");
+
             sessionFactory.close();
-        }
     }
 }
