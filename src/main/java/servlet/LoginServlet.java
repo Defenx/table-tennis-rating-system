@@ -31,9 +31,6 @@ public class LoginServlet extends HttpServlet {
         super.init(config);
         userAuthenticationService = (UserAuthenticationService) config.getServletContext().getAttribute(USER_AUTH_SERVICE_ATTRIBUTE);
         credentialsExtractor = (CredentialsExtractor) config.getServletContext().getAttribute(CREDENTIALS_EXTRACTOR_ATTRIBUTE);
-        if (userAuthenticationService == null || credentialsExtractor == null) {
-            throw new ServletException(SERVICE_NOT_INITIALIZED_MESSAGE);
-        }
     }
 
     @Override
@@ -54,7 +51,6 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
-            // Аутентификация пользователя
             Optional<User> existedUser = userAuthenticationService.authenticate(credentials.username(), credentials.password());
             if (existedUser.isPresent()) {
                 userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
