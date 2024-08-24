@@ -1,7 +1,0 @@
-app:
-  errors:
-    serviceNotInitialized: UserAuthenticationService is not initialized
-    authenticationFailed: Invalid email or password
-    errorMessage: errorMessage
-    errorUserAdding: Error while user adding
-    invalidCredentials: Invalid email or password
