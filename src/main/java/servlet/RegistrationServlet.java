@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.hibernate.HibernateException;
 import service.registration.RegistrationDataExtractor;
 import service.UserService;
 
@@ -66,10 +65,10 @@ public class RegistrationServlet extends HttpServlet {
         RegistrationFormDto userData = RegistrationDataExtractor.extract(req);
         try {
             userService.addUser(userData);
-            resp.setStatus(201);
+            resp.setStatus(HttpServletResponse.SC_CREATED);
             resp.sendRedirect(LOGIN_URL);
-        } catch (HibernateException e) {
-            resp.setStatus(500);
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             req.setAttribute("errorMessage", MESSAGE_ERROR + e.getMessage());
             req.getRequestDispatcher(ERROR_JSP).forward(req, resp);
         }

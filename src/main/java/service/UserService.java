@@ -5,7 +5,6 @@ import dto.RegistrationFormDto;
 import entity.User;
 import enums.Role;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.HibernateException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
@@ -21,7 +20,7 @@ public class UserService {
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()));
     }
 
-    public void addUser(RegistrationFormDto userData) throws HibernateException {
+    public void addUser(RegistrationFormDto userData) {
         userDao.create(User.builder()
                 .email(userData.email())
                 .password(passwordEncoder.encode(userData.password()))
