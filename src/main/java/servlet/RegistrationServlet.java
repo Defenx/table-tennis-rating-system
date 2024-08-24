@@ -1,6 +1,5 @@
 package servlet;
 
-import config.ConstantsConfig;
 import dto.RegistrationFormDto;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
@@ -21,8 +20,12 @@ import java.io.IOException;
  */
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
+    private static final String REGISTRATION_JSP = "registration.jsp";
+    private static final String ERROR_JSP = "error.jsp";
+    private static final String LOGIN_URL = "/login";
+    private static final String MESSAGE_ERROR = "Error while user adding! ";
     private UserService userService;
-    private ConstantsConfig constants;
+
 
     /**
      * Initializes the servlet from the servlet context.
@@ -35,7 +38,6 @@ public class RegistrationServlet extends HttpServlet {
         super.init(config);
         ServletContext servletContext = getServletContext();
         userService = (UserService) servletContext.getAttribute("userService");
-        constants = (ConstantsConfig) servletContext.getAttribute("constants");
     }
 
     /**
@@ -48,7 +50,7 @@ public class RegistrationServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(constants.getRegistrationJsp()).forward(req, resp);
+        req.getRequestDispatcher(REGISTRATION_JSP).forward(req, resp);
     }
 
     /**
@@ -65,12 +67,11 @@ public class RegistrationServlet extends HttpServlet {
         try {
             userService.addUser(userData);
             resp.setStatus(201);
-            resp.sendRedirect(constants.getLoginURL());
+            resp.sendRedirect(LOGIN_URL);
         } catch (HibernateException e) {
             resp.setStatus(500);
-            req.setAttribute("errorMessage", constants.getErrorUserAddMessage() + " " + e.getMessage());
-
-            req.getRequestDispatcher(constants.getErrorJsp()).forward(req, resp);
+            req.setAttribute("errorMessage", MESSAGE_ERROR + e.getMessage());
+            req.getRequestDispatcher(ERROR_JSP).forward(req, resp);
         }
     }
 }

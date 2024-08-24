@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Registration</title>
-    <link rel="stylesheet" href="css/authentication.css">
+    <link rel="stylesheet" href="css/registration.css">
 </head>
 <body>
 <div class="form-auth">
