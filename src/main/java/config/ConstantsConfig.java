@@ -6,6 +6,11 @@ import lombok.RequiredArgsConstructor;
 public class ConstantsConfig {
     private final ConfigProperties config;
 
+    /**
+     * Returns the Property by the string key.
+     *
+     * @return the Property by the string key.
+     */
     public String getProperty(String key) {
         return config.getProperty(key);
     }
