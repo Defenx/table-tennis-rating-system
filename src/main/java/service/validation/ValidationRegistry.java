@@ -13,10 +13,10 @@ public class ValidationRegistry {
 
     public ValidationRegistry(UserDao userDao) {
         routesToValidationMap = Map.of(
-                Route.TEST_REGISTRATION_PAGE.getUri(), Map.of(
+                Route.REGISTRATION, Map.of(
                         "password", List.of(
                                 new EmptinessValidator(),
-                                new LengthValidator(16),
+                                new LengthValidator(8),
                                 new SpecialCharacterValidator(2)),
 
                         "email", List.of(

@@ -34,7 +34,7 @@ public class ValidationFilter implements Filter {
         if (isValidRequest) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            validatedHttpRequest.getRequestDispatcher(Route.TEST_REGISTRATION_PAGE.getJspPath()).forward(validatedHttpRequest, servletResponse);
+            validatedHttpRequest.getRequestDispatcher(Route.REGISTRATION_JSP).forward(validatedHttpRequest, servletResponse);
         }
     }
 }

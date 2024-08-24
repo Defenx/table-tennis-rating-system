@@ -7,13 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(urlPatterns = "/test-registration")
-public class TestValidationServlet extends HttpServlet {
+@WebServlet(urlPatterns = Route.REGISTRATION)
+public class FakeRegistrationServlet extends HttpServlet {
+
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("POST /test-registration");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        System.out.println("POST " + Route.REGISTRATION);
+
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String age = req.getParameter("age");
@@ -26,12 +27,12 @@ public class TestValidationServlet extends HttpServlet {
         System.out.println("password: " + password);
         System.out.println("Save is completed!");
 
-        resp.sendRedirect("/success-test-registration");
+        resp.sendRedirect(Route.SUCCESS_REGISTRATION);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("GET /test-registration");
-        req.getRequestDispatcher(Route.TEST_REGISTRATION_PAGE.getJspPath()).forward(req, resp);
+        System.out.println("GET " + Route.REGISTRATION);
+        req.getRequestDispatcher(Route.REGISTRATION_JSP).forward(req, resp);
     }
 }
