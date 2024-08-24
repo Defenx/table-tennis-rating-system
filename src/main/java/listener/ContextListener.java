@@ -47,12 +47,12 @@ public class ContextListener implements ServletContextListener {
         var userAuthenticationService = new UserAuthenticationService(userService);
         var credentialsExtractor = new BasicCredentialsExtractorService();
 
-        Map<String, Object> attributes = Stream.of(
+        Map<String, Object> attributes = Map.ofEntries(
                 new AbstractMap.SimpleEntry<>(CREDENTIALS_EXTRACTOR, credentialsExtractor),
                 new AbstractMap.SimpleEntry<>(USER_AUTH_SERVICE, userAuthenticationService),
                 new AbstractMap.SimpleEntry<>(SESSION_FACTORY, sessionFactory),
                 new AbstractMap.SimpleEntry<>(USER_DAO, userDao)
-        ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        );
 
         attributes.forEach(servletContext::setAttribute);
     }
