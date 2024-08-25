@@ -16,11 +16,11 @@ public class UserDao {
     private final SessionFactory sessionFactory;
 
     public User getById(UUID id) {
-        User user = null;
+        User user;
         try (Session session = sessionFactory.openSession()) {
             user = session.get(User.class, id);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (HibernateException he) {
+            throw new RuntimeException(he);
         }
 
         return user;
@@ -38,27 +38,6 @@ public class UserDao {
             }
             throw e;
         }
-    }
-
-    public Optional<User> findByEmailAndPassword(String email, String password) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-        User user = null;
-        try {
-            transaction = session.beginTransaction();
-            Query<User> query = session.createQuery("FROM User u WHERE u.email = :email AND u.password = :password", User.class);
-            query.setParameter("email", email);
-            query.setParameter("password", password);
-            user = query.uniqueResult();
-            transaction.commit();
-        } catch (HibernateException e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-
-        return user != null ? Optional.of(user) : Optional.empty();
     }
 
     public Optional<User> findByEmail(String email) {
