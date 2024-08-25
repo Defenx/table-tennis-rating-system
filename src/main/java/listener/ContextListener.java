@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.UserService;
 import service.login.BasicCredentialsExtractorService;
 import service.login.UserAuthenticationService;
+import service.validation.ValidationService;
+import service.validation.ValidationRegistry;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -32,6 +34,7 @@ public class ContextListener implements ServletContextListener {
     public static final String USER_SERVICE = "userService";
     public static final String SESSION_FACTORY = "sessionFactory";
     public static final String USER_DAO = "userDao";
+
     @Override
     @SneakyThrows
     public void contextInitialized(ServletContextEvent sce) {
@@ -71,6 +74,17 @@ public class ContextListener implements ServletContextListener {
         ) {
             liquibase.update(new Contexts(), new LabelExpression());
         }
+
+        SessionFactory sessionFactory = new HibernateConfig().buildSessionFactory();
+
+        UserDao userDao = new UserDao(sessionFactory);
+
+        servletContext.setAttribute("sessionFactory",sessionFactory);
+
+
+        var validationFactory = new ValidationRegistry(userDao);
+        var validationService = new ValidationService(validationFactory);
+        servletContext.setAttribute(VALIDATION_SERVICE, validationService);
     }
 
     @Override
@@ -79,6 +93,6 @@ public class ContextListener implements ServletContextListener {
                 .getServletContext()
                 .getAttribute("sessionFactory");
 
-            sessionFactory.close();
+        sessionFactory.close();
     }
 }

@@ -8,33 +8,30 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import listener.ContextListener;
 import service.login.CredentialsExtractor;
 import service.login.UserAuthenticationService;
 
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/login")
+@WebServlet(Route.LOGIN)
 public class LoginServlet extends HttpServlet {
     private UserAuthenticationService userAuthenticationService;
     private CredentialsExtractor credentialsExtractor;
 
-    private static final String USER_AUTH_SERVICE_ATTRIBUTE = "userAuthService";
-    private static final String CREDENTIALS_EXTRACTOR_ATTRIBUTE = "credentialsExtractor";
-    private static final String SERVICE_NOT_INITIALIZED_MESSAGE = "serviceNotInitialized";
     private static final String AUTHENTICATION_FAILED_MESSAGE =  "authenticationFailed";
-    private static final String LOGIN_PAGE =  "/login.jsp";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        userAuthenticationService = (UserAuthenticationService) config.getServletContext().getAttribute(USER_AUTH_SERVICE_ATTRIBUTE);
-        credentialsExtractor = (CredentialsExtractor) config.getServletContext().getAttribute(CREDENTIALS_EXTRACTOR_ATTRIBUTE);
+        userAuthenticationService = (UserAuthenticationService) config.getServletContext().getAttribute(ContextListener.USER_AUTH_SERVICE);
+        credentialsExtractor = (CredentialsExtractor) config.getServletContext().getAttribute(ContextListener.CREDENTIALS_EXTRACTOR);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
+        req.getRequestDispatcher(Route.LOGIN_JSP).forward(req, resp);
     }
 
     @Override
@@ -57,8 +54,8 @@ public class LoginServlet extends HttpServlet {
                 userAuthenticationService.handleAuthenticationFailure(req, resp);
             }
         } catch (Exception e) {
-            req.setAttribute(USER_AUTH_SERVICE_ATTRIBUTE, AUTHENTICATION_FAILED_MESSAGE);
-            req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
+            req.setAttribute(ContextListener.USER_AUTH_SERVICE, AUTHENTICATION_FAILED_MESSAGE);
+            req.getRequestDispatcher(Route.LOGIN_JSP).forward(req, resp);
         }
     }
 }

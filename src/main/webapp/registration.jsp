@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>Registration</title>
@@ -10,28 +11,35 @@
     <h2 class="auth">Registration</h2>
     <form action="/registration" method="post">
         <div>
-            <label>First name
-                <input name="firstname" type="text" placeholder="Enter your firstname" required>
-            </label>
+            <label for="firstname">First name:</label>
+            <input type="text" id="firstname" name="firstname" placeholder="Enter your firstname">
+            <c:forEach var="firstnameValidationError" items="${firstnameValidationErrors}">
+                <p class="validation-message">${firstnameValidationError}</p>
+            </c:forEach>
         </div>
         <div>
-            <label>Last name
-                <input name="surname" type="text" placeholder="Enter your surname" required>
-            </label>
+            <label for="surname">Surname:</label>
+            <input type="text" id="surname" name="surname" placeholder="Enter your surname">
+            <c:forEach var="surnameValidationError" items="${surnameValidationErrors}">
+                <p class="validation-message">${surnameValidationError}</p>
+            </c:forEach>
         </div>
         <div>
-            <label>Email
-                <input name="email" type="email" placeholder="Enter your Email" required>
-            </label>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your Email">
+            <c:forEach var="emailValidationError" items="${emailValidationErrors}">
+                <p class="validation-message">${emailValidationError}</p>
+            </c:forEach>
         </div>
         <div>
-            <label>Password
-                <input name="password" type="password" placeholder="Enter your password" required>
-            </label><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"  placeholder="Enter your password">
+            <c:forEach var="passwordValidationError" items="${passwordValidationErrors}">
+                <p class="validation-message">${passwordValidationError}</p>
+            </c:forEach>
         </div>
         <div class ="buttons">
             <button type="submit">Register</button>
-            or
             <a href="/login" class="link-button" onclick="redirectToLogin()">Back to Login page.</a>
         </div>
     </form>
