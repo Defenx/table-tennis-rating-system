@@ -6,8 +6,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,15 +17,40 @@ import java.util.UUID;
 public class UserDao {
     private final SessionFactory sessionFactory;
 
-    public User getById(UUID id) {
+    public User findById(UUID id) {
         User user;
         try (Session session = sessionFactory.openSession()) {
-            user = session.get(User.class, id);
+            user = session.find(User.class, id);
         } catch (HibernateException he) {
             throw new RuntimeException(he);
         }
 
         return user;
+    }
+
+    public List<User> findAllOrderByRatingAsc() {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("FROM User u ORDER BY rating DESC", User.class);
+            return query.getResultList();
+        } catch (HibernateException he) {
+            throw new RuntimeException(he);
+        }
+    }
+
+    public void deleteById(UUID id) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            MutationQuery mutationQuery = session.createMutationQuery("DELETE FROM User u WHERE id = :id");
+            mutationQuery.setParameter("id", id);
+            mutationQuery.executeUpdate();
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
     }
 
     public void create(User user) {
@@ -50,4 +77,5 @@ public class UserDao {
             throw new RuntimeException(he);
         }
     }
+
 }
