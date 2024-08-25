@@ -7,14 +7,16 @@ body {
     height: 100vh;
     margin: 0;
 }
+
 .auth {
     position: relative;
     text-align: center;
     color: #000000;
 }
+
 .form-auth {
     padding: 5%;
-    text-align: center;
+    text-align: start;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -22,12 +24,12 @@ body {
 }
 
 form div {
-    margin-bottom: 15px;
+    margin-bottom: 1.25rem;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin: 5px;
     text-align: left;
     font-size: 1.2rem;
     color: #000000;
@@ -50,13 +52,15 @@ input[type="email"] {
     border-color: #007bff;
     outline: none;
 }
-.buttons{
+
+.buttons {
     position: relative;
 
     padding: 10px;
     width: 100%;
 }
-a{
+
+a {
     position: absolute;
     color: #e13131;
     left: 50%;
@@ -81,4 +85,10 @@ button {
 
 button:hover {
     background-color: #b20303;
+}
+
+.validation-message {
+    margin: 0.5rem 5px 5px 5px !important;
+    color: red;
+    font-size: 0.8rem;
 }

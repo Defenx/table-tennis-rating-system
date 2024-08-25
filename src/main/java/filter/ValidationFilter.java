@@ -23,7 +23,7 @@ public class ValidationFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         var httpRequest = (HttpServletRequest) servletRequest;
 
-        if (!httpRequest.getMethod().equalsIgnoreCase("POST")) {
+        if (!"POST".equalsIgnoreCase(httpRequest.getMethod())) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -34,7 +34,9 @@ public class ValidationFilter implements Filter {
         if (isValidRequest) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            validatedHttpRequest.getRequestDispatcher(Route.REGISTRATION_JSP).forward(validatedHttpRequest, servletResponse);
+            var requestedEndpoint = httpRequest.getRequestURI();
+            var errorPageJsp = Route.getJspPath(requestedEndpoint);
+            validatedHttpRequest.getRequestDispatcher(errorPageJsp).forward(validatedHttpRequest, servletResponse);
         }
     }
 }

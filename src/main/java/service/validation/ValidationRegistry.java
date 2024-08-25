@@ -14,15 +14,21 @@ public class ValidationRegistry {
     public ValidationRegistry(UserDao userDao) {
         routesToValidationMap = Map.of(
                 Route.REGISTRATION, Map.of(
-                        "password", List.of(
-                                new EmptinessValidator(),
-                                new LengthValidator(8),
-                                new SpecialCharacterValidator(2)),
+                        "firstname", List.of(
+                                new EmptinessValidator()),
+
+                        "surname", List.of(
+                                new EmptinessValidator()),
 
                         "email", List.of(
                                 new EmptinessValidator(),
                                 new EmailPatternValidator(),
-                                new EmailRepeatValidator(userDao))
+                                new EmailRepeatValidator(userDao)),
+
+                        "password", List.of(
+                                new EmptinessValidator(),
+                                new LengthValidator(8),
+                                new SpecialCharacterValidator(2))
                 )
         );
     }
