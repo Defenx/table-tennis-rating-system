@@ -2,6 +2,7 @@ package listener;
 
 import config.HibernateConfig;
 import config.LiquibaseConfig;
+import dao.TournamentDao;
 import dao.UserDao;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
@@ -18,12 +19,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.UserService;
 import service.login.BasicCredentialsExtractorService;
 import service.login.UserAuthenticationService;
-import service.validation.ValidationService;
 import service.validation.ValidationRegistry;
+import service.validation.ValidationService;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.util.AbstractMap;
 import java.util.Map;
 
 @WebListener
@@ -34,34 +34,40 @@ public class ContextListener implements ServletContextListener {
     public static final String USER_SERVICE = "userService";
     public static final String SESSION_FACTORY = "sessionFactory";
     public static final String USER_DAO = "userDao";
+    public static final String TOURNAMENT_DAO = "tournamentDao";
 
     @Override
     @SneakyThrows
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
 
-        initializeLiquibase(servletContext);
+        initializeLiquibase();
         SessionFactory sessionFactory = new HibernateConfig().buildSessionFactory();
 
         var userDao = new UserDao(sessionFactory);
+        var tournamentDao = new TournamentDao(sessionFactory);
         var bCryptPasswordEncoder = new BCryptPasswordEncoder();
         var userService = new UserService(userDao, bCryptPasswordEncoder);
         var userAuthenticationService = new UserAuthenticationService(userService);
         var credentialsExtractor = new BasicCredentialsExtractorService();
+        var validationFactory = new ValidationRegistry(userDao);
+        var validationService = new ValidationService(validationFactory);
 
         Map<String, Object> attributes = Map.ofEntries(
-                new AbstractMap.SimpleEntry<>(CREDENTIALS_EXTRACTOR, credentialsExtractor),
-                new AbstractMap.SimpleEntry<>(USER_AUTH_SERVICE, userAuthenticationService),
-                new AbstractMap.SimpleEntry<>(SESSION_FACTORY, sessionFactory),
-                new AbstractMap.SimpleEntry<>(USER_DAO, userDao),
-                new AbstractMap.SimpleEntry<>(USER_SERVICE,userService)
+                Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),
+                Map.entry(USER_AUTH_SERVICE, userAuthenticationService),
+                Map.entry(SESSION_FACTORY, sessionFactory),
+                Map.entry(USER_DAO, userDao),
+                Map.entry(TOURNAMENT_DAO, tournamentDao),
+                Map.entry(USER_SERVICE, userService),
+                Map.entry(VALIDATION_SERVICE, validationService)
         );
 
         attributes.forEach(servletContext::setAttribute);
     }
 
     @SneakyThrows
-    private void initializeLiquibase(ServletContext servletContext) {
+    private void initializeLiquibase() {
         LiquibaseConfig liquibaseConfig = new LiquibaseConfig();
         DataSource dataSource = liquibaseConfig.getDataSource();
         try (
@@ -74,17 +80,6 @@ public class ContextListener implements ServletContextListener {
         ) {
             liquibase.update(new Contexts(), new LabelExpression());
         }
-
-        SessionFactory sessionFactory = new HibernateConfig().buildSessionFactory();
-
-        UserDao userDao = new UserDao(sessionFactory);
-
-        servletContext.setAttribute("sessionFactory",sessionFactory);
-
-
-        var validationFactory = new ValidationRegistry(userDao);
-        var validationService = new ValidationService(validationFactory);
-        servletContext.setAttribute(VALIDATION_SERVICE, validationService);
     }
 
     @Override

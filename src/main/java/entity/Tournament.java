@@ -2,6 +2,7 @@ package entity;
 
 import enums.Status;
 import enums.TournamentType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -43,15 +44,12 @@ public class Tournament {
 
     private Integer stage;
 
-    @OneToMany(mappedBy = "tournament")
-    @ToString.Exclude
+    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
     private List<Extension> extensions;
 
     @OneToMany(mappedBy = "tournament")
-    @ToString.Exclude
     private List<TournamentParticipant> participants;
 
     @OneToMany(mappedBy = "tournament")
-    @ToString.Exclude
     private List<Match> matches;
 }
