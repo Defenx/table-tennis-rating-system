@@ -21,13 +21,10 @@ public class AdminFilter implements Filter {
         var httpResponse = (HttpServletResponse) response;
 
         var user = (User) httpRequest.getSession().getAttribute("user");
-        var role = user.getRole();
-
-        if (role != null && role.equals(Role.ADMIN)) {
+        if (user != null && Role.ADMIN.equals(user.getRole())) {
             chain.doFilter(request, response);
+            return;
         }
-        else {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/");
-        }
+        httpResponse.sendRedirect(httpRequest.getContextPath() + "/");
     }
 }
