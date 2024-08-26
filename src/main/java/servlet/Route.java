@@ -12,6 +12,9 @@ public class Route {
     public static final String ERROR = "/error";
     public static final String ERROR_JSP = getJspPath(ERROR);
 
+    public static final String STATISTIC = "/statistic";
+    public static final String STATISTIC_JSP = getJspPath(STATISTIC);
+
     public static String getJspPath(String endpoint) {
         return endpoint + JSP_EXTENSION;
     }
