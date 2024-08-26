@@ -36,9 +36,7 @@ public class ValidationRegistry {
                                 new EmailPatternValidator()
                         ),
                         "password", List.of(
-                                new EmptinessValidator(),
-                                new LengthValidator(8),
-                                new SpecialCharacterValidator(2)
+                                new EmptinessValidator()
                         )
                 )
         );
