@@ -19,6 +19,8 @@ public class UserAuthenticationService {
     private static final String HOME_PATH =  "/";
     private static final String LOGIN_PAGE = "/login.jsp";
     private static final String USER_DTO_SESSION_ATTRIBUTE = "userDto";
+    private static final String USER_RATING_PLACE = "userRatingPlace";
+    private static final String USERS_COUNT = "usersCount";
 
     private final UserService userService;
 
@@ -34,6 +36,8 @@ public class UserAuthenticationService {
         }
         HttpSession session = req.getSession();
         session.setAttribute(USER_DTO_SESSION_ATTRIBUTE, user);
+        session.setAttribute(USER_RATING_PLACE,userService.getPlaceOfUser(user));
+        session.setAttribute(USERS_COUNT,userService.getCountOfUsers());
         resp.sendRedirect(req.getContextPath() + HOME_PATH);
     }
 

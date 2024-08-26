@@ -16,7 +16,9 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import service.TournamentService;
 import service.UserService;
+import service.home.TournamentHelperService;
 import service.login.BasicCredentialsExtractorService;
 import service.login.UserAuthenticationService;
 import service.validation.ValidationRegistry;
@@ -35,6 +37,8 @@ public class ContextListener implements ServletContextListener {
     public static final String SESSION_FACTORY = "sessionFactory";
     public static final String USER_DAO = "userDao";
     public static final String TOURNAMENT_DAO = "tournamentDao";
+    public static final String TOURNAMENT_SERVICE = "tournamentService";
+    public static final String TOURNAMENT_HELPER_SERVICE = "tournamentHelperService";
 
     @Override
     @SneakyThrows
@@ -48,10 +52,12 @@ public class ContextListener implements ServletContextListener {
         var tournamentDao = new TournamentDao(sessionFactory);
         var bCryptPasswordEncoder = new BCryptPasswordEncoder();
         var userService = new UserService(userDao, bCryptPasswordEncoder);
+        var tournamentService = new TournamentService(tournamentDao);
         var userAuthenticationService = new UserAuthenticationService(userService);
         var credentialsExtractor = new BasicCredentialsExtractorService();
         var validationFactory = new ValidationRegistry(userDao);
         var validationService = new ValidationService(validationFactory);
+        var tournamentHelperService = new TournamentHelperService(tournamentService);
 
         Map<String, Object> attributes = Map.ofEntries(
                 Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),
@@ -60,7 +66,9 @@ public class ContextListener implements ServletContextListener {
                 Map.entry(USER_DAO, userDao),
                 Map.entry(TOURNAMENT_DAO, tournamentDao),
                 Map.entry(USER_SERVICE, userService),
-                Map.entry(VALIDATION_SERVICE, validationService)
+                Map.entry(VALIDATION_SERVICE, validationService),
+                Map.entry(TOURNAMENT_SERVICE, tournamentService),
+                Map.entry(TOURNAMENT_HELPER_SERVICE, tournamentHelperService)
         );
 
         attributes.forEach(servletContext::setAttribute);
