@@ -29,6 +29,17 @@ public class ValidationRegistry {
                                 new EmptinessValidator(),
                                 new LengthValidator(8),
                                 new SpecialCharacterValidator(2))
+                ),
+                Route.LOGIN, Map.of(
+                        "email", List.of(
+                                new EmptinessValidator(),
+                                new EmailPatternValidator()
+                        ),
+                        "password", List.of(
+                                new EmptinessValidator(),
+                                new LengthValidator(8),
+                                new SpecialCharacterValidator(2)
+                        )
                 )
         );
     }
