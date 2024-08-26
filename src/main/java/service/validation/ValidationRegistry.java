@@ -32,8 +32,7 @@ public class ValidationRegistry {
                 ),
                 Route.LOGIN, Map.of(
                         "email", List.of(
-                                new EmptinessValidator(),
-                                new EmailPatternValidator()
+                                new EmptinessValidator()
                         ),
                         "password", List.of(
                                 new EmptinessValidator()
