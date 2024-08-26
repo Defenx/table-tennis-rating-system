@@ -20,7 +20,7 @@ public class AdminFilter implements Filter {
         var httpRequest = (HttpServletRequest) request;
         var httpResponse = (HttpServletResponse) response;
 
-        var user = (User) httpRequest.getSession().getAttribute("userDto");
+        var user = (User) httpRequest.getSession().getAttribute("user");
         var role = user.getRole();
 
         if (role != null && role.equals(Role.ADMIN)) {
