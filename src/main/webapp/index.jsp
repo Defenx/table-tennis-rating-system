@@ -15,14 +15,14 @@
         <button>Таблица Рейтинга</button>
         <button>Выход</button>
         <c:if test="${userDto.role == 'ADMIN'}">
-            <button>Содать турнир</button>
+            <button>Создать турнир</button>
         </c:if>
     </div>
     <div class="tournament">
         <c:if test="${tournament!=null}">
             <c:if test="${!isSomeoneRegisteredForTournament}">
                 <form action="" method="post">
-                    <button type="submit">Зарегестрируйся первым</button>
+                    <button type="submit">Зарегистрируйся первым</button>
                 </form>
             </c:if>
             <c:if test="${isSomeoneRegisteredForTournament}">
@@ -55,11 +55,11 @@
         </c:if>
         <div class="regOrDenied">
             <form action="/home" method="post">
-                <button class="reg" type="submit">записаться</button>
+                <button class="reg" type="submit">Записаться</button>
             </form>
             <form action="" method="get">
                 <input type="hidden" name="_method" value="DELETE">
-                <button class="denied" type="submit">отменить запись</button>
+                <button class="denied" type="submit">Отменить запись</button>
             </form>
         </div>
     </div>
