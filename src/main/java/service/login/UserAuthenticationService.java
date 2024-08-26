@@ -5,6 +5,7 @@ import entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import service.UserService;
 
@@ -18,6 +19,7 @@ public class UserAuthenticationService {
     private static final String INVALID_CREDENTIALS_MESSAGE = "invalidCredentials";
     private static final String HOME_PATH =  "/";
     private static final String LOGIN_PAGE = "/login.jsp";
+    @Getter
     private static final String USER_DTO_SESSION_ATTRIBUTE = "userDto";
 
     private final UserService userService;
