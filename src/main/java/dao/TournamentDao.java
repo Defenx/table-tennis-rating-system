@@ -2,6 +2,7 @@ package dao;
 
 import entity.Extension;
 import entity.Tournament;
+import entity.TournamentParticipant;
 import entity.User;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -37,7 +37,8 @@ public class TournamentDao {
     public Optional<Tournament> findNewTournament() {
         try (Session session = sessionFactory.openSession()) {
             Query<Tournament> query = session.createQuery("FROM Tournament t WHERE t.status = 'NEW'", Tournament.class);
-            query.setMaxResults(1);
+            Query<Tournament> tournamentQuery = query.setMaxResults(1);
+            System.out.println("DAO: " + tournamentQuery.getSingleResult());
             return Optional.of(query.getSingleResult());
         } catch (HibernateException he) {
             throw new RuntimeException(he);
@@ -46,4 +47,36 @@ public class TournamentDao {
         }
     }
 
+    public void participateUserToTournament(User user, Tournament tournament) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            TournamentParticipant participant = new TournamentParticipant();
+            participant.setUser(user);
+            participant.setTournament(tournament);
+            tournament.getParticipants().add(participant);
+            session.persist(participant);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void withdrawFromTournament(User user, Tournament tournament) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            tournament.getParticipants().removeIf(participant->participant.getUser().getId().equals(user.getId()));
+            session.persist(tournament);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
 }

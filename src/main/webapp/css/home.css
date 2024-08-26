@@ -1,0 +1,98 @@
+body {
+    background-image: url('https://bogatyr.club/uploads/posts/2023-03/1679524685_bogatyr-club-p-nastolnii-tennis-oboi-foni-oboi-2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.welcome {
+    margin-bottom: 20px;
+}
+
+.welcome h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.welcome button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+}
+
+.welcome button:hover {
+    opacity: 0.8;
+}
+
+
+.tournament {
+    margin-bottom: 20px;
+}
+
+.tournament table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.tournament th, .tournament td {
+    border: 1px solid white;
+    padding: 8px;
+    text-align: center;
+}
+
+.tournament th {
+    background-color: #333;
+}
+
+.regOrDenied {
+    display: flex;
+    gap: 10px;
+}
+
+.regOrDenied form {
+    display: inline-block;
+}
+
+.regOrDenied .reg {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50; /* Зеленая кнопка */
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.regOrDenied .reg:hover {
+    background-color: #45a049;
+}
+
+.regOrDenied .denied {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #f44336; /* Красная кнопка */
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.regOrDenied .denied:hover {
+    background-color: #d32f2f;
+}

@@ -1,6 +1,7 @@
 package service.home;
 
 import entity.Tournament;
+import entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,9 @@ public class TournamentHelperService {
         } else {
             session.setAttribute(TOURNAMENT_SESSION_ATTRIBUTE,null);
         }
+    }
+
+    public void participate(User user, Tournament tournament) {
+        tournamentService.participate(user, tournament);
     }
 }
