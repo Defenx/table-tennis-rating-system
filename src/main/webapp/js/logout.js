@@ -11,7 +11,7 @@ async function handleLogout() {
     try {
         // Sends a POST request to log out the user
         const response = await fetch('/logout', {
-            method: 'POST',
+            method: 'GET',
             credentials: 'same-origin' // Ensures cookies are sent with the request
         });
 
