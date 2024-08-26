@@ -18,7 +18,7 @@ public class UserAuthenticationService {
     private static final String INVALID_CREDENTIALS_MESSAGE = "invalidCredentials";
     private static final String HOME_PATH =  "/";
     private static final String LOGIN_PAGE = "/login.jsp";
-    private static final String USER_SESSION_ATTRIBUTE = "User";
+    private static final String USER_SESSION_ATTRIBUTE = "user";
 
     private final UserService userService;
 

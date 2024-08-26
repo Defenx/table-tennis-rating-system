@@ -1,6 +1,6 @@
 package filter;
 
-import dto.UserDto;
+import entity.User;
 import enums.Role;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -20,8 +20,8 @@ public class AdminFilter implements Filter {
         var httpRequest = (HttpServletRequest) request;
         var httpResponse = (HttpServletResponse) response;
 
-        var user = (UserDto) request.getServletContext().getAttribute("User");
-        var role = user.role();
+        var user = (User) httpRequest.getSession().getAttribute("user");
+        var role = user.getRole();
 
         if (role != null && role.equals(Role.ADMIN)) {
             chain.doFilter(request, response);
