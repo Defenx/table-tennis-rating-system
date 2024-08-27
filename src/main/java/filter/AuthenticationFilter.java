@@ -11,21 +11,28 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class AuthenticationFilter implements Filter {
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         var httpRequest = (HttpServletRequest) request;
         var httpResponse = (HttpServletResponse) response;
-        var path = httpRequest.getServletPath();
-        var routeOptional = Optional.ofNullable(Route.fromPath(path));
+
+        var routeOptional = Route.fromPath(httpRequest.getServletPath());
+
         if (routeOptional.isPresent()) {
-            var userOptional = Optional.ofNullable((User) httpRequest
+            var route = routeOptional.get();
+
+            var optionalUser = Optional.ofNullable((User) httpRequest
                     .getSession()
                     .getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE));
-            if (!routeOptional.get().isRequiresAuth() || userOptional.isPresent()) {
-                chain.doFilter(request, response);
+
+            if (optionalUser.isEmpty() && route.isRequiresAuth()) {
+                httpResponse.sendRedirect(Route.LOGIN.getPath());
                 return;
             }
+
         }
-        httpResponse.sendRedirect(httpRequest.getContextPath() + Route.LOGIN.getPath());
+
+        chain.doFilter(request, response);
     }
 }

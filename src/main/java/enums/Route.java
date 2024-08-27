@@ -4,6 +4,7 @@ import constant.RouteConstants;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -12,17 +13,17 @@ public enum Route {
     LOGIN(
             RouteConstants.LOGIN,
             (RouteConstants.LOGIN + ".jsp"),
-            Set.of(Role.USER, Role.ADMIN),
+            Role.ALL_ROLES,
             false),
     REGISTRATION(
             RouteConstants.REGISTRATION,
             (RouteConstants.REGISTRATION + ".jsp"),
-            Set.of(Role.USER, Role.ADMIN),
+            Role.ALL_ROLES,
             false),
     ERROR(
             RouteConstants.ERROR,
             (RouteConstants.ERROR + ".jsp"),
-            Set.of(Role.USER, Role.ADMIN),
+            Role.ALL_ROLES,
             false),
     ADMIN_TOURNAMENT_CREATE(
             RouteConstants.ADMIN_TOURNAMENT_CREATE,
@@ -32,7 +33,7 @@ public enum Route {
     HOME(
             RouteConstants.HOME,
             (RouteConstants.HOME + ".jsp"),
-            Set.of(Role.ADMIN, Role.USER),
+            Role.ALL_ROLES,
             true
     );
 
@@ -41,12 +42,17 @@ public enum Route {
     private final Set<Role> allowedRoles;
     private final boolean requiresAuth;
 
-    public static Route fromPath(String path) {
+    public static Optional<Route> fromPath(String path) {
         for (Route route : values()) {
             if (route.getPath().equals(path)) {
-                return route;
+                return Optional.ofNullable(route);
             }
         }
-        return null;
+        return Optional.empty();
     }
+
+    public boolean isAllowedForRole(Role role) {
+        return allowedRoles.contains(role);
+    }
+
 }
