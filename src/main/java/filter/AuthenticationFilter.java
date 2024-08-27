@@ -1,36 +1,34 @@
 package filter;
 
+import constant.RouteConstants;
 import constant.SessionAttributes;
 import entity.User;
 import enums.Route;
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class AuthenticationFilter implements Filter {
+public class AuthenticationFilter extends BaseFilter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        var httpRequest = (HttpServletRequest) request;
-        var httpResponse = (HttpServletResponse) response;
-
-        var routeOptional = Route.fromPath(httpRequest.getServletPath());
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        var routeOptional = Route.fromPath(request.getServletPath());
 
         if (routeOptional.isPresent()) {
             var route = routeOptional.get();
 
-            var optionalUser = Optional.ofNullable((User) httpRequest
+            var optionalUser = Optional.ofNullable((User) request
                     .getSession()
                     .getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE));
 
             if (optionalUser.isEmpty() && route.isRequiresAuth()) {
-                httpResponse.sendRedirect(Route.LOGIN.getPath());
+                request.getRequestDispatcher(RouteConstants.LOGIN).forward(request, response);
                 return;
             }
-
         }
 
         chain.doFilter(request, response);

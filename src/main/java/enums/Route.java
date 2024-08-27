@@ -4,6 +4,7 @@ import constant.RouteConstants;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,6 +36,12 @@ public enum Route {
             (RouteConstants.HOME + ".jsp"),
             Role.ALL_ROLES,
             true
+    ),
+    ROOT(
+            RouteConstants.ROOT,
+            (RouteConstants.ROOT + ".jsp"),
+            Role.ALL_ROLES,
+            true
     );
 
     private final String path;
@@ -43,12 +50,9 @@ public enum Route {
     private final boolean requiresAuth;
 
     public static Optional<Route> fromPath(String path) {
-        for (Route route : values()) {
-            if (route.getPath().equals(path)) {
-                return Optional.ofNullable(route);
-            }
-        }
-        return Optional.empty();
+        return Arrays.stream(values())
+                .filter(route -> route.getPath().equals(path))
+                .findFirst();
     }
 
     public boolean isAllowedForRole(Role role) {
