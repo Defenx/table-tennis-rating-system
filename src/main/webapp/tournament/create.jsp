@@ -14,7 +14,7 @@
         <h2>Форма регистрации турнира</h1>
         <form action="/tournament/create" method="post">
             <!-- Тип турнира -->
-            <label for="type">Тип турнира:</label>
+            <label for="type">Тип турнира</label>
             <select id="type" name="type">
                 <c:forEach var="tournamentType" items="${tournamentTypes}">
                     <option value="${tournamentType.name()}" ${tournamentType.name() == defaultTournamentType ? 'selected' : ''}>${tournamentType.getDisplayName()}</option>
@@ -22,7 +22,7 @@
             </select>
 
             <!-- Дата турнира -->
-            <label for="date">Дата турнира:</label>
+            <label for="date">Дата турнира</label>
             <input type="date" id="date" name="date" required>
 
             <!-- Дополнения -->

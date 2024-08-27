@@ -1,7 +1,10 @@
 package enums;
 
+import lombok.Getter;
+
 import java.util.Map;
 
+@Getter
 public enum ExtensionName {
     IS_RATING("Рейтинговый турнир", InputType.CHECKBOX, Map.of("checked", "")),
     TRAINING_SETS("Кол-во побед в тренировочных матчах", InputType.NUMBER, Map.of("min", "1", "max", "3")),
@@ -17,18 +20,6 @@ public enum ExtensionName {
         this.displayName = displayName;
         this.inputType = inputType;
         this.htmlAttributes = htmlAttributes;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public InputType getInputType() {
-        return inputType;
-    }
-
-    public Map<String, String> getHtmlAttributes() {
-        return htmlAttributes;
     }
 
     public String getHtmlAttributesAsString() {

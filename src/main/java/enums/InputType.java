@@ -1,5 +1,8 @@
 package enums;
 
+import lombok.Getter;
+
+@Getter
 public enum InputType {
     CHECKBOX("checkbox"),
     NUMBER("number");
@@ -8,9 +11,5 @@ public enum InputType {
 
     InputType(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 }
