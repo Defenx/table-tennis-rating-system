@@ -4,13 +4,10 @@ import constant.SessionAttributes;
 import entity.User;
 import enums.Route;
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import service.login.UserAuthenticationService;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Optional;
 
 public class AuthenticationFilter implements Filter {
