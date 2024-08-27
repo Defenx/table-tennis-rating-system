@@ -25,7 +25,7 @@ public class IndexDeleteById extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
         System.out.println(pathInfo);
         UUID userId = UUID.fromString(pathInfo.substring(1));

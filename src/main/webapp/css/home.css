@@ -2,97 +2,78 @@ body {
     background-image: url('https://bogatyr.club/uploads/posts/2023-03/1679524685_bogatyr-club-p-nastolnii-tennis-oboi-foni-oboi-2.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    color: white;
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
 }
 
 .main {
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 8px;
+    background-color: rgba(255, 255, 255);
+    border-radius: 10px;
     max-width: 1200px;
-    margin: auto;
-}
-
-.welcome {
-    margin-bottom: 20px;
+    margin: 40px auto;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .welcome h2 {
-    margin: 0;
-    font-size: 24px;
+    margin: 0 0 20px;
+    font-size: 22px;
+    text-align: center;
 }
 
-.welcome button {
-    margin-right: 10px;
+button {
+    background-color: #4CAF50;
+    color: white;
     padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+    margin: 10px 5px;
     border: none;
     border-radius: 5px;
-    background-color: #4CAF50;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-.welcome button:hover {
-    opacity: 0.8;
+button:hover {
+    background-color: #45a049;
 }
 
-
-.tournament {
-    margin-bottom: 20px;
+.tournament h3 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 20px;
+    color: #444;
 }
 
 .tournament table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .tournament th, .tournament td {
-    border: 1px solid white;
-    padding: 8px;
-    text-align: center;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
 .tournament th {
-    background-color: #333;
+    background-color: #f2f2f2;
 }
 
 .regOrDenied {
-    display: flex;
-    gap: 10px;
-}
-
-.regOrDenied form {
-    display: inline-block;
+    text-align: left;
+    margin: 20px 0;
 }
 
 .regOrDenied .reg {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
     background-color: #4CAF50; /* Зеленая кнопка */
-    color: white;
-    border: none;
-    border-radius: 5px;
-}
-
-.regOrDenied .reg:hover {
-    background-color: #45a049;
 }
 
 .regOrDenied .denied {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
     background-color: #f44336; /* Красная кнопка */
-    color: white;
-    border: none;
-    border-radius: 5px;
 }
 
-.regOrDenied .denied:hover {
-    background-color: #d32f2f;
+.regOrDenied button:hover {
+    opacity: 0.8;
 }

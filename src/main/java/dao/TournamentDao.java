@@ -10,6 +10,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 
 import java.util.Optional;
@@ -68,6 +69,18 @@ public class TournamentDao {
     }
 
     public void removeFromTournament(UUID participantId) {
-        //TODO нужен рабочий метод ДАО
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            MutationQuery mutationQuery = session.createMutationQuery("DELETE FROM TournamentParticipant tp WHERE id = :id");
+            mutationQuery.setParameter("id", participantId);
+            mutationQuery.executeUpdate();
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
     }
 }

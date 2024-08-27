@@ -14,6 +14,7 @@ import service.home.TournamentHelperService;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.Optional;
 
 @WebServlet(Route.HOME_PAGE)
 public class IndexServlet extends HttpServlet {
@@ -37,7 +38,7 @@ public class IndexServlet extends HttpServlet {
                 ).reversed())
         );
         tournamentHelperService.setSessionAttributes(req, optionalTournament);
-        req.getRequestDispatcher(req.getContextPath() + Route.HOME_PAGE_JSP).forward(req, resp);
+        req.getRequestDispatcher(Route.HOME_PAGE_JSP).forward(req, resp);
     }
 
     @Override
@@ -48,6 +49,23 @@ public class IndexServlet extends HttpServlet {
         if (optionalTournament.isPresent()) {
             tournamentHelperService.participate(user, optionalTournament.get());
             resp.sendRedirect(Route.HOME_PAGE);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var optionalTournament = tournamentHelperService.getNewTournament();
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute(USER_DTO);
+        if (optionalTournament.isPresent()) {
+            Optional<TournamentParticipant> first = optionalTournament.get().getParticipants().stream()
+                    .filter(participant -> participant.getUser().getId().equals(user.getId()))
+                    .findFirst();
+            if (first.isPresent()) {
+                System.out.println(first.get().getId());
+                tournamentHelperService.removeFromTournament(first.get().getId());
+                resp.sendRedirect(Route.HOME_PAGE);
+            }
         }
     }
 }

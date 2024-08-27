@@ -11,7 +11,8 @@
         <div>
             <h2>Добро пожаловать! <c:out value="${userDto.surname}"/> <c:out
                     value="${userDto.firstname}, твой рейтинг - ${userDto.rating}, ты занимаешь ${userRatingPlace} из ${usersCount}"/></h2>
-        </div><br><br>
+        </div>
+        <br><br>
         <button>Таблица Рейтинга</button>
         <button>Выход</button>
         <c:if test="${userDto.role == 'ADMIN'}">
@@ -42,7 +43,12 @@
                             <td>${participant.user.firstname}</td>
                             <td>${participant.user.rating}</td>
                             <c:if test="${userDto.role == 'ADMIN'}">
-                                <td><a href="/participant/delete/${participant.id}">Х</a></td>
+                                <td>
+                                    <form class="regOrDenied" action="/participant/delete/${participant.id}" method="post">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button class="denied" type="submit">Удалить</button>
+                                    </form>
+                                </td>
                             </c:if>
                         </tr>
                     </c:forEach>
@@ -57,7 +63,7 @@
                     </form>
                 </c:if>
                 <c:if test="${isCurrentUserRegisteredForTournament == true}">
-                    <form action="" method="get">
+                    <form action="/home" method="post">
                         <input type="hidden" name="_method" value="DELETE">
                         <button class="denied" type="submit">Отменить запись</button>
                     </form>
