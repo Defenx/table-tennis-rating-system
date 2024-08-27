@@ -1,5 +1,6 @@
 package servlet;
 
+import entity.Tournament;
 import entity.TournamentParticipant;
 import entity.User;
 import jakarta.servlet.ServletConfig;
@@ -18,6 +19,7 @@ import java.util.Comparator;
 @WebServlet(Route.HOME_PAGE)
 public class IndexServlet extends HttpServlet {
     private TournamentHelperService tournamentHelperService;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -38,12 +40,7 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var optionalTournament = tournamentHelperService.getNewTournament();
-        HttpSession session = req.getSession();
-        User user = (User) session.getAttribute("userDto");
-        if (optionalTournament.isPresent()) {
-            tournamentHelperService.participate(user, optionalTournament.get());
-            resp.sendRedirect(Route.HOME_PAGE);
-        }
+        tournamentHelperService.participate(req);
+        resp.sendRedirect(Route.HOME_PAGE);
     }
 }

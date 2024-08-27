@@ -26,6 +26,7 @@
                 </form>
             </c:if>
             <c:if test="${isSomeoneRegisteredForTournament}">
+                <h3>Запись на турнир ${tournament.date}</h3>
                 <table>
                     <tr>
                         <th>Фамилия</th>
@@ -47,21 +48,26 @@
                     </c:forEach>
 
                 </table>
-            </c:if>
 
+            </c:if>
+            <div class="regOrDenied">
+                <c:if test="${isCurrentUserRegisteredForTournament == false}">
+                    <form action="/home" method="post">
+                        <button class="reg" type="submit">Записаться</button>
+                    </form>
+                </c:if>
+                <c:if test="${isCurrentUserRegisteredForTournament == true}">
+                    <form action="" method="get">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button class="denied" type="submit">Отменить запись</button>
+                    </form>
+                </c:if>
+            </div>
         </c:if>
         <c:if test="${tournament==null}">
             <h1>Турниров в данный момент нет.</h1>
         </c:if>
-        <div class="regOrDenied">
-            <form action="/home" method="post">
-                <button class="reg" type="submit">Записаться</button>
-            </form>
-            <form action="" method="get">
-                <input type="hidden" name="_method" value="DELETE">
-                <button class="denied" type="submit">Отменить запись</button>
-            </form>
-        </div>
+
     </div>
 </div>
 </body>

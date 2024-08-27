@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import service.UserService;
+import servlet.Attributes;
 import servlet.Route;
 
 import java.io.IOException;
@@ -17,7 +18,6 @@ import java.util.Optional;
 public class UserAuthenticationService {
     private static final String ERROR_MESSAGE_ATTRIBUTE = "errorMessage";
     private static final String INVALID_CREDENTIALS_MESSAGE = "invalidCredentials";
-    private static final String USER_DTO_SESSION_ATTRIBUTE = "userDto";
     private static final String USER_RATING_PLACE = "userRatingPlace";
     private static final String USERS_COUNT = "usersCount";
 
@@ -34,7 +34,7 @@ public class UserAuthenticationService {
             throw new IllegalArgumentException("User cannot be null");
         }
         HttpSession session = req.getSession();
-        session.setAttribute(USER_DTO_SESSION_ATTRIBUTE, user);
+        session.setAttribute(Attributes.USER_DTO_SESSION_ATTRIBUTE.toString(), user);
         session.setAttribute(USER_RATING_PLACE,userService.getPlaceOfUser(user));
         session.setAttribute(USERS_COUNT,userService.getCountOfUsers());
         resp.sendRedirect(Route.HOME_PAGE);
