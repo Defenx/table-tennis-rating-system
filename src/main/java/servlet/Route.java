@@ -15,6 +15,8 @@ public class Route {
     public static final String ERROR = "/error";
     public static final String ERROR_JSP = getJspPath(ERROR);
 
+    public static final String DELETE_BY_PARTICIPANT_ID = "/participant/delete/*";
+
     public static String getJspPath(String endpoint) {
         return endpoint + JSP_EXTENSION;
     }

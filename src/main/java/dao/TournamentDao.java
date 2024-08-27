@@ -13,6 +13,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class TournamentDao {
@@ -34,6 +35,7 @@ public class TournamentDao {
             throw e;
         }
     }
+
     public Optional<Tournament> findNewTournament() {
         try (Session session = sessionFactory.openSession()) {
             Query<Tournament> query = session.createQuery("FROM Tournament t WHERE t.status = 'NEW'", Tournament.class);
@@ -65,18 +67,7 @@ public class TournamentDao {
         }
     }
 
-    public void withdrawFromTournament(User user, Tournament tournament) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            tournament.getParticipants().removeIf(participant->participant.getUser().getId().equals(user.getId()));
-            session.persist(tournament);
-            transaction.commit();
-        } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw e;
-        }
+    public void removeFromTournament(UUID participantId) {
+        //TODO нужен рабочий метод ДАО
     }
 }

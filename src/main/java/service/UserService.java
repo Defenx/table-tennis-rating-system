@@ -7,7 +7,6 @@ import enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -30,12 +29,5 @@ public class UserService {
                 .role(Role.USER)
                 .rating(1000)
                 .build());
-    }
-    public int getPlaceOfUser(User user){
-        List<User> allOrderByRatingAsc = userDao.findAllOrderByRatingAsc();
-        return allOrderByRatingAsc.indexOf(user);
-    }
-    public Long getCountOfUsers(){
-        return userDao.getCountOfUsers();
     }
 }

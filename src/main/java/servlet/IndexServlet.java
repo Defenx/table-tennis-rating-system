@@ -1,6 +1,5 @@
 package servlet;
 
-import entity.Tournament;
 import entity.TournamentParticipant;
 import entity.User;
 import jakarta.servlet.ServletConfig;
@@ -18,6 +17,7 @@ import java.util.Comparator;
 
 @WebServlet(Route.HOME_PAGE)
 public class IndexServlet extends HttpServlet {
+    private static final String USER_DTO = "userDto";
     private TournamentHelperService tournamentHelperService;
 
     @Override
@@ -26,21 +26,28 @@ public class IndexServlet extends HttpServlet {
         var servletContext = config.getServletContext();
         tournamentHelperService = (TournamentHelperService) servletContext.getAttribute(ContextListener.TOURNAMENT_HELPER_SERVICE);
     }
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         var optionalTournament = tournamentHelperService.getNewTournament();
-        tournamentHelperService.setSessionAttributes(req,optionalTournament);
         optionalTournament.ifPresent(tournament -> tournament.getParticipants()
                 .sort(Comparator.comparing(
                         (TournamentParticipant tp) -> tp.getUser().getRating()
                 ).reversed())
         );
+        tournamentHelperService.setSessionAttributes(req, optionalTournament);
         req.getRequestDispatcher(req.getContextPath() + Route.HOME_PAGE_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        tournamentHelperService.participate(req);
-        resp.sendRedirect(Route.HOME_PAGE);
+        var optionalTournament = tournamentHelperService.getNewTournament();
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute(USER_DTO);
+        if (optionalTournament.isPresent()) {
+            tournamentHelperService.participate(user, optionalTournament.get());
+            resp.sendRedirect(Route.HOME_PAGE);
+        }
     }
 }
