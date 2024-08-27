@@ -11,8 +11,9 @@ public class Route {
 
     public static final String ERROR = "/error";
     public static final String ERROR_JSP = getJspPath(ERROR);
-    public static final String TOURNAMENT = "/tournament_create";
-    public static final String TOURNAMENT_JSP = getJspPath(TOURNAMENT);
+
+    public static final String TOURNAMENT_CREATE = "/tournament/create";
+    public static final String TOURNAMENT_CREATE_JSP = getJspPath(TOURNAMENT_CREATE);
 
     public static String getJspPath(String endpoint) {
         return endpoint + JSP_EXTENSION;
