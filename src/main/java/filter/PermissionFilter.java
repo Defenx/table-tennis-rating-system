@@ -3,15 +3,14 @@ package filter;
 import constant.SessionAttributes;
 import entity.User;
 import enums.Role;
+import enums.Route;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import servlet.Route;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.Set;
 
 @WebFilter("/*")
 public class PermissionFilter implements Filter {
@@ -26,31 +25,26 @@ public class PermissionFilter implements Filter {
         var userOptional = Optional.ofNullable((User) httpRequest
                 .getSession()
                 .getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE));
-        var userRole = userOptional.map(User::getRole).orElse(null);
+        var userRole = userOptional.map(User::getRole).orElse(Role.GUEST);
 
         var path = httpRequest.getServletPath();
-        var allowedRoles = getAllowedRolesForPath(path);
+        var routeOptional = Optional.ofNullable(Route.fromPath(path));
 
-        if (userRole != null && allowedRoles.contains(userRole)) {
-            chain.doFilter(request, response);
+        if (routeOptional.isPresent() && routeOptional.get().isRequiresAuth()) {
+            if (userRole != Role.GUEST) {
+                if (!routeOptional.get().getAllowedRoles().contains(userRole)) {
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + Route.ERROR.getPath());
+                    return;
+                }
+            }
+            else {
+                if (!path.equals(Route.LOGIN.getPath())
+                        && !path.equals(Route.REGISTRATION.getPath())) {
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + Route.LOGIN.getPath());
+                    return;
+                }
+            }
         }
-        else {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/");
-        }
-    }
-
-    private Set<Role> getAllowedRolesForPath(String path) {
-        switch (path) {
-            case Route.LOGIN:
-                return Route.LOGIN_ROLES;
-            case Route.REGISTRATION:
-                return Route.REGISTRATION_ROLES;
-            case Route.ERROR:
-                return Route.ERROR_ROLES;
-            case Route.ADMIN_TOURNAMENT_CREATE:
-                return Route.ADMIN_TOURNAMENT_CREATE_ROLES;
-            default:
-                return Set.of();
-        }
+        chain.doFilter(request, response);
     }
 }
