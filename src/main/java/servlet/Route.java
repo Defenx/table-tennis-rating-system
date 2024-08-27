@@ -9,8 +9,8 @@ public class Route {
     public static final String REGISTRATION = "/registration";
     public static final String REGISTRATION_JSP = getJspPath(REGISTRATION);
 
-    public static final String HOME_PAGE = "/home";
-    public static final String HOME_PAGE_JSP = "/index.jsp";
+    public static final String HOME = "/home";
+    public static final String HOME_JSP = getJspPath(HOME);
 
     public static final String ERROR = "/error";
     public static final String ERROR_JSP = getJspPath(ERROR);

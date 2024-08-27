@@ -40,10 +40,10 @@ public class TournamentHelperService {
             req.setAttribute(USER_RATING_PLACE, tournamentService.getPlaceOfUser(user, tournament.getParticipants()));
             req.setAttribute(USERS_COUNT, tournamentService.getParticipantsListLength(tournament));
             req.setAttribute(IS_SOMEONE_REGISTERED_FOR_TOURNAMENT_SESSION_ATTRIBUTE, !tournament.getParticipants().isEmpty());
-            req.getRequestDispatcher(Route.HOME_PAGE_JSP).forward(req, resp);
+            req.getRequestDispatcher(Route.HOME_JSP).forward(req, resp);
         } else {
             req.setAttribute(TOURNAMENT_SESSION_ATTRIBUTE, null);
-            req.getRequestDispatcher(Route.HOME_PAGE_JSP).forward(req, resp);
+            req.getRequestDispatcher(Route.HOME_JSP).forward(req, resp);
         }
     }
 

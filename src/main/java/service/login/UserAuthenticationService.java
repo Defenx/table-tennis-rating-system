@@ -32,7 +32,7 @@ public class UserAuthenticationService {
         }
         HttpSession session = req.getSession();
         session.setAttribute(USER_DTO_SESSION_ATTRIBUTE, user);
-        resp.sendRedirect(Route.HOME_PAGE);
+        resp.sendRedirect(Route.HOME);
     }
 
     public void handleAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp) throws IOException, jakarta.servlet.ServletException {

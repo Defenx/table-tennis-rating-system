@@ -30,6 +30,6 @@ public class IndexDeleteById extends HttpServlet {
         System.out.println(pathInfo);
         UUID userId = UUID.fromString(pathInfo.substring(1));
         tournamentHelperService.removeFromTournament(userId);
-        resp.sendRedirect(Route.HOME_PAGE);
+        resp.sendRedirect(Route.HOME);
     }
 }

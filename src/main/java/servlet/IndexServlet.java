@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.Optional;
 
-@WebServlet(Route.HOME_PAGE)
+@WebServlet(Route.HOME)
 public class IndexServlet extends HttpServlet {
     private static final String USER_DTO = "userDto";
     private TournamentHelperService tournamentHelperService;
@@ -46,7 +46,7 @@ public class IndexServlet extends HttpServlet {
         User user = (User) session.getAttribute(USER_DTO);
         if (optionalTournament.isPresent()) {
             tournamentHelperService.participate(user, optionalTournament.get());
-            resp.sendRedirect(Route.HOME_PAGE);
+            resp.sendRedirect(Route.HOME);
         }
     }
 
@@ -62,7 +62,7 @@ public class IndexServlet extends HttpServlet {
             if (tournamentParticipant.isPresent()) {
                 System.out.println(tournamentParticipant.get().getId());
                 tournamentHelperService.removeFromTournament(tournamentParticipant.get().getId());
-                resp.sendRedirect(Route.HOME_PAGE);
+                resp.sendRedirect(Route.HOME);
             }
         }
     }
