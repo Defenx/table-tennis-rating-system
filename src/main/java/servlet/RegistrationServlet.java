@@ -1,6 +1,8 @@
 package servlet;
 
+import constant.RouteConstants;
 import dto.RegistrationFormDto;
+import enums.Route;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -18,7 +20,7 @@ import java.io.IOException;
 /**
  * The RegistrationServlet class handles user registration requests.
  */
-@WebServlet(Route.REGISTRATION)
+@WebServlet(RouteConstants.REGISTRATION)
 public class RegistrationServlet extends HttpServlet {
     private static final String MESSAGE_ERROR = "Error while user adding! ";
     private UserService userService;
@@ -46,7 +48,7 @@ public class RegistrationServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(Route.REGISTRATION_JSP).forward(req, resp);
+        req.getRequestDispatcher(Route.REGISTRATION.getJspPath()).forward(req, resp);
     }
 
     /**
@@ -63,11 +65,11 @@ public class RegistrationServlet extends HttpServlet {
         try {
             userService.addUser(userData);
             resp.setStatus(HttpServletResponse.SC_CREATED);
-            resp.sendRedirect(Route.LOGIN);
+            resp.sendRedirect(RouteConstants.LOGIN);
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             req.setAttribute("errorMessage", MESSAGE_ERROR + e.getMessage());
-            req.getRequestDispatcher(Route.ERROR_JSP).forward(req, resp);
+            req.getRequestDispatcher(Route.REGISTRATION.getJspPath()).forward(req, resp);
         }
     }
 }

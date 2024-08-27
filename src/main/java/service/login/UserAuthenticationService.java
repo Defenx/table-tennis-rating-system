@@ -1,6 +1,8 @@
 package service.login;
 
+import constant.RouteConstants;
 import entity.User;
+import enums.Route;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -16,8 +18,6 @@ import constant.SessionAttributes;
 public class UserAuthenticationService {
     private static final String ERROR_MESSAGE_ATTRIBUTE = "errorMessage";
     private static final String INVALID_CREDENTIALS_MESSAGE = "invalidCredentials";
-    private static final String HOME_PATH =  "/";
-    private static final String LOGIN_PAGE = "/login.jsp";
 
     private final UserService userService;
 
@@ -31,11 +31,11 @@ public class UserAuthenticationService {
         }
         HttpSession session = req.getSession();
         session.setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, user);
-        resp.sendRedirect(req.getContextPath() + HOME_PATH);
+        resp.sendRedirect(req.getContextPath() + RouteConstants.HOME);
     }
 
     public void handleAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp) throws IOException, jakarta.servlet.ServletException {
         req.setAttribute(ERROR_MESSAGE_ATTRIBUTE, INVALID_CREDENTIALS_MESSAGE);
-        req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
+        req.getRequestDispatcher(Route.LOGIN.getJspPath()).forward(req, resp);
     }
 }

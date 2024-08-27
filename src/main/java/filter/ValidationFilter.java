@@ -1,11 +1,11 @@
 package filter;
 
+import enums.Route;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import listener.ContextListener;
 import service.validation.ValidationService;
-import servlet.Route;
 
 import java.io.IOException;
 
@@ -34,8 +34,7 @@ public class ValidationFilter implements Filter {
         if (isValidRequest) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            var requestedEndpoint = httpRequest.getRequestURI();
-            var errorPageJsp = Route.getJspPath(requestedEndpoint);
+            var errorPageJsp = Route.ERROR.getJspPath();
             validatedHttpRequest.getRequestDispatcher(errorPageJsp).forward(validatedHttpRequest, servletResponse);
         }
     }
