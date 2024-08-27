@@ -11,7 +11,8 @@ body {
 .main {
     background-color: rgba(255, 255, 255);
     border-radius: 10px;
-    max-width: 1200px;
+    max-width: 1000px;
+    height: 88%;
     margin: 40px auto;
     padding: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
@@ -53,7 +54,7 @@ button:hover {
 
 .tournament th, .tournament td {
     padding: 10px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #ddd;
 }
 
@@ -75,5 +76,23 @@ button:hover {
 }
 
 .regOrDenied button:hover {
+    opacity: 0.8;
+}
+
+.removeButton {
+    width: 50px;
+    text-align: right;
+    margin: auto;
+}
+
+.removeButton .reg {
+    background-color: #4CAF50; /* Зеленая кнопка */
+}
+
+.removeButton .denied {
+    background-color: #f44336; /* Красная кнопка */
+}
+
+.removeButton button:hover {
     opacity: 0.8;
 }

@@ -44,7 +44,7 @@
                             <td>${participant.user.rating}</td>
                             <c:if test="${userDto.role == 'ADMIN'}">
                                 <td>
-                                    <form class="regOrDenied" action="/participant/delete/${participant.id}" method="post">
+                                    <form class="removeButton" action="/participant/delete/${participant.id}" method="post">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="denied" type="submit">Удалить</button>
                                     </form>
