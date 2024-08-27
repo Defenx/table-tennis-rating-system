@@ -80,3 +80,9 @@ button {
 button:hover {
     background-color: #b20303;
 }
+
+.validation-message {
+    margin: 0.5rem 5px 5px 5px !important;
+    color: red;
+    font-size: 0.8rem;
+}

@@ -38,6 +38,14 @@ public class ValidationRegistry {
                                 new SpecialCharacterValidator(1),
                                 new SpaceSymbolsValidator()
                         )
+                ),
+                Route.LOGIN, Map.of(
+                        "email", List.of(
+                                new EmptinessValidator()
+                        ),
+                        "password", List.of(
+                                new EmptinessValidator()
+                        )
 
                 )
         );
