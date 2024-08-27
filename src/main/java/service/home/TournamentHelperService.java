@@ -3,11 +3,15 @@ package service.home;
 import entity.Tournament;
 import entity.TournamentParticipant;
 import entity.User;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import service.TournamentService;
+import servlet.Route;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,18 +30,20 @@ public class TournamentHelperService {
         return tournamentService.getNewTournament();
     }
 
-    public void setSessionAttributes(HttpServletRequest req, Optional<Tournament> optionalTournament) {
+    public void setSessionAttributes(HttpServletRequest req, HttpServletResponse resp, Optional<Tournament> optionalTournament) throws ServletException, IOException {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute(USER_DTO);
         if (optionalTournament.isPresent()) {
             Tournament tournament = optionalTournament.get();
-            session.setAttribute(IS_CURRENT_USER_REGISTERED_FOR_TOURNAMENT_SESSION_ATTRIBUTE, isAlreadyParticipated(user, tournament));
-            session.setAttribute(TOURNAMENT_SESSION_ATTRIBUTE, tournament);
-            session.setAttribute(USER_RATING_PLACE, tournamentService.getPlaceOfUser(user, tournament.getParticipants()));
-            session.setAttribute(USERS_COUNT, tournamentService.getParticipantsListLength(tournament));
-            session.setAttribute(IS_SOMEONE_REGISTERED_FOR_TOURNAMENT_SESSION_ATTRIBUTE, !tournament.getParticipants().isEmpty());
+            req.setAttribute(IS_CURRENT_USER_REGISTERED_FOR_TOURNAMENT_SESSION_ATTRIBUTE, isAlreadyParticipated(user, tournament));
+            req.setAttribute(TOURNAMENT_SESSION_ATTRIBUTE, tournament);
+            req.setAttribute(USER_RATING_PLACE, tournamentService.getPlaceOfUser(user, tournament.getParticipants()));
+            req.setAttribute(USERS_COUNT, tournamentService.getParticipantsListLength(tournament));
+            req.setAttribute(IS_SOMEONE_REGISTERED_FOR_TOURNAMENT_SESSION_ATTRIBUTE, !tournament.getParticipants().isEmpty());
+            req.getRequestDispatcher(Route.HOME_PAGE_JSP).forward(req, resp);
         } else {
-            session.setAttribute(TOURNAMENT_SESSION_ATTRIBUTE, null);
+            req.setAttribute(TOURNAMENT_SESSION_ATTRIBUTE, null);
+            req.getRequestDispatcher(Route.HOME_PAGE_JSP).forward(req, resp);
         }
     }
 

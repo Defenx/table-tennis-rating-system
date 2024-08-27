@@ -30,15 +30,13 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         var optionalTournament = tournamentHelperService.getNewTournament();
         optionalTournament.ifPresent(tournament -> tournament.getParticipants()
                 .sort(Comparator.comparing(
                         (TournamentParticipant tp) -> tp.getUser().getRating()
                 ).reversed())
         );
-        tournamentHelperService.setSessionAttributes(req, optionalTournament);
-        req.getRequestDispatcher(Route.HOME_PAGE_JSP).forward(req, resp);
+        tournamentHelperService.setSessionAttributes(req,resp, optionalTournament);
     }
 
     @Override
@@ -58,12 +56,12 @@ public class IndexServlet extends HttpServlet {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute(USER_DTO);
         if (optionalTournament.isPresent()) {
-            Optional<TournamentParticipant> first = optionalTournament.get().getParticipants().stream()
+            Optional<TournamentParticipant> tournamentParticipant = optionalTournament.get().getParticipants().stream()
                     .filter(participant -> participant.getUser().getId().equals(user.getId()))
                     .findFirst();
-            if (first.isPresent()) {
-                System.out.println(first.get().getId());
-                tournamentHelperService.removeFromTournament(first.get().getId());
+            if (tournamentParticipant.isPresent()) {
+                System.out.println(tournamentParticipant.get().getId());
+                tournamentHelperService.removeFromTournament(tournamentParticipant.get().getId());
                 resp.sendRedirect(Route.HOME_PAGE);
             }
         }

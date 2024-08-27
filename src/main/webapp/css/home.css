@@ -1,21 +1,29 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     background-image: url('https://bogatyr.club/uploads/posts/2023-03/1679524685_bogatyr-club-p-nastolnii-tennis-oboi-foni-oboi-2.jpg');
     background-size: cover;
     background-repeat: no-repeat;
-    margin: 0;
-    padding: 0;
     font-family: Arial, sans-serif;
     color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .main {
     background-color: rgba(255, 255, 255);
     border-radius: 10px;
-    max-width: 1000px;
-    height: 88%;
-    margin: 40px auto;
+    max-width: 80%;
+    height: 90vh; /* Занимает почти всю высоту экрана */
+    margin: 0;
     padding: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
 }
 
 .welcome h2 {
@@ -39,6 +47,11 @@ button:hover {
     background-color: #45a049;
 }
 
+.tournament {
+    flex: 1;
+    overflow-y: auto; /* Добавляет вертикальную прокрутку */
+}
+
 .tournament h3 {
     margin-top: 0;
     text-align: center;
@@ -50,6 +63,7 @@ button:hover {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
+    padding: 20px;
 }
 
 .tournament th, .tournament td {

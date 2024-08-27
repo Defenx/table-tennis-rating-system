@@ -1,4 +1,4 @@
-package servlet;
+package enums;
 
 public enum Attributes {
 
@@ -14,4 +14,6 @@ public enum Attributes {
     public String toString(){
         return this.name;
     }
+
+    //TODO Нужен ли этот Enum?
 }
