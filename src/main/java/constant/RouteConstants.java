@@ -1,7 +1,7 @@
 package constant;
 
 
-public class RouteConstants {
+public final class RouteConstants {
     public static final String LOGIN = "/login";
     public static final String REGISTRATION = "/registration";
     public static final String ERROR = "/error";

@@ -9,7 +9,7 @@ import service.validation.ValidationService;
 
 import java.io.IOException;
 
-@WebFilter("/*")
+
 public class ValidationFilter implements Filter {
     private ValidationService validationService;
 
