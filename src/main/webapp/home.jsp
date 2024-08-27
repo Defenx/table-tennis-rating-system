@@ -11,8 +11,9 @@
 </head>
 <body>
     <h2>Main page</h2>
-    <button id="logoutButton" ><span>Logout</span></button>
+    <form id="logoutForm" action="/logout" method="post">
+        <button type="submit" id="logoutButton">Logout</button>
+    </form>
 
-    <script type="module" src="./js/logout.js"></script>
 </body>
 </html>

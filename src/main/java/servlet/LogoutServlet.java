@@ -14,14 +14,10 @@ import java.io.IOException;
 @WebServlet(Route.LOGOUT)
 public class LogoutServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getSession().invalidate();
-        resp.sendRedirect(req.getContextPath() + Route.LOGIN);
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
+        req.getSession().invalidate();
+        req.getRequestDispatcher(Route.LOGIN).forward(req, resp);
     }
 }
