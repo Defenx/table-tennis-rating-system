@@ -1,5 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,9 +10,9 @@
 <h2>Рейтинг пользователей</h2>
         <c:forEach var="user" items="${ratingUserList}" >
             <tr>
-                <p><c:out value="${user.value.firstname}" /></p>
-                <p><c:out value="${user.value.surname}" /></p>
-                <p><c:out value="${user.value.rating}" /></p>
+                <p><c:out value="${user.firstname}" /></p>
+                <p><c:out value="${user.surname}" /></p>
+                <p><c:out value="${user.rating}" /></p>
             </tr>
         </c:forEach>
 </body>
