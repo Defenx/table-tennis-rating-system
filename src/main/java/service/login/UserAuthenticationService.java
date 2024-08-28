@@ -1,7 +1,11 @@
 package service.login;
 
 
+import constant.RouteConstants;
+import constant.SessionAttributes;
 import entity.User;
+import enums.Route;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -11,35 +15,54 @@ import service.UserService;
 import java.io.IOException;
 import java.util.Optional;
 
-
+/**
+ * The type User authentication service.
+ */
 @RequiredArgsConstructor
 public class UserAuthenticationService {
     private static final String ERROR_MESSAGE_ATTRIBUTE = "errorMessage";
     private static final String INVALID_CREDENTIALS_MESSAGE = "invalidCredentials";
-    private static final String HOME_PATH =  "/";
-    private static final String LOGIN_PAGE = "/login.jsp";
-    private static final String USER_SESSION_ATTRIBUTE = "user";
 
     private final UserService userService;
 
-
+    /**
+     * Authenticate optional.
+     *
+     * @param username the username
+     * @param password the password
+     * @return the optional
+     */
     public Optional<User> authenticate(String username, String password) {
         return userService.getExistedUser(username, password);
     }
 
-
+    /**
+     * Sets session attributes.
+     *
+     * @param req  the req
+     * @param resp the resp
+     * @param user the user
+     * @throws IOException the io exception
+     */
     public void setSessionAttributes(HttpServletRequest req, HttpServletResponse resp, User user) throws IOException {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
         HttpSession session = req.getSession();
-        session.setAttribute(USER_SESSION_ATTRIBUTE, user);
-        resp.sendRedirect(req.getContextPath() + HOME_PATH);
+        session.setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, user);
+        resp.sendRedirect(req.getContextPath() + RouteConstants.HOME);
     }
 
-
+    /**
+     * Handle authentication failure.
+     *
+     * @param req  the req
+     * @param resp the resp
+     * @throws IOException      the io exception
+     * @throws ServletException the servlet exception
+     */
     public void handleAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp) throws IOException, jakarta.servlet.ServletException {
         req.setAttribute(ERROR_MESSAGE_ATTRIBUTE, INVALID_CREDENTIALS_MESSAGE);
-        req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
+        req.getRequestDispatcher(Route.LOGIN.getJspPath()).forward(req, resp);
     }
 }

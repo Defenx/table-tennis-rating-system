@@ -10,4 +10,5 @@ public record UserDto(
         String lastName,
         Integer rating,
         Role role
-) {}
+) {
+}

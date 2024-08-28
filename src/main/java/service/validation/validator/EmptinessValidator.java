@@ -21,4 +21,3 @@ public class EmptinessValidator implements Validator {
         return Collections.emptyList();
     }
 }
-

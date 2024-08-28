@@ -2,7 +2,7 @@ package service.validation;
 
 import dao.UserDao;
 import service.validation.validator.*;
-import servlet.Route;
+import constant.RouteConstants;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +13,7 @@ public class ValidationRegistry {
 
     public ValidationRegistry(UserDao userDao) {
         routesToValidationMap = Map.of(
-                Route.REGISTRATION, Map.of(
+                RouteConstants.REGISTRATION, Map.of(
                         "firstname", List.of(
                                 new EmptinessValidator(),
                                 new LanguageValidator(),

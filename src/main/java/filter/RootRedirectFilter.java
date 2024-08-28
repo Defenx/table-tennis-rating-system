@@ -1,22 +1,24 @@
 package filter;
 
-import jakarta.servlet.*;
+import constant.RouteConstants;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import servlet.Route;
 
 import java.io.IOException;
 
-public class RootRedirectFilter implements Filter {
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
+/**
+ * The type Root redirect filter.
+ */
+public class RootRedirectFilter extends BaseFilter {
 
-        if (httpRequest.getRequestURI().equals("/")) {
-            httpResponse.sendRedirect(Route.HOME_PAGE);
-        } else {
-            chain.doFilter(httpRequest, httpResponse);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        if (request.getRequestURI().equals(RouteConstants.ROOT)) {
+            response.sendRedirect(RouteConstants.HOME);
+            return;
         }
+        chain.doFilter(request, response);
     }
 }
