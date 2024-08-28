@@ -40,7 +40,7 @@ public class ValidationRegistry {
                                 new SpaceSymbolsValidator()
                         )
                 ),
-                Route.LOGIN, Map.of(
+                RouteConstants.LOGIN, Map.of(
                         "email", List.of(
                                 new EmptinessValidator()
                         ),
