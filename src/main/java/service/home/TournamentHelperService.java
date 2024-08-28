@@ -23,7 +23,7 @@ public class TournamentHelperService {
     public static final String TOURNAMENT_SESSION_ATTRIBUTE = "tournament";
     private static final String USER_RATING_PLACE = "userRatingPlace";
     private static final String USERS_COUNT = "usersCount";
-    private static final String USER_DTO = "userDto";
+    private static final String USER = "user";
 
     private final TournamentService tournamentService;
 
@@ -33,7 +33,7 @@ public class TournamentHelperService {
 
     public void setSessionAttributes(HttpServletRequest req, HttpServletResponse resp, Tournament tournament) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        User user = (User) session.getAttribute(USER_DTO);
+        User user = (User) session.getAttribute(USER);
         if (tournament != null) {
             tournament.getParticipants()
                     .sort(Comparator.comparing((TournamentParticipant tp) -> tp.getUser().getRating()).reversed());

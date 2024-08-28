@@ -10,27 +10,40 @@
     <div class="welcome">
         <h2>Добро пожаловать!</h2>
         <h3>
-        <c:out value="${userDto.surname}"/>
-            <c:out value="${userDto.firstname}, ваш рейтинг - ${userDto.rating}!"/>
+            <c:out value="${user.surname}"/>
+            <c:out value="${user.firstname}, ваш рейтинг - ${user.rating}!"/>
 
             <c:if test="${tournament!=null}">
-                <c:out value="Вы занимаете ${userRatingPlace}-е место из ${usersCount}"/>
+                <c:if test="${isCurrentUserRegisteredForTournament == true}">
+                    <c:out value="Вы занимаете ${userRatingPlace}-е место из ${usersCount}"/>
+                </c:if>
             </c:if>
         </h3>
     </div>
     <div class="mainButtons">
-        <div class="buttonContainer">
-            <button>Таблица Рейтинга</button>
-            <button>Выход</button>
-            <c:if test="${userDto.role == 'ADMIN'}">
-                <button class="adminButton">Создать турнир</button>
+        <div class="flex-row">
+            <form action="" method="post">
+                <button class="leftButton">Таблица Рейтинга</button>
+            </form>
+            <form action="/logout" method="post">
+                <button class="rightButton" type="submit">Logout</button>
+            </form>
+        </div>
+        <div>
+            <c:if test="${tournament!=null}">
+                <h3>Запись на турнир ${tournament.date}</h3><br>
             </c:if>
         </div>
-    </div>
-    <div>
-        <c:if test="${tournament!=null}">
-            <h3>Запись на турнир ${tournament.date}</h3><br>
-        </c:if>
+        <div class="flex-row">
+            <c:if test="${user.role == 'ADMIN'}">
+                <form action="" method="post">
+                    <button class="leftButton">Создать турнир</button>
+                </form>
+                <form action="" method="post">
+                    <button class="rightButton">Удалить турнир</button>
+                </form>
+            </c:if>
+        </div>
     </div>
     <div class="tournament">
         <c:if test="${tournament!=null}">
@@ -45,7 +58,7 @@
                         <th>Фамилия</th>
                         <th>Имя</th>
                         <th>Рейтинг</th>
-                        <c:if test="${userDto.role == 'ADMIN'}">
+                        <c:if test="${user.role == 'ADMIN'}">
                             <th></th>
                         </c:if>
                     </tr>
@@ -54,27 +67,23 @@
                             <td>${participant.user.surname}</td>
                             <td>${participant.user.firstname}</td>
                             <td>${participant.user.rating}</td>
-                            <c:if test="${userDto.role == 'ADMIN'}">
+                            <c:if test="${user.role == 'ADMIN'}">
                                 <td>
                                     <form class="removeButton" action="/participant/delete/${participant.id}"
                                           method="post">
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button class="denied" type="submit">Удалить</button>
+                                        <button class="deleteButton" type="submit">Удалить</button>
                                     </form>
                                 </td>
                             </c:if>
                         </tr>
                     </c:forEach>
-
                 </table>
-
             </c:if>
-
         </c:if>
         <c:if test="${tournament==null}">
             <h1>Турниров в данный момент нет.</h1>
         </c:if>
-
     </div>
     <div class="regOrDenied">
         <c:if test="${isCurrentUserRegisteredForTournament == false}">

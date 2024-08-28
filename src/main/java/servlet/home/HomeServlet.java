@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @WebServlet(Route.HOME)
 public class HomeServlet extends BaseHomeServlet {
-    private static final String USER_DTO = "userDto";
+    private static final String USER = "user";
 
 
     @Override
@@ -26,7 +26,7 @@ public class HomeServlet extends BaseHomeServlet {
         var optionalTournament = tournamentHelperService.getNewTournament();
         if (optionalTournament.isPresent()) {
             HttpSession session = req.getSession();
-            User user = (User) session.getAttribute(USER_DTO);
+            User user = (User) session.getAttribute(USER);
             tournamentHelperService.participate(user, optionalTournament.get());
             resp.sendRedirect(Route.HOME);
         }
@@ -37,7 +37,7 @@ public class HomeServlet extends BaseHomeServlet {
         var optionalTournament = tournamentHelperService.getNewTournament();
         if (optionalTournament.isPresent()) {
             HttpSession session = req.getSession();
-            User user = (User) session.getAttribute(USER_DTO);
+            User user = (User) session.getAttribute(USER);
             tournamentHelperService.withdrawFromTheTournament(user, optionalTournament.get());
             resp.sendRedirect(Route.HOME);
         }

@@ -17,6 +17,8 @@ public class Route {
 
     public static final String DELETE_BY_PARTICIPANT_ID = "/participant/delete/*";
 
+    public static final String LOGOUT = "/logout";
+
     public static String getJspPath(String endpoint) {
         return endpoint + JSP_EXTENSION;
     }

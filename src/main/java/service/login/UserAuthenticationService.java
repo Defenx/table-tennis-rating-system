@@ -17,7 +17,7 @@ import java.util.Optional;
 public class UserAuthenticationService {
     private static final String ERROR_MESSAGE_ATTRIBUTE = "errorMessage";
     private static final String INVALID_CREDENTIALS_MESSAGE = "invalidCredentials";
-    private static final String USER_DTO_SESSION_ATTRIBUTE = "userDto";
+    private static final String USER_SESSION_ATTRIBUTE = "user";
 
     private final UserService userService;
 
@@ -26,14 +26,16 @@ public class UserAuthenticationService {
         return userService.getExistedUser(username, password);
     }
 
+
     public void setSessionAttributes(HttpServletRequest req, HttpServletResponse resp, User user) throws IOException {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
         HttpSession session = req.getSession();
-        session.setAttribute(USER_DTO_SESSION_ATTRIBUTE, user);
+        session.setAttribute(USER_SESSION_ATTRIBUTE, user);
         resp.sendRedirect(Route.HOME);
     }
+
 
     public void handleAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp) throws IOException, jakarta.servlet.ServletException {
         req.setAttribute(ERROR_MESSAGE_ATTRIBUTE, INVALID_CREDENTIALS_MESSAGE);

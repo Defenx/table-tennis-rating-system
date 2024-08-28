@@ -52,11 +52,11 @@ public class ContextListener implements ServletContextListener {
         var tournamentDao = new TournamentDao(sessionFactory);
         var bCryptPasswordEncoder = new BCryptPasswordEncoder();
         var userService = new UserService(userDao, bCryptPasswordEncoder);
-        var tournamentService = new TournamentService(tournamentDao);
         var userAuthenticationService = new UserAuthenticationService(userService);
         var credentialsExtractor = new BasicCredentialsExtractorService();
-        var validationFactory = new ValidationRegistry(userDao);
-        var validationService = new ValidationService(validationFactory);
+        var validationRegistry = new ValidationRegistry(userDao);
+        var validationService = new ValidationService(validationRegistry);
+        var tournamentService = new TournamentService(tournamentDao);
         var tournamentHelperService = new TournamentHelperService(tournamentService);
 
         Map<String, Object> attributes = Map.ofEntries(

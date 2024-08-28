@@ -41,47 +41,66 @@ h3 {
     flex-direction: column;
 }
 
-.mainButtons h2 {
-    margin: 0 0 20px;
-    font-size: 22px;
-    text-align: center;
+.mainButtons {
+    margin-top: 20px;
 }
 
-.mainButtons div {
+.buttonContainer {
     display: flex;
-    justify-content: flex-start; /* Выравнивание всех кнопок влево */
-    align-items: center;
+    flex-direction: column;
+    gap: 5px; /* Уменьшает расстояние между строками кнопок */
 }
 
-.mainButtons div button {
-    margin-right: 10px; /* Уменьшенное расстояние между левыми кнопками */
+.flex-row {
+    display: flex;
+    justify-content: space-between; /* Распределяет элементы по сторонам */
+    align-items: center; /* Выравнивает элементы по вертикали */
 }
 
-.adminButton {
-    margin-left: auto; /* Отправляет adminButton вправо */
-}
-
-
-.adminButton {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    margin: 10px 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.adminButton:hover {
-    background-color: #45a049;
+.leftButton, .rightButton {
+    flex: 1; /* Занимают равное пространство */
 }
 
 button {
+    padding: 5px 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.leftButton button {
+    background-color: #4CAF50; /* Зеленый цвет для кнопки слева */
+    color: white;
+}
+
+.rightButton button {
+    background-color: #f44336; /* Красный цвет для кнопки справа */
+    color: white;
+}
+
+.adminButton {
+    background-color: #007bff; /* Синий цвет для кнопок администратора */
+    color: white;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.deleteButton{
+    width: auto;
+    height: auto;
+    background-color: #f44336;
+}
+
+button {
+    width: 150px;
     background-color: #4CAF50;
     color: white;
-    padding: 10px 20px;
-    margin: 10px 5px;
+    padding: 5px 5px;
+    margin: 5px 5px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -105,7 +124,7 @@ button:hover {
 }
 
 .tournament table {
-    width: 100%;
+    width: 99%;
     border-collapse: collapse;
     margin: 20px 0;
     padding: 20px;
