@@ -1,7 +1,11 @@
 package service.login;
 
 
+import constant.RouteConstants;
+import constant.SessionAttributes;
 import entity.User;
+import enums.Route;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -10,8 +14,6 @@ import service.UserService;
 
 import java.io.IOException;
 import java.util.Optional;
-
-import constant.SessionAttributes;
 
 /**
  * The type User authentication service.

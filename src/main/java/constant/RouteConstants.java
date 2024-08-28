@@ -29,4 +29,5 @@ public final class RouteConstants {
      * The constant ROOT.
      */
     public static final String ROOT = "/";
+    public static final String LOGOUT = "/logout" ;
 }

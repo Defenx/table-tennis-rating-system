@@ -1,5 +1,6 @@
 package servlet;
 
+import constant.RouteConstants;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,13 +12,13 @@ import java.io.IOException;
 /**
  * The type Logout servlet.
  */
-@WebServlet(Route.LOGOUT)
+@WebServlet(RouteConstants.LOGOUT)
 public class LogoutServlet extends HttpServlet {
 
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
-        req.getRequestDispatcher(Route.LOGIN).forward(req, resp);
+        req.getRequestDispatcher(RouteConstants.LOGIN).forward(req, resp);
     }
 }
