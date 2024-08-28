@@ -16,6 +16,7 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import service.TournamentDataExtractor;
 import service.TournamentService;
 import service.UserService;
 import service.login.BasicCredentialsExtractorService;
@@ -31,6 +32,7 @@ import java.util.Map;
 public class ContextListener implements ServletContextListener {
     public static final String VALIDATION_SERVICE = "validationService";
     public static final String CREDENTIALS_EXTRACTOR = "credentialsExtractor";
+    public static final String TOURNAMENT_DATA_EXTRACTOR = "tournamentDataExtractor";
     public static final String USER_AUTH_SERVICE = "userAuthService";
     public static final String USER_SERVICE = "userService";
     public static final String TOURNAMENT_SERVICE = "tournamentService";
@@ -55,6 +57,7 @@ public class ContextListener implements ServletContextListener {
         var validationFactory = new ValidationRegistry(userDao);
         var validationService = new ValidationService(validationFactory);
         var tournamentService = new TournamentService(tournamentDao);
+        var tournamentDataExtractor = new TournamentDataExtractor();
 
         Map<String, Object> attributes = Map.ofEntries(
                 Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),
@@ -64,7 +67,8 @@ public class ContextListener implements ServletContextListener {
                 Map.entry(TOURNAMENT_DAO, tournamentDao),
                 Map.entry(USER_SERVICE, userService),
                 Map.entry(VALIDATION_SERVICE, validationService),
-                Map.entry(TOURNAMENT_SERVICE, tournamentService)
+                Map.entry(TOURNAMENT_SERVICE, tournamentService),
+                Map.entry(TOURNAMENT_DATA_EXTRACTOR, tournamentDataExtractor)
         );
 
         attributes.forEach(servletContext::setAttribute);
