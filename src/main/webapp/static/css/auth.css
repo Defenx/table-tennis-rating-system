@@ -23,7 +23,7 @@ body {
     box-shadow: 16px 14px 9px 15px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     min-width: 350px;
-    width: content-box;
+    width: 30%;
 }
 
 .container-label-input {
