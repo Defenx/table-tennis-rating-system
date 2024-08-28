@@ -64,10 +64,13 @@ public class TournamentHelperService {
     }
 
     private boolean isAlreadyParticipated(User user, Tournament tournament) {
-        TournamentParticipant participant = tournament.getParticipants().stream()
-                .filter(p -> p.getUser().getId().equals(user.getId()))
-                .findFirst().orElse(null);
-        return participant != null;
+        if (user != null && tournament != null) {
+            TournamentParticipant participant = tournament.getParticipants().stream()
+                    .filter(p -> p.getUser().getId().equals(user.getId()))
+                    .findFirst().orElse(null);
+            return participant != null;
+        }
+        return false;
     }
 
     public void withdrawFromTheTournament(User user, Tournament tournament) {

@@ -3,32 +3,35 @@
 <html>
 <head>
     <title>Турнир</title>
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="static/css/home.css">
 </head>
 <body>
 <div class="main">
-    <div class="welcome">
-        <h2>Добро пожаловать!</h2>
-        <h3>
-            <c:out value="${user.surname}"/>
-            <c:out value="${user.firstname}, ваш рейтинг - ${user.rating}!"/>
 
-            <c:if test="${tournament!=null}">
-                <c:if test="${isCurrentUserRegisteredForTournament == true}">
-                    <c:out value="Вы занимаете ${userRatingPlace}-е место из ${usersCount}"/>
-                </c:if>
-            </c:if>
-        </h3>
-    </div>
-    <div class="mainButtons">
+    <div class="container-buttons">
         <div class="flex-row">
             <form action="" method="post">
-                <button class="leftButton">Таблица Рейтинга</button>
+                <button class="button">Таблица Рейтинга</button>
             </form>
             <form action="/logout" method="post">
-                <button class="rightButton" type="submit">Logout</button>
+                <button class="button" type="submit" onclick="return checkingIntentions()">Выйти</button>
             </form>
         </div>
+
+        <div class="welcome">
+            <h2>Добро пожаловать!</h2>
+            <h3>
+                <c:out value="${user.surname}"/>
+                <c:out value="${user.firstname}, ваш рейтинг - ${user.rating}!"/>
+
+                <c:if test="${tournament!=null}">
+                    <c:if test="${isCurrentUserRegisteredForTournament == true}">
+                        <c:out value="Вы занимаете ${userRatingPlace}-е место из ${usersCount}"/>
+                    </c:if>
+                </c:if>
+            </h3>
+        </div>
+        <br><br>
         <div>
             <c:if test="${tournament!=null}">
                 <h3>Запись на турнир ${tournament.date}</h3><br>
@@ -38,21 +41,22 @@
             <c:if test="${user.role == 'ADMIN'}">
                 <form action="" method="post">
                     <c:if test="${tournament==null}">
-                        <button class="leftButton">Создать турнир</button>
+                        <button class="button">Создать турнир</button>
                     </c:if>
                 </form>
                 <form action="/tournament/delete" method="post">
                     <input type="hidden" name="_method" value="DELETE">
-                    <button class="rightButton">Удалить турнир</button>
+                    <button class="buttonRed" onclick="return checkingIntentions()">Удалить турнир</button>
                 </form>
             </c:if>
         </div>
     </div>
+
     <div class="tournament">
         <c:if test="${tournament!=null}">
             <c:if test="${!isSomeoneRegisteredForTournament}">
                 <form action="" method="post">
-                    <button type="submit">Зарегистрируйся первым</button>
+                    <button class="button" type="submit">Зарегистрируйся первым</button>
                 </form>
             </c:if>
             <c:if test="${isSomeoneRegisteredForTournament}">
@@ -75,7 +79,7 @@
                                     <form class="removeButton" action="/participant/delete/${participant.id}"
                                           method="post">
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button class="deleteButton" type="submit">Удалить</button>
+                                        <button class="buttonRed" type="submit" onclick="return checkingIntentions()">Удалить</button>
                                     </form>
                                 </td>
                             </c:if>
@@ -89,18 +93,30 @@
         </c:if>
     </div>
     <div class="regOrDenied">
-        <c:if test="${isCurrentUserRegisteredForTournament == false}">
-            <form action="/home" method="post">
-                <button class="reg" type="submit">Записаться</button>
-            </form>
+        <c:if test="${isSomeoneRegisteredForTournament == true}">
+            <c:if test="${isCurrentUserRegisteredForTournament == false}">
+                <form action="/home" method="post">
+                    <button class="button" type="submit">Записаться</button>
+                </form>
+            </c:if>
         </c:if>
         <c:if test="${isCurrentUserRegisteredForTournament == true}">
             <form action="/home" method="post">
-                <input type="hidden" name="_method" value="DELETE">
-                <button class="denied" type="submit">Отменить запись</button>
+                <input type="hidden" name="_method" value="DELETE" >
+                <button class="buttonRed" type="submit" onclick="return checkingIntentions()">Отменить запись</button>
             </form>
         </c:if>
     </div>
 </div>
 </body>
+<script>
+    function checkingIntentions() {
+        var isConfirmed = confirm('Are you sure?');
+
+        if (isConfirmed) {
+            window.location.href = '/login';
+        }
+        return isConfirmed;
+    }
+</script>
 </html>

@@ -4,14 +4,15 @@ html, body {
 }
 
 body {
-    background-image: url('https://bogatyr.club/uploads/posts/2023-03/1679524685_bogatyr-club-p-nastolnii-tennis-oboi-foni-oboi-2.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    font-family: Arial, sans-serif;
-    color: #333;
+    font-family: "Times New Roman", serif;
+    background-image: url("../table-tennis.jpg");
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .welcome {
@@ -41,74 +42,68 @@ h3 {
     flex-direction: column;
 }
 
-.mainButtons {
-    margin-top: 20px;
+
+button {
+    width: content-box;
+    height: content-box;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+    background: linear-gradient(0deg, rgba(6,14,131,1) 0%, rgba(12,25,180,1) 100%);
+    border: none;
 }
 
-.buttonContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 5px; /* Уменьшает расстояние между строками кнопок */
+button:hover {
+    background: rgb(0,3,255);
+    background: linear-gradient(0deg, rgba(0,3,255,1) 0%, rgba(2,126,251,1) 100%);
+}
+
+.buttonRed {
+    width: content-box;
+    height: content-box;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+    background: linear-gradient(0deg, rgb(131, 6, 6) 0%, rgb(180, 12, 12) 100%);
+    border: none;
+}
+
+.buttonRed:hover {
+    background: rgb(255, 0, 0);
+    background: linear-gradient(0deg, rgb(255, 0, 38) 0%, rgb(251, 2, 2) 100%);
+}
+
+.container-buttons{
+    display: block;
+    justify-content: center;
 }
 
 .flex-row {
     display: flex;
     justify-content: space-between; /* Распределяет элементы по сторонам */
     align-items: center; /* Выравнивает элементы по вертикали */
-}
-
-.leftButton, .rightButton {
-    flex: 1; /* Занимают равное пространство */
-}
-
-button {
-    padding: 5px 5px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin: 5px;
-}
-
-.leftButton button {
-    background-color: #4CAF50; /* Зеленый цвет для кнопки слева */
-    color: white;
-}
-
-.rightButton button {
-    background-color: #f44336; /* Красный цвет для кнопки справа */
-    color: white;
-}
-
-.adminButton {
-    background-color: #007bff; /* Синий цвет для кнопок администратора */
-    color: white;
-}
-
-button:hover {
-    opacity: 0.8;
-}
-
-.deleteButton{
-    width: auto;
-    height: auto;
-    background-color: #f44336;
-}
-
-button {
-    width: 150px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 5px 5px;
-    margin: 5px 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #45a049;
 }
 
 .tournament {
@@ -132,45 +127,11 @@ button:hover {
 
 .tournament th, .tournament td {
     padding: 10px;
+
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #ddd;
 }
 
 .tournament th {
     background-color: #f2f2f2;
-}
-
-.regOrDenied {
-    text-align: left;
-    margin: 20px 0;
-}
-
-.regOrDenied .reg {
-    background-color: #4CAF50; /* Зеленая кнопка */
-}
-
-.regOrDenied .denied {
-    background-color: #f44336; /* Красная кнопка */
-}
-
-.regOrDenied button:hover {
-    opacity: 0.8;
-}
-
-.removeButton {
-    width: 50px;
-    text-align: right;
-    margin: auto;
-}
-
-.removeButton .reg {
-    background-color: #4CAF50; /* Зеленая кнопка */
-}
-
-.removeButton .denied {
-    background-color: #f44336; /* Красная кнопка */
-}
-
-.removeButton button:hover {
-    opacity: 0.8;
 }

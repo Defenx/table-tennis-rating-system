@@ -27,9 +27,11 @@ public class TournamentService {
     }
 
     public int getPlaceOfUser(User user, List<TournamentParticipant> participants) {
-        for (int i = 0; i < participants.size(); i++) {
-            if (participants.get(i).getUser().getId().equals(user.getId())) {
-                return i + 1;
+        if (user != null && participants != null) {
+            for (int i = 0; i < participants.size(); i++) {
+                if (participants.get(i).getUser().getId().equals(user.getId())) {
+                    return i + 1;
+                }
             }
         }
         return 0;
