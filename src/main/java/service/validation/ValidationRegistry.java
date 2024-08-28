@@ -15,20 +15,30 @@ public class ValidationRegistry {
         routesToValidationMap = Map.of(
                 Route.REGISTRATION, Map.of(
                         "firstname", List.of(
-                                new EmptinessValidator()),
+                                new EmptinessValidator(),
+                                new LanguageValidator(),
+                                new CapitalLetterValidator()
+                        ),
 
                         "surname", List.of(
-                                new EmptinessValidator()),
+                                new EmptinessValidator(),
+                                new LanguageValidator(),
+                                new CapitalLetterValidator()
+                        ),
 
                         "email", List.of(
                                 new EmptinessValidator(),
                                 new EmailPatternValidator(),
-                                new EmailRepeatValidator(userDao)),
+                                new EmailRepeatValidator(userDao)
+                        ),
 
                         "password", List.of(
                                 new EmptinessValidator(),
-                                new LengthValidator(8),
-                                new SpecialCharacterValidator(2))
+                                new MinLengthValidator(5),
+                                new MaxLengthValidator(16),
+                                new SpecialCharacterValidator(1),
+                                new SpaceSymbolsValidator()
+                        )
                 ),
                 Route.LOGIN, Map.of(
                         "email", List.of(
@@ -37,6 +47,7 @@ public class ValidationRegistry {
                         "password", List.of(
                                 new EmptinessValidator()
                         )
+
                 )
         );
     }
