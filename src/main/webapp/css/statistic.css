@@ -1,5 +1,100 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("https://bogatyr.club/uploads/posts/2023-03/1679524685_bogatyr-club-p-nastolnii-tennis-oboi-foni-oboi-2.jpg");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.section {
+  max-height: 600px;
+  padding: 1rem;
+  overflow-y: auto;
+  direction: ltr;
+  scrollbar-color: #d4aa70 #e4e4e4;
+  scrollbar-width: thin;
+  background-color: #f2f2f2;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+
+}
+
+.section::-webkit-scrollbar {
+  width: 20px;
+}
+
+.section::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 100px;
+}
+
+.section::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-image: linear-gradient(180deg, #d0368a 0%, #708ad4 99%);
+  box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    font-size: 1.2rem;
+    color: #000000;
+}
+
 table {
+    display: inline-block;
     width: 50%;
     border-collapse: collapse;
     margin: 20px 0;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #ffffff;
+}
+th {
+    background-color: #ffffff;
+}
+
+.super-section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.buttons{
+    position: static;
+
+    padding: 10px;
+    width: 100%;
+}
+
+button {
+    position: center;
+    left: 1%;
+    width: 50%;
+    padding: 10px;
+    background-color: #e13131;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }

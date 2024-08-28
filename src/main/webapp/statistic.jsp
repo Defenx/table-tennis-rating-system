@@ -1,19 +1,49 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"  %>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Рейтинг пользователей</title>
+    <link rel="stylesheet" href="css/statistic.css">
 </head>
 <body>
-<h2>Рейтинг пользователей</h2>
-        <c:forEach var="user" items="${ratingUserList}" >
-            <tr>
-                <p><c:out value="${user.firstname}" /></p>
-                <p><c:out value="${user.surname}" /></p>
-                <p><c:out value="${user.rating}" /></p>
-            </tr>
-        </c:forEach>
+    <div class="super-section">
+        <div class="section">
+            <h2>Рейтинг пользователей</h2>
+            <c:if test="${not empty ratingUserList}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Номер</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Рейтинг</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="user" items="${ratingUserList}" varStatus="status">
+                        <tr>
+                            <td>${status.index + 1}</td>
+                            <td>${user.surname}</td>
+                            <td>${user.firstname}</td>
+                            <td>${user.rating}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            </c:if>
+                <c:if test="${empty ratingUserList}">
+                <p>Нет данных для отображения.</p>
+            </c:if>
+        </div>
+        <div class="buttons">
+            <form action="/" method="get">
+                <div class ="buttons">
+                    <button type="submit">На главную</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
