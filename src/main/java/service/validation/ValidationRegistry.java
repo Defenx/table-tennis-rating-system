@@ -2,7 +2,7 @@ package service.validation;
 
 import dao.UserDao;
 import service.validation.validator.*;
-import servlet.Route;
+import constant.RouteConstants;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,22 +13,41 @@ public class ValidationRegistry {
 
     public ValidationRegistry(UserDao userDao) {
         routesToValidationMap = Map.of(
-                Route.REGISTRATION, Map.of(
+                RouteConstants.REGISTRATION, Map.of(
                         "firstname", List.of(
-                                new EmptinessValidator()),
+                                new EmptinessValidator(),
+                                new LanguageValidator(),
+                                new CapitalLetterValidator()
+                        ),
 
                         "surname", List.of(
-                                new EmptinessValidator()),
+                                new EmptinessValidator(),
+                                new LanguageValidator(),
+                                new CapitalLetterValidator()
+                        ),
 
                         "email", List.of(
                                 new EmptinessValidator(),
                                 new EmailPatternValidator(),
-                                new EmailRepeatValidator(userDao)),
+                                new EmailRepeatValidator(userDao)
+                        ),
 
                         "password", List.of(
                                 new EmptinessValidator(),
-                                new LengthValidator(8),
-                                new SpecialCharacterValidator(2))
+                                new MinLengthValidator(5),
+                                new MaxLengthValidator(16),
+                                new SpecialCharacterValidator(1),
+                                new SpaceSymbolsValidator()
+                        )
+                ),
+                RouteConstants.LOGIN, Map.of(
+                        "email", List.of(
+                                new EmptinessValidator()
+                        ),
+                        "password", List.of(
+                                new EmptinessValidator()
+                        )
+
                 )
         );
     }

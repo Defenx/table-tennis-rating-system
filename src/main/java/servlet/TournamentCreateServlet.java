@@ -1,6 +1,8 @@
 package servlet;
 
+import constant.RouteConstants;
 import enums.ExtensionName;
+import enums.Route;
 import enums.TournamentType;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -14,7 +16,7 @@ import service.tournament.create.TournamentCreateService;
 
 import java.io.IOException;
 
-@WebServlet(Route.TOURNAMENT_CREATE)
+@WebServlet(RouteConstants.ADMIN_TOURNAMENT_CREATE)
 public class TournamentCreateServlet extends HttpServlet {
     private TournamentCreateService tournamentCreateService;
     private TournamentCreateExtractorService tournamentCreateExtractorService;
@@ -32,13 +34,13 @@ public class TournamentCreateServlet extends HttpServlet {
         req.setAttribute("defaultTournamentType", TournamentType.SINGLE_PLAYER);
         req.setAttribute("tournamentTypes", TournamentType.values());
         req.setAttribute("extensions", ExtensionName.values());
-        req.getRequestDispatcher(Route.TOURNAMENT_CREATE_JSP).forward(req, resp);
+        req.getRequestDispatcher(Route.ADMIN_TOURNAMENT_CREATE.getJspPath()).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var extractTournamentDto = tournamentCreateExtractorService.extract(req);
         tournamentCreateService.addTournament(extractTournamentDto);
-        resp.sendRedirect(Route.TOURNAMENT_CREATE);
+        resp.sendRedirect(Route.ADMIN_TOURNAMENT_CREATE.getJspPath());
     }
 }

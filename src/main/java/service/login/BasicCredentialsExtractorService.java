@@ -4,6 +4,9 @@ import dto.Credentials;
 import jakarta.servlet.http.HttpServletRequest;
 
 
+/**
+ * The type Basic credentials extractor service.
+ */
 public class BasicCredentialsExtractorService implements CredentialsExtractor {
 
     @Override

@@ -3,18 +3,19 @@ package service.validation.validator;
 import java.util.Collections;
 import java.util.List;
 
-public class EmptinessValidator implements Validator {
+public class SpaceSymbolsValidator implements Validator {
+
     private final List<String> errorMessages;
 
-    public EmptinessValidator() {
+    public SpaceSymbolsValidator() {
         this.errorMessages = List.of(
-                "The field can not be empty"
+                "Поле не должно содержать пробельных символов"
         );
     }
 
     @Override
     public List<String> validate(String value) {
-        if (value == null || value.isEmpty()) {
+        if (value == null || value.contains(" ")) {
             return errorMessages;
         }
 

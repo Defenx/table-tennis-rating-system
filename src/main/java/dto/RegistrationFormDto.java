@@ -8,4 +8,5 @@ public record RegistrationFormDto(
         String password,
         String firstname,
         String surname
-) {}
+) {
+}

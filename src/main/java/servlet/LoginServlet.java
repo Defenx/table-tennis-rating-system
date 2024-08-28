@@ -1,7 +1,9 @@
 package servlet;
 
+import constant.RouteConstants;
 import dto.Credentials;
 import entity.User;
+import enums.Route;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +17,7 @@ import service.login.UserAuthenticationService;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(Route.LOGIN)
+@WebServlet(RouteConstants.LOGIN)
 public class LoginServlet extends HttpServlet {
     private UserAuthenticationService userAuthenticationService;
     private CredentialsExtractor credentialsExtractor;
@@ -31,22 +33,13 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(Route.LOGIN_JSP).forward(req, resp);
+        req.getRequestDispatcher(Route.LOGIN.getJspPath()).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Credentials credentials = credentialsExtractor.extract(req);
-
-            if (credentials.username() == null
-                    || credentials.password() == null
-                    || credentials.username().isEmpty()
-                    || credentials.password().isEmpty()) {
-                userAuthenticationService.handleAuthenticationFailure(req, resp);
-                return;
-            }
-
             Optional<User> existedUser = userAuthenticationService.authenticate(credentials.username(), credentials.password());
             if (existedUser.isPresent()) {
                 userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
@@ -55,7 +48,7 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (Exception e) {
             req.setAttribute(ContextListener.USER_AUTH_SERVICE, AUTHENTICATION_FAILED_MESSAGE);
-            req.getRequestDispatcher(Route.LOGIN_JSP).forward(req, resp);
+            req.getRequestDispatcher(Route.LOGIN.getJspPath()).forward(req, resp);
         }
     }
 }
