@@ -34,7 +34,8 @@ public class ValidationRegistry {
 
                         "password", List.of(
                                 new EmptinessValidator(),
-                                new LengthValidator(5, 16),
+                                new MinLengthValidator(5),
+                                new MaxLengthValidator(16),
                                 new SpecialCharacterValidator(1),
                                 new SpaceSymbolsValidator()
                         )

@@ -3,20 +3,21 @@ package service.validation.validator;
 import java.util.Collections;
 import java.util.List;
 
-public class CapitalLetterValidator implements Validator {
+public class MaxLengthValidator implements Validator {
 
     private final List<String> errorMessages;
+    private final int maxLength;
 
-    public CapitalLetterValidator() {
+    public MaxLengthValidator(int maxLength) {
+        this.maxLength = maxLength;
         this.errorMessages = List.of(
-                "Вводимые данные должны начинаться с заглавной буквы"
+                "Поле должно быть длиной не менее " + maxLength + " символов"
         );
     }
 
     @Override
     public List<String> validate(String value) {
-
-        if (value.isBlank() || !Character.isUpperCase(value.charAt(0))) {
+        if (value == null || value.length() > maxLength) {
             return errorMessages;
         }
 
