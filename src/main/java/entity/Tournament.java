@@ -41,6 +41,7 @@ public class Tournament {
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
     private List<Extension> extensions;
 
+    @OrderBy("user.rating DESC")
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<TournamentParticipant> participants;
 
