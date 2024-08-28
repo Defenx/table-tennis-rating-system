@@ -50,8 +50,8 @@ public class ContextListener implements ServletContextListener {
         var userService = new UserService(userDao, bCryptPasswordEncoder);
         var userAuthenticationService = new UserAuthenticationService(userService);
         var credentialsExtractor = new BasicCredentialsExtractorService();
-        var validationFactory = new ValidationRegistry(userDao);
-        var validationService = new ValidationService(validationFactory);
+        var validationRegistry = new ValidationRegistry(userDao);
+        var validationService = new ValidationService(validationRegistry);
 
         Map<String, Object> attributes = Map.ofEntries(
                 Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),

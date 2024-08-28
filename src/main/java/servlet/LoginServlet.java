@@ -40,15 +40,6 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Credentials credentials = credentialsExtractor.extract(req);
-
-            if (credentials.username() == null
-                    || credentials.password() == null
-                    || credentials.username().isEmpty()
-                    || credentials.password().isEmpty()) {
-                userAuthenticationService.handleAuthenticationFailure(req, resp);
-                return;
-            }
-
             Optional<User> existedUser = userAuthenticationService.authenticate(credentials.username(), credentials.password());
             if (existedUser.isPresent()) {
                 userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
