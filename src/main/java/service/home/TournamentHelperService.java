@@ -12,6 +12,7 @@ import service.TournamentService;
 import servlet.Route;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,16 +31,17 @@ public class TournamentHelperService {
         return tournamentService.getNewTournament();
     }
 
-    public void setSessionAttributes(HttpServletRequest req, HttpServletResponse resp, Optional<Tournament> optionalTournament) throws ServletException, IOException {
+    public void setSessionAttributes(HttpServletRequest req, HttpServletResponse resp, Tournament tournament) throws ServletException, IOException {
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute(USER_DTO);
-        if (optionalTournament.isPresent()) {
-            Tournament tournament = optionalTournament.get();
-            req.setAttribute(IS_CURRENT_USER_REGISTERED_FOR_TOURNAMENT_SESSION_ATTRIBUTE, isAlreadyParticipated(user, tournament));
+        if (tournament != null) {
+            tournament.getParticipants()
+                    .sort(Comparator.comparing((TournamentParticipant tp) -> tp.getUser().getRating()).reversed());
             req.setAttribute(TOURNAMENT_SESSION_ATTRIBUTE, tournament);
+            req.setAttribute(IS_CURRENT_USER_REGISTERED_FOR_TOURNAMENT_SESSION_ATTRIBUTE, isAlreadyParticipated(user, tournament));
+            req.setAttribute(IS_SOMEONE_REGISTERED_FOR_TOURNAMENT_SESSION_ATTRIBUTE, !tournament.getParticipants().isEmpty());
             req.setAttribute(USER_RATING_PLACE, tournamentService.getPlaceOfUser(user, tournament.getParticipants()));
             req.setAttribute(USERS_COUNT, tournamentService.getParticipantsListLength(tournament));
-            req.setAttribute(IS_SOMEONE_REGISTERED_FOR_TOURNAMENT_SESSION_ATTRIBUTE, !tournament.getParticipants().isEmpty());
             req.getRequestDispatcher(Route.HOME_JSP).forward(req, resp);
         } else {
             req.setAttribute(TOURNAMENT_SESSION_ATTRIBUTE, null);
@@ -62,5 +64,14 @@ public class TournamentHelperService {
                 .filter(p -> p.getUser().getId().equals(user.getId()))
                 .findFirst().orElse(null);
         return participant != null;
+    }
+
+    public void withdrawFromTheTournament(User user, Tournament tournament) {
+        for (TournamentParticipant participant : tournament.getParticipants()) {
+            if (participant.getUser().getId().equals(user.getId())) {
+                removeFromTournament(participant.getId());
+                break;
+            }
+        }
     }
 }

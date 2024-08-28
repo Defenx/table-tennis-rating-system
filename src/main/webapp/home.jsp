@@ -2,21 +2,34 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Registration</title>
+    <title>Турнир</title>
     <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
 <div class="main">
     <div class="welcome">
-        <div>
-            <h2>Добро пожаловать! <c:out value="${userDto.surname}"/> <c:out
-                    value="${userDto.firstname}, твой рейтинг - ${userDto.rating}, ты занимаешь ${userRatingPlace} из ${usersCount}"/></h2>
+        <h2>Добро пожаловать!</h2>
+        <h3>
+        <c:out value="${userDto.surname}"/>
+            <c:out value="${userDto.firstname}, ваш рейтинг - ${userDto.rating}!"/>
+
+            <c:if test="${tournament!=null}">
+                <c:out value="Вы занимаете ${userRatingPlace}-е место из ${usersCount}"/>
+            </c:if>
+        </h3>
+    </div>
+    <div class="mainButtons">
+        <div class="buttonContainer">
+            <button>Таблица Рейтинга</button>
+            <button>Выход</button>
+            <c:if test="${userDto.role == 'ADMIN'}">
+                <button class="adminButton">Создать турнир</button>
+            </c:if>
         </div>
-        <br><br>
-        <button>Таблица Рейтинга</button>
-        <button>Выход</button>
-        <c:if test="${userDto.role == 'ADMIN'}">
-            <button>Создать турнир</button>
+    </div>
+    <div>
+        <c:if test="${tournament!=null}">
+            <h3>Запись на турнир ${tournament.date}</h3><br>
         </c:if>
     </div>
     <div class="tournament">
@@ -27,7 +40,6 @@
                 </form>
             </c:if>
             <c:if test="${isSomeoneRegisteredForTournament}">
-                <h3>Запись на турнир ${tournament.date}</h3>
                 <table>
                     <tr>
                         <th>Фамилия</th>
@@ -44,7 +56,8 @@
                             <td>${participant.user.rating}</td>
                             <c:if test="${userDto.role == 'ADMIN'}">
                                 <td>
-                                    <form class="removeButton" action="/participant/delete/${participant.id}" method="post">
+                                    <form class="removeButton" action="/participant/delete/${participant.id}"
+                                          method="post">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <button class="denied" type="submit">Удалить</button>
                                     </form>
@@ -56,24 +69,25 @@
                 </table>
 
             </c:if>
-            <div class="regOrDenied">
-                <c:if test="${isCurrentUserRegisteredForTournament == false}">
-                    <form action="/home" method="post">
-                        <button class="reg" type="submit">Записаться</button>
-                    </form>
-                </c:if>
-                <c:if test="${isCurrentUserRegisteredForTournament == true}">
-                    <form action="/home" method="post">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button class="denied" type="submit">Отменить запись</button>
-                    </form>
-                </c:if>
-            </div>
+
         </c:if>
         <c:if test="${tournament==null}">
             <h1>Турниров в данный момент нет.</h1>
         </c:if>
 
+    </div>
+    <div class="regOrDenied">
+        <c:if test="${isCurrentUserRegisteredForTournament == false}">
+            <form action="/home" method="post">
+                <button class="reg" type="submit">Записаться</button>
+            </form>
+        </c:if>
+        <c:if test="${isCurrentUserRegisteredForTournament == true}">
+            <form action="/home" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button class="denied" type="submit">Отменить запись</button>
+            </form>
+        </c:if>
     </div>
 </div>
 </body>

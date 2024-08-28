@@ -14,10 +14,25 @@ body {
     align-items: center;
 }
 
+.welcome {
+    border: 2px solid #000;
+    border-radius: 10px;
+}
+
+h2 {
+    text-align: center;
+    margin: auto;
+}
+
+h3 {
+    text-align: center;
+    margin: auto;
+}
+
 .main {
     background-color: rgba(255, 255, 255);
     border-radius: 10px;
-    max-width: 80%;
+    width: 45%;
     height: 90vh; /* Занимает почти всю высоту экрана */
     margin: 0;
     padding: 20px;
@@ -26,10 +41,40 @@ body {
     flex-direction: column;
 }
 
-.welcome h2 {
+.mainButtons h2 {
     margin: 0 0 20px;
     font-size: 22px;
     text-align: center;
+}
+
+.mainButtons div {
+    display: flex;
+    justify-content: flex-start; /* Выравнивание всех кнопок влево */
+    align-items: center;
+}
+
+.mainButtons div button {
+    margin-right: 10px; /* Уменьшенное расстояние между левыми кнопками */
+}
+
+.adminButton {
+    margin-left: auto; /* Отправляет adminButton вправо */
+}
+
+
+.adminButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.adminButton:hover {
+    background-color: #45a049;
 }
 
 button {
