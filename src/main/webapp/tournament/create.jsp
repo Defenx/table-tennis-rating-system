@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Форма регистрации турнира</h1>
+        <h2>Форма регистрации турнира</h2>
         <form action="/tournament/create" method="post">
             <!-- Тип турнира -->
             <label for="type">Тип турнира</label>
