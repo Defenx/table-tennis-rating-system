@@ -2,45 +2,58 @@ package enums;
 
 import constant.RouteConstants;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
-@RequiredArgsConstructor
+/**
+ * The enum Route.
+ */
 @Getter
 public enum Route {
+    /**
+     * Login route.
+     */
     LOGIN(
             RouteConstants.LOGIN,
-            (RouteConstants.LOGIN + ".jsp"),
-            Role.ALL_ROLES,
+            PermissionGroup.PERMIT_ALL,
             false),
+    /**
+     * Registration route.
+     */
     REGISTRATION(
             RouteConstants.REGISTRATION,
-            (RouteConstants.REGISTRATION + ".jsp"),
-            Role.ALL_ROLES,
+            PermissionGroup.PERMIT_ALL,
             false),
+    /**
+     * Error route.
+     */
     ERROR(
             RouteConstants.ERROR,
-            (RouteConstants.ERROR + ".jsp"),
-            Role.ALL_ROLES,
+            PermissionGroup.PERMIT_ALL,
             false),
+    /**
+     * Admin tournament create route.
+     */
     ADMIN_TOURNAMENT_CREATE(
             RouteConstants.ADMIN_TOURNAMENT_CREATE,
-            (RouteConstants.ADMIN_TOURNAMENT_CREATE + ".jsp"),
-            Set.of(Role.ADMIN),
+            PermissionGroup.ONLY_ADMIN,
             true),
+    /**
+     * Home route.
+     */
     HOME(
             RouteConstants.HOME,
-            (RouteConstants.HOME + ".jsp"),
-            Role.ALL_ROLES,
+            PermissionGroup.PERMIT_ALL,
             true
     ),
+    /**
+     * Root route.
+     */
     ROOT(
             RouteConstants.ROOT,
-            (RouteConstants.ROOT + ".jsp"),
-            Role.ALL_ROLES,
+            PermissionGroup.PERMIT_ALL,
             true
     );
 
@@ -49,14 +62,32 @@ public enum Route {
     private final Set<Role> allowedRoles;
     private final boolean requiresAuth;
 
+    Route(String path, Set<Role> allowedRoles, boolean requiresAuth) {
+        this.path = path;
+        this.jspPath = path + ".jsp";
+        this.allowedRoles = allowedRoles;
+        this.requiresAuth = requiresAuth;
+    }
+
+    /**
+     * From path optional.
+     *
+     * @param path the path
+     * @return the optional
+     */
     public static Optional<Route> fromPath(String path) {
         return Arrays.stream(values())
                 .filter(route -> route.getPath().equals(path))
-                .findFirst();
+                .findAny();
     }
 
+    /**
+     * Is allowed for role boolean.
+     *
+     * @param role the role
+     * @return the boolean
+     */
     public boolean isAllowedForRole(Role role) {
         return allowedRoles.contains(role);
     }
-
 }

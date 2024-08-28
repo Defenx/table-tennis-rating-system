@@ -77,5 +77,4 @@ public class UserDao {
             throw new RuntimeException(he);
         }
     }
-
 }

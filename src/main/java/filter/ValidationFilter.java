@@ -11,6 +11,9 @@ import service.validation.ValidationService;
 
 import java.io.IOException;
 
+/**
+ * The type Validation filter.
+ */
 public class ValidationFilter extends BaseFilter {
     private ValidationService validationService;
 

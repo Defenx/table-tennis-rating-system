@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * The type Authentication filter.
+ */
 public class AuthenticationFilter extends BaseFilter {
 
     @Override

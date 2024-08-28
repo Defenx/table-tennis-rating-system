@@ -16,7 +16,7 @@ public class HibernateConfig {
      *
      * @return the session factory
      */
-    public SessionFactory buildSessionFactory(){
+    public SessionFactory buildSessionFactory() {
         try {
             StandardServiceRegistry standardServiceRegistry = new StandardServiceRegistryBuilder()
                     .configure("hibernate.cfg.xml").build();
