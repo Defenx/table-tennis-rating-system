@@ -37,9 +37,12 @@
         <div class="flex-row">
             <c:if test="${user.role == 'ADMIN'}">
                 <form action="" method="post">
-                    <button class="leftButton">Создать турнир</button>
+                    <c:if test="${tournament==null}">
+                        <button class="leftButton">Создать турнир</button>
+                    </c:if>
                 </form>
-                <form action="" method="post">
+                <form action="/tournament/delete" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
                     <button class="rightButton">Удалить турнир</button>
                 </form>
             </c:if>

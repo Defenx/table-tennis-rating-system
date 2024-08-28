@@ -40,8 +40,6 @@ public class TournamentDao {
     public Optional<Tournament> findNewTournament() {
         try (Session session = sessionFactory.openSession()) {
             Query<Tournament> query = session.createQuery("FROM Tournament t WHERE t.status = 'NEW'", Tournament.class);
-            Query<Tournament> tournamentQuery = query.setMaxResults(1);
-            System.out.println("DAO: " + tournamentQuery.getSingleResult());
             return Optional.of(query.getSingleResult());
         } catch (HibernateException he) {
             throw new RuntimeException(he);
@@ -75,6 +73,20 @@ public class TournamentDao {
             MutationQuery mutationQuery = session.createMutationQuery("DELETE FROM TournamentParticipant tp WHERE id = :id");
             mutationQuery.setParameter("id", participantId);
             mutationQuery.executeUpdate();
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void deleteTournament(Tournament tournament) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.remove(tournament);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {

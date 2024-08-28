@@ -16,6 +16,7 @@ public class Route {
     public static final String ERROR_JSP = getJspPath(ERROR);
 
     public static final String DELETE_BY_PARTICIPANT_ID = "/participant/delete/*";
+    public static final String DELETE_TOURNAMENT = "/tournament/delete";
 
     public static final String LOGOUT = "/logout";
 

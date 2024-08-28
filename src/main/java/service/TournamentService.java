@@ -38,4 +38,8 @@ public class TournamentService {
     public int getParticipantsListLength(Tournament tournament) {
         return tournament.getParticipants().size();
     }
+
+    public void deleteTournament(Tournament tournament) {
+        tournamentDao.deleteTournament(tournament);
+    }
 }

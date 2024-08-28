@@ -59,6 +59,10 @@ public class TournamentHelperService {
         tournamentService.removeFromTournament(participantId);
     }
 
+    public void deleteTournament(Tournament tournament) {
+        tournamentService.deleteTournament(tournament);
+    }
+
     private boolean isAlreadyParticipated(User user, Tournament tournament) {
         TournamentParticipant participant = tournament.getParticipants().stream()
                 .filter(p -> p.getUser().getId().equals(user.getId()))
