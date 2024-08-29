@@ -12,10 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-
-/**
- * The type Permission filter.
- */
 public class PermissionFilter extends BaseFilter {
 
     @Override

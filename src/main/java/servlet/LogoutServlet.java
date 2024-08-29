@@ -9,12 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-/**
- * The type Logout servlet.
- */
 @WebServlet(RouteConstants.LOGOUT)
 public class LogoutServlet extends HttpServlet {
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

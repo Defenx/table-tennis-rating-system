@@ -8,9 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-/**
- * The type Root redirect filter.
- */
 public class RootRedirectFilter extends BaseFilter {
 
     @Override

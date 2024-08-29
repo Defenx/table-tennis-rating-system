@@ -2,13 +2,7 @@ package entity;
 
 import enums.Status;
 import enums.TournamentType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +12,7 @@ import lombok.ToString;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,11 +40,11 @@ public class Tournament {
     private Integer stage;
 
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
-    private List<Extension> extensions;
+    private List<Extension> extensions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tournament", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private List<TournamentParticipant> participants = new ArrayList<>();
 
     @OneToMany(mappedBy = "tournament")
-    private List<TournamentParticipant> participants;
-
-    @OneToMany(mappedBy = "tournament")
-    private List<Match> matches;
+    private List<Match> matches = new ArrayList<>();
 }
