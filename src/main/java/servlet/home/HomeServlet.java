@@ -1,11 +1,12 @@
 package servlet.home;
 
+import entity.Tournament;
 import entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import service.home.TournamentServiceMethod;
 import servlet.Route;
 
 import java.io.IOException;
@@ -17,19 +18,19 @@ public class HomeServlet extends BaseHomeServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var optionalTournament = tournamentHelperService.getNewTournament();
-        tournamentHelperService.setSessionAttributes(req, resp, optionalTournament.orElse(null));
+        User user = (User) req.getSession().getAttribute(USER);
+
+        var reqAttributes = tournamentAttributeResolver.findNeededAttributes(user);
+        reqAttributes.forEach(req::setAttribute);
+
+        req.getRequestDispatcher(Route.HOME_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var optionalTournament = tournamentHelperService.getNewTournament();
-        if (optionalTournament.isPresent()) {
-            HttpSession session = req.getSession();
-            User user = (User) session.getAttribute(USER);
-            tournamentHelperService.participate(user, optionalTournament.get());
-            resp.sendRedirect(Route.HOME);
-        }
+        getAndApplyAttributesToMethod(req, tournamentService::participate);
+
+        resp.sendRedirect(Route.HOME);
     }
 
     @Override

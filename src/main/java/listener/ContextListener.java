@@ -3,6 +3,7 @@ package listener;
 import config.HibernateConfig;
 import config.LiquibaseConfig;
 import dao.TournamentDao;
+import dao.TournamentParticipantDao;
 import dao.UserDao;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
@@ -18,7 +19,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.TournamentService;
 import service.UserService;
-import service.home.TournamentHelperService;
+import service.home.TournamentAttributeResolver;
 import service.login.BasicCredentialsExtractorService;
 import service.login.UserAuthenticationService;
 import service.validation.ValidationRegistry;
@@ -38,7 +39,7 @@ public class ContextListener implements ServletContextListener {
     public static final String USER_DAO = "userDao";
     public static final String TOURNAMENT_DAO = "tournamentDao";
     public static final String TOURNAMENT_SERVICE = "tournamentService";
-    public static final String TOURNAMENT_HELPER_SERVICE = "tournamentHelperService";
+    public static final String TOURNAMENT_ATTRIBUTE_RESOLVER = "tournamentAttributeResolver";
 
     @Override
     @SneakyThrows
@@ -55,9 +56,10 @@ public class ContextListener implements ServletContextListener {
         var userAuthenticationService = new UserAuthenticationService(userService);
         var credentialsExtractor = new BasicCredentialsExtractorService();
         var validationRegistry = new ValidationRegistry(userDao);
+        var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
         var validationService = new ValidationService(validationRegistry);
-        var tournamentService = new TournamentService(tournamentDao);
-        var tournamentHelperService = new TournamentHelperService(tournamentService);
+        var tournamentService = new TournamentService(tournamentDao, tournamentParticipantDao);
+        var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
 
         Map<String, Object> attributes = Map.ofEntries(
                 Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),
@@ -68,7 +70,7 @@ public class ContextListener implements ServletContextListener {
                 Map.entry(USER_SERVICE, userService),
                 Map.entry(VALIDATION_SERVICE, validationService),
                 Map.entry(TOURNAMENT_SERVICE, tournamentService),
-                Map.entry(TOURNAMENT_HELPER_SERVICE, tournamentHelperService)
+                Map.entry(TOURNAMENT_ATTRIBUTE_RESOLVER, tournamentAttributeResolver)
         );
 
         attributes.forEach(servletContext::setAttribute);

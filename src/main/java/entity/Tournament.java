@@ -12,6 +12,7 @@ import lombok.ToString;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,12 +40,11 @@ public class Tournament {
     private Integer stage;
 
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
-    private List<Extension> extensions;
+    private List<Extension> extensions = new ArrayList<>();
 
-    @OrderBy("user.rating DESC")
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private List<TournamentParticipant> participants;
+    private List<TournamentParticipant> participants = new ArrayList<>();
 
     @OneToMany(mappedBy = "tournament")
-    private List<Match> matches;
+    private List<Match> matches = new ArrayList<>();
 }

@@ -16,7 +16,9 @@ public class HomeServletDeleteById extends BaseHomeServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
         UUID userId = UUID.fromString(pathInfo.substring(1));
-        tournamentHelperService.removeFromTournament(userId);
+
+        tournamentService.removeFromTournament(userId);
+
         resp.sendRedirect(Route.HOME);
     }
 }
