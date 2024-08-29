@@ -7,7 +7,6 @@ import entity.TournamentParticipant;
 import entity.User;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,17 +36,6 @@ public class TournamentService {
                 }
             }
         } else System.err.println("withdrawFromTheTournament ERROR");
-    }
-
-    public int getPlaceOfUser(User user, List<TournamentParticipant> participants) {
-        if (user != null && participants != null) {
-            for (int i = 0; i < participants.size(); i++) {
-                if (participants.get(i).getUser().getId().equals(user.getId())) {
-                    return i + 1;
-                }
-            }
-        }
-        return 0;
     }
 
     public int getParticipantsListLength(Tournament tournament) {

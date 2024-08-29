@@ -14,6 +14,7 @@ import java.io.IOException;
 @WebServlet(Route.HOME)
 public class HomeServlet extends BaseHomeServlet {
     private static final String USER = "user";
+    private static final String TOURNAMENT_REQUEST_ATTRIBUTE = "tournament";
 
 
     @Override
@@ -35,12 +36,18 @@ public class HomeServlet extends BaseHomeServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var optionalTournament = tournamentHelperService.getNewTournament();
-        if (optionalTournament.isPresent()) {
-            HttpSession session = req.getSession();
-            User user = (User) session.getAttribute(USER);
-            tournamentHelperService.withdrawFromTheTournament(user, optionalTournament.get());
-            resp.sendRedirect(Route.HOME);
-        }
+        getAndApplyAttributesToMethod(req, tournamentService::withdrawFromTheTournament);
+
+        resp.sendRedirect(Route.HOME);
+    }
+
+    private void getAndApplyAttributesToMethod(HttpServletRequest req, TournamentServiceMethod method) {
+        User user = (User) req.getSession().getAttribute(USER);
+        var reqAttributes = tournamentAttributeResolver.findNeededAttributes(user);
+        reqAttributes.forEach(req::setAttribute);
+        Tournament tournament = (Tournament) req.getAttribute(TOURNAMENT_REQUEST_ATTRIBUTE);
+
+        method.apply(user, tournament);
     }
 }
+

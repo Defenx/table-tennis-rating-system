@@ -23,12 +23,6 @@
             <h3>
                 <c:out value="${user.surname}"/>
                 <c:out value="${user.firstname}, ваш рейтинг - ${user.rating}!"/>
-
-                <c:if test="${tournament!=null}">
-                    <c:if test="${isCurrentUserRegisteredForTournament == true}">
-                        <c:out value="Вы занимаете ${userRatingPlace}-е место из ${usersCount}"/>
-                    </c:if>
-                </c:if>
             </h3>
         </div>
         <br><br>
