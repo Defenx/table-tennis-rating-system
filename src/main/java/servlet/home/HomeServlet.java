@@ -1,17 +1,19 @@
 package servlet.home;
 
+import constant.RouteConstants;
 import entity.Tournament;
 import entity.User;
+import enums.Route;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import service.home.TournamentServiceMethod;
-import servlet.Route;
+
 
 import java.io.IOException;
 
-@WebServlet(Route.HOME)
+@WebServlet(RouteConstants.HOME)
 public class HomeServlet extends BaseHomeServlet {
     private static final String USER = "user";
     private static final String TOURNAMENT_REQUEST_ATTRIBUTE = "tournament";
@@ -24,21 +26,21 @@ public class HomeServlet extends BaseHomeServlet {
         var reqAttributes = tournamentAttributeResolver.findNeededAttributes(user);
         reqAttributes.forEach(req::setAttribute);
 
-        req.getRequestDispatcher(Route.HOME_JSP).forward(req, resp);
+        req.getRequestDispatcher(Route.HOME.getJspPath()).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         getAndApplyAttributesToMethod(req, tournamentService::participate);
 
-        resp.sendRedirect(Route.HOME);
+        resp.sendRedirect(Route.HOME.getPath());
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         getAndApplyAttributesToMethod(req, tournamentService::withdrawFromTheTournament);
 
-        resp.sendRedirect(Route.HOME);
+        resp.sendRedirect(Route.HOME.getPath());
     }
 
     private void getAndApplyAttributesToMethod(HttpServletRequest req, TournamentServiceMethod method) {

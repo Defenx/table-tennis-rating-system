@@ -1,15 +1,16 @@
 package servlet.home;
 
+import constant.RouteConstants;
+import enums.Route;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import servlet.Route;
 
 import java.io.IOException;
 import java.util.UUID;
 
-@WebServlet(Route.DELETE_BY_PARTICIPANT_ID)
+@WebServlet(RouteConstants.DELETE_BY_PARTICIPANT_ID)
 public class HomeServletDeleteById extends BaseHomeServlet {
 
     @Override
@@ -19,6 +20,6 @@ public class HomeServletDeleteById extends BaseHomeServlet {
 
         tournamentService.removeFromTournament(userId);
 
-        resp.sendRedirect(Route.HOME);
+        resp.sendRedirect(Route.HOME.getPath());
     }
 }
