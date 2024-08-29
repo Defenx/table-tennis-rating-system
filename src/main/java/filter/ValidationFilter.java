@@ -11,9 +11,6 @@ import service.validation.ValidationService;
 
 import java.io.IOException;
 
-/**
- * The type Validation filter.
- */
 public class ValidationFilter extends BaseFilter {
     private ValidationService validationService;
 
@@ -38,8 +35,12 @@ public class ValidationFilter extends BaseFilter {
         if (isValidRequest) {
             chain.doFilter(request, response);
         } else {
-            var errorPageJsp = Route.ERROR.getJspPath();
-            validatedHttpRequest.getRequestDispatcher(errorPageJsp).forward(validatedHttpRequest, response);
+            var requestedEndpoint = request.getRequestURI();
+            var optionalRoute = Route.fromPath(requestedEndpoint);
+            if (optionalRoute.isPresent()) {
+                var errorPageJsp = optionalRoute.get().getJspPath();
+                validatedHttpRequest.getRequestDispatcher(errorPageJsp).forward(validatedHttpRequest, response);
+            }
         }
     }
 }

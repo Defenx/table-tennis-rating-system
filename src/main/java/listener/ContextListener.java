@@ -3,6 +3,7 @@ package listener;
 import config.HibernateConfig;
 import config.LiquibaseConfig;
 import dao.TournamentDao;
+import dao.TournamentParticipantDao;
 import dao.UserDao;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
@@ -16,7 +17,10 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import service.TournamentService;
 import service.UserService;
+import service.home.TournamentAttributeResolver;
+import service.login.CredentialsExtractor;
 import service.login.BasicCredentialsExtractorService;
 import service.login.UserAuthenticationService;
 import service.tournament.create.TournamentCreateExtractorService;
@@ -32,13 +36,14 @@ import java.util.Map;
 public class ContextListener implements ServletContextListener {
     public static final String VALIDATION_SERVICE = "validationService";
     public static final String CREDENTIALS_EXTRACTOR = "credentialsExtractor";
-    public static final String USER_AUTH_SERVICE = "userAuthService";
     public static final String USER_SERVICE = "userService";
     public static final String SESSION_FACTORY = "sessionFactory";
     public static final String USER_DAO = "userDao";
     public static final String TOURNAMENT_DAO = "tournamentDao";
     public static final String TOURNAMENT_CREATE_SERVICE = "tournamentCreateService";
     public static final String TOURNAMENT_CREATE_EXTRACTOR_SERVICE = "tournamentCreateExtractorService";
+    public static final String TOURNAMENT_SERVICE = "tournamentService";
+    public static final String TOURNAMENT_ATTRIBUTE_RESOLVER = "tournamentAttributeResolver";
 
     @Override
     @SneakyThrows
@@ -52,6 +57,12 @@ public class ContextListener implements ServletContextListener {
         var tournamentDao = new TournamentDao(sessionFactory);
         var bCryptPasswordEncoder = new BCryptPasswordEncoder();
         var userService = new UserService(userDao, bCryptPasswordEncoder);
+        var credentialsExtractor = new CredentialsExtractor();
+        var validationRegistry = new ValidationRegistry(userDao);
+        var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
+        var validationService = new ValidationService(validationRegistry);
+        var tournamentService = new TournamentService(tournamentDao, tournamentParticipantDao);
+        var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
         var userAuthenticationService = new UserAuthenticationService(userService);
         var credentialsExtractor = new BasicCredentialsExtractorService();
         var validationFactory = new ValidationRegistry(userDao);
@@ -61,11 +72,13 @@ public class ContextListener implements ServletContextListener {
 
         Map<String, Object> attributes = Map.ofEntries(
                 Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),
-                Map.entry(USER_AUTH_SERVICE, userAuthenticationService),
                 Map.entry(SESSION_FACTORY, sessionFactory),
                 Map.entry(USER_DAO, userDao),
                 Map.entry(TOURNAMENT_DAO, tournamentDao),
                 Map.entry(USER_SERVICE, userService),
+                Map.entry(VALIDATION_SERVICE, validationService),
+                Map.entry(TOURNAMENT_SERVICE, tournamentService),
+                Map.entry(TOURNAMENT_ATTRIBUTE_RESOLVER, tournamentAttributeResolver)
                 Map.entry(VALIDATION_SERVICE, validationService),
                 Map.entry(TOURNAMENT_CREATE_SERVICE, tournamentCreateService),
                 Map.entry(TOURNAMENT_CREATE_EXTRACTOR_SERVICE, tournamentCreateExtractorService)
