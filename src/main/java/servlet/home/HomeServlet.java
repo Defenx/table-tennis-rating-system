@@ -1,6 +1,8 @@
 package servlet.home;
 
+import constant.RequestAttributes;
 import constant.RouteConstants;
+import constant.SessionAttributes;
 import entity.Tournament;
 import entity.User;
 import enums.Route;
@@ -15,13 +17,10 @@ import java.io.IOException;
 
 @WebServlet(RouteConstants.HOME)
 public class HomeServlet extends BaseHomeServlet {
-    private static final String USER = "user";
-    private static final String TOURNAMENT_REQUEST_ATTRIBUTE = "tournament";
-
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = (User) req.getSession().getAttribute(USER);
+        User user = (User) req.getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE);
 
         var reqAttributes = tournamentAttributeResolver.findNeededAttributes(user);
         reqAttributes.forEach(req::setAttribute);
@@ -44,10 +43,10 @@ public class HomeServlet extends BaseHomeServlet {
     }
 
     private void getAndApplyAttributesToMethod(HttpServletRequest req, TournamentServiceMethod method) {
-        User user = (User) req.getSession().getAttribute(USER);
+        User user = (User) req.getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE);
         var reqAttributes = tournamentAttributeResolver.findNeededAttributes(user);
         reqAttributes.forEach(req::setAttribute);
-        Tournament tournament = (Tournament) req.getAttribute(TOURNAMENT_REQUEST_ATTRIBUTE);
+        Tournament tournament = (Tournament) req.getAttribute(RequestAttributes.TOURNAMENT_REQUEST_ATTRIBUTE);
 
         method.apply(user, tournament);
     }
