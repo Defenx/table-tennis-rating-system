@@ -55,6 +55,22 @@ public enum Route {
             RouteConstants.ROOT,
             PermissionGroup.PERMIT_ALL,
             true
+    ),
+    /**
+     * DELETE_BY_PARTICIPANT_ID route.
+     */
+    DELETE_BY_PARTICIPANT_ID(
+            RouteConstants.DELETE_BY_PARTICIPANT_ID,
+            PermissionGroup.ONLY_ADMIN,
+            true
+    ),
+    /**
+     * DELETE_TOURNAMENT route.
+     */
+    DELETE_TOURNAMENT(
+            RouteConstants.DELETE_TOURNAMENT,
+            PermissionGroup.ONLY_ADMIN,
+            true
     );
 
     private final String path;

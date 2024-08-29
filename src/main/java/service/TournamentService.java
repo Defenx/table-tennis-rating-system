@@ -35,11 +35,7 @@ public class TournamentService {
                     break;
                 }
             }
-        } else System.err.println("withdrawFromTheTournament ERROR");
-    }
-
-    public int getParticipantsListLength(Tournament tournament) {
-        return tournament.getParticipants().size();
+        }
     }
 
     public void deleteTournament() {
@@ -52,7 +48,6 @@ public class TournamentService {
             return tournament.getParticipants().stream()
                     .anyMatch(participant -> participant.getUser().getId().equals(user.getId()));
         } else {
-            System.err.println("isAlreadyParticipated ERROR");
             return false;
         }
     }
