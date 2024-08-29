@@ -15,8 +15,8 @@
     <form action="/registration" method="post">
         <div class = container-input-content>
             <div class=container-label-input>
-                <label for="firstname">Фамилия:</label>
-                <input type="text" id="firstname" name="firstname" placeholder="Введите фамилию">
+                <label for="firstname">Имя:</label>
+                <input type="text" id="firstname" name="firstname" placeholder="Введите имя">
             </div>
             <c:forEach var="firstnameValidationError" items="${firstnameValidationErrors}">
                 <p class="validation-message">${firstnameValidationError}</p>
@@ -24,8 +24,8 @@
         </div>
         <div class = container-input-content>
             <div class=container-label-input>
-                <label for="surname">Имя:</label>
-                <input type="text" id="surname" name="surname" placeholder="Введите имя">
+                <label for="surname">Фамилия:</label>
+                <input type="text" id="surname" name="surname" placeholder="Введите фамилию">
             </div>
             <c:forEach var="surnameValidationError" items="${surnameValidationErrors}">
                 <p class="validation-message">${surnameValidationError}</p>
