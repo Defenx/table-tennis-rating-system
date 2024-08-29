@@ -3,16 +3,11 @@ package service.login;
 import dto.Credentials;
 import jakarta.servlet.http.HttpServletRequest;
 
-/**
- * The interface Credentials extractor.
- */
-public interface CredentialsExtractor {
+public class CredentialsExtractor {
 
-    /**
-     * Extract credentials.
-     *
-     * @param request the request
-     * @return the credentials
-     */
-    Credentials extract(HttpServletRequest request);
+    public Credentials extract(HttpServletRequest request) {
+        String username = request.getParameter("email");
+        String password = request.getParameter("password");
+        return new Credentials(username, password);
+    }
 }

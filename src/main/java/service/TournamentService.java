@@ -28,12 +28,10 @@ public class TournamentService {
     }
 
     public void withdrawFromTheTournament(User user, Tournament tournament) {
-        if (user != null && tournament != null) {
-            for (TournamentParticipant participant : tournament.getParticipants()) {
-                if (participant.getUser().getId().equals(user.getId())) {
-                    removeFromTournament(participant.getId());
-                    break;
-                }
+        for (TournamentParticipant participant : tournament.getParticipants()) {
+            if (participant.getUser().getId().equals(user.getId())) {
+                removeFromTournament(participant.getId());
+                break;
             }
         }
     }
@@ -44,11 +42,7 @@ public class TournamentService {
     }
 
     public boolean isAlreadyParticipated(User user, Tournament tournament) {
-        if (user != null && tournament != null) {
-            return tournament.getParticipants().stream()
-                    .anyMatch(participant -> participant.getUser().getId().equals(user.getId()));
-        } else {
-            return false;
-        }
+        return tournament.getParticipants().stream()
+                .anyMatch(participant -> participant.getUser().getId().equals(user.getId()));
     }
 }

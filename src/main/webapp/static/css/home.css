@@ -1,8 +1,3 @@
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
 body {
     font-family: "Times New Roman", serif;
     background-image: url("../table-tennis.jpg");
@@ -13,36 +8,36 @@ body {
     margin: 0;
     background-repeat: no-repeat;
     background-size: cover;
-    font-size: 1.2rem;
 }
 
-.welcome {
-    border: 2px solid #000;
-    border-radius: 10px;
-}
-
-h2 {
+.container-main {
+    width: 70%;
+    padding: 5px;
     text-align: center;
-    margin: auto;
-}
-
-h3 {
-    text-align: center;
-    margin: auto;
-}
-
-.main {
-    background-color: rgba(255, 255, 255);
+    background-color: #FFFFFF;
     border-radius: 10px;
-    width: 45%;
-    height: 90vh; /* Занимает почти всю высоту экрана */
-    margin: 0;
-    padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 16px 14px 9px 15px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    min-width: 450px;
+}
+.container-tournament {
     display: flex;
+    gap: 10px;
     flex-direction: column;
+    align-items: center;
+
 }
 
+.container-buttons {
+    display: flex;
+    width: 50%;
+    justify-content: center;
+}
+
+.container-buttons-navigation {
+    display: flex;
+    justify-content: center;
+}
 
 button {
     width: content-box;
@@ -70,7 +65,7 @@ button:hover {
     background: linear-gradient(0deg, rgba(0,3,255,1) 0%, rgba(2,126,251,1) 100%);
 }
 
-.buttonRed {
+.delete-button {
     width: content-box;
     height: content-box;
     color: #fff;
@@ -87,51 +82,27 @@ button:hover {
     7px 7px 20px 0px rgba(0,0,0,.1),
     4px 4px 5px 0px rgba(0,0,0,.1);
     outline: none;
-    background: linear-gradient(0deg, rgb(131, 6, 6) 0%, rgb(180, 12, 12) 100%);
+    background: linear-gradient(0deg, rgb(169, 10, 10) 0%, rgb(227, 13, 13) 100%);
     border: none;
 }
 
-.buttonRed:hover {
-    background: rgb(255, 0, 0);
-    background: linear-gradient(0deg, rgb(255, 0, 38) 0%, rgb(253, 29, 29) 100%);
+.delete-button:hover {
+    background: rgb(190, 14, 14);
+    background: linear-gradient(0deg, rgb(185, 8, 8) 0%, rgb(241, 14, 14) 100%);
 }
 
-.container-buttons{
-    display: block;
-    justify-content: center;
-}
 
-.flex-row {
-    display: flex;
-    justify-content: space-between; /* Распределяет элементы по сторонам */
-    align-items: center; /* Выравнивает элементы по вертикали */
-}
-
-.tournament {
-    flex: 1;
-    overflow-y: auto; /* Добавляет вертикальную прокрутку */
-}
-
-.tournament h3 {
-    margin-top: 0;
-    text-align: center;
-    color: #444;
-}
-
-.tournament table {
-    width: 99%;
+table {
     border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 1.2rem;
-    padding: 20px;
+    width: 60%;
 }
 
-.tournament th, .tournament td {
-    padding: 10px;
+td {
+    border: 1px solid #ccc;
+    padding: 15px;
     text-align: center;
-    border: 1px solid #ddd;
 }
 
-.tournament th {
-    background-color: #f2f2f2;
+td button {
+    margin-top: 20px;
 }

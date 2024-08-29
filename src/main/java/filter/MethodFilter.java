@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
-
 @WebFilter("/*")
 public class MethodFilter implements Filter {
 

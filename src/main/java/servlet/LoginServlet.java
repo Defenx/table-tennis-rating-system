@@ -1,8 +1,7 @@
 package servlet;
 
 import constant.RouteConstants;
-import dto.Credentials;
-import entity.User;
+import constant.SessionAttributes;
 import enums.Route;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -11,23 +10,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import listener.ContextListener;
+import service.UserService;
 import service.login.CredentialsExtractor;
-import service.login.UserAuthenticationService;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @WebServlet(RouteConstants.LOGIN)
 public class LoginServlet extends HttpServlet {
-    private UserAuthenticationService userAuthenticationService;
+    private UserService userService;
     private CredentialsExtractor credentialsExtractor;
-
-    private static final String AUTHENTICATION_FAILED_MESSAGE =  "authenticationFailed";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        userAuthenticationService = (UserAuthenticationService) config.getServletContext().getAttribute(ContextListener.USER_AUTH_SERVICE);
+        userService = (UserService) config.getServletContext().getAttribute(ContextListener.USER_SERVICE);
         credentialsExtractor = (CredentialsExtractor) config.getServletContext().getAttribute(ContextListener.CREDENTIALS_EXTRACTOR);
     }
 
@@ -39,16 +35,14 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            Credentials credentials = credentialsExtractor.extract(req);
-            Optional<User> existedUser = userAuthenticationService.authenticate(credentials.username(), credentials.password());
-            if (existedUser.isPresent()) {
-                userAuthenticationService.setSessionAttributes(req, resp, existedUser.get());
-            } else {
-                userAuthenticationService.handleAuthenticationFailure(req, resp);
-            }
+            var credentials = credentialsExtractor.extract(req);
+            var existedUser = userService.getExistedUser(credentials.username(), credentials.password());
+            existedUser.ifPresent((user) -> req.getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, user));
+
+            resp.sendRedirect(req.getContextPath() + RouteConstants.HOME);
         } catch (Exception e) {
-            req.setAttribute(ContextListener.USER_AUTH_SERVICE, AUTHENTICATION_FAILED_MESSAGE);
-            req.getRequestDispatcher(Route.LOGIN.getJspPath()).forward(req, resp);
+            req.getRequestDispatcher(RouteConstants.LOGIN).forward(req, resp);
         }
     }
+
 }
