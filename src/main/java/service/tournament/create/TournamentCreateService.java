@@ -2,20 +2,16 @@ package service.tournament.create;
 
 import dao.TournamentDao;
 import dto.TournamentDto;
-import entity.Tournament;
-import enums.Status;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-
-
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TournamentCreateService {
 
     private final TournamentDao tournamentDao;
+    private final TournamentMapper tournamentMapper;
 
-    public void addTournament(TournamentDto tournamentDto) {
-        tournamentDao.create(
-                TournamentMapper.INSTANCE.toEntity(tournamentDto)
-        );
+    public void createTournament(TournamentDto tournamentDto) {
+        var tournament = tournamentMapper.toEntity(tournamentDto);
+        tournamentDao.create(tournament);
     }
 }

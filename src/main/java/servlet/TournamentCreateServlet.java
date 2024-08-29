@@ -40,7 +40,7 @@ public class TournamentCreateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var extractTournamentDto = tournamentCreateExtractorService.extract(req);
-        tournamentCreateService.addTournament(extractTournamentDto);
+        tournamentCreateService.createTournament(extractTournamentDto);
         resp.sendRedirect(RouteConstants.HOME);
     }
 }

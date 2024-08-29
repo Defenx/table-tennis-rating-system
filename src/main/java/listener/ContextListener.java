@@ -16,6 +16,7 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
+import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.TournamentService;
 import service.UserService;
@@ -23,6 +24,7 @@ import service.home.TournamentAttributeResolver;
 import service.login.CredentialsExtractor;
 import service.tournament.create.TournamentCreateExtractorService;
 import service.tournament.create.TournamentCreateService;
+import service.tournament.create.TournamentMapper;
 import service.validation.ValidationRegistry;
 import service.validation.ValidationService;
 
@@ -56,12 +58,13 @@ public class ContextListener implements ServletContextListener {
         var bCryptPasswordEncoder = new BCryptPasswordEncoder();
         var userService = new UserService(userDao, bCryptPasswordEncoder);
         var credentialsExtractor = new CredentialsExtractor();
+        var tournamentMapper = Mappers.getMapper(TournamentMapper.class);
         var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
         var tournamentService = new TournamentService(tournamentDao, tournamentParticipantDao);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
         var validationFactory = new ValidationRegistry(userDao);
         var validationService = new ValidationService(validationFactory);
-        var tournamentCreateService = new TournamentCreateService(tournamentDao);
+        var tournamentCreateService = new TournamentCreateService(tournamentDao, tournamentMapper);
         var tournamentCreateExtractorService = new TournamentCreateExtractorService();
 
         Map<String, Object> attributes = Map.ofEntries(
