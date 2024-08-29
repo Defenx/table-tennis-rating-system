@@ -96,7 +96,7 @@
             <c:if test="${user.role == 'ADMIN'}">
                 <c:choose>
                     <c:when test="${tournament==null}">
-                        <form action="" method="post">
+                        <form action="/tournament/create" method="get">
                                 <button class="button">Создать турнир</button>
                         </form>
                     </c:when>

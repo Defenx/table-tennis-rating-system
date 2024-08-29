@@ -41,6 +41,6 @@ public class TournamentCreateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var extractTournamentDto = tournamentCreateExtractorService.extract(req);
         tournamentCreateService.addTournament(extractTournamentDto);
-        resp.sendRedirect(Route.HOME.getJspPath());
+        resp.sendRedirect(RouteConstants.HOME);
     }
 }

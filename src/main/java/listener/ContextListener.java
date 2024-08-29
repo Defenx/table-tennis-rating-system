@@ -21,8 +21,6 @@ import service.TournamentService;
 import service.UserService;
 import service.home.TournamentAttributeResolver;
 import service.login.CredentialsExtractor;
-import service.login.BasicCredentialsExtractorService;
-import service.login.UserAuthenticationService;
 import service.tournament.create.TournamentCreateExtractorService;
 import service.tournament.create.TournamentCreateService;
 import service.validation.ValidationRegistry;
@@ -58,13 +56,9 @@ public class ContextListener implements ServletContextListener {
         var bCryptPasswordEncoder = new BCryptPasswordEncoder();
         var userService = new UserService(userDao, bCryptPasswordEncoder);
         var credentialsExtractor = new CredentialsExtractor();
-        var validationRegistry = new ValidationRegistry(userDao);
         var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
-        var validationService = new ValidationService(validationRegistry);
         var tournamentService = new TournamentService(tournamentDao, tournamentParticipantDao);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
-        var userAuthenticationService = new UserAuthenticationService(userService);
-        var credentialsExtractor = new BasicCredentialsExtractorService();
         var validationFactory = new ValidationRegistry(userDao);
         var validationService = new ValidationService(validationFactory);
         var tournamentCreateService = new TournamentCreateService(tournamentDao);
@@ -76,9 +70,8 @@ public class ContextListener implements ServletContextListener {
                 Map.entry(USER_DAO, userDao),
                 Map.entry(TOURNAMENT_DAO, tournamentDao),
                 Map.entry(USER_SERVICE, userService),
-                Map.entry(VALIDATION_SERVICE, validationService),
                 Map.entry(TOURNAMENT_SERVICE, tournamentService),
-                Map.entry(TOURNAMENT_ATTRIBUTE_RESOLVER, tournamentAttributeResolver)
+                Map.entry(TOURNAMENT_ATTRIBUTE_RESOLVER, tournamentAttributeResolver),
                 Map.entry(VALIDATION_SERVICE, validationService),
                 Map.entry(TOURNAMENT_CREATE_SERVICE, tournamentCreateService),
                 Map.entry(TOURNAMENT_CREATE_EXTRACTOR_SERVICE, tournamentCreateExtractorService)

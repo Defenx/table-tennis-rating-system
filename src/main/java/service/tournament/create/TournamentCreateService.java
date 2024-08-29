@@ -14,12 +14,8 @@ public class TournamentCreateService {
     private final TournamentDao tournamentDao;
 
     public void addTournament(TournamentDto tournamentDto) {
-        tournamentDao.create(Tournament.builder()
-                        .type(tournamentDto.type())
-                        .date(tournamentDto.data())
-                        .extensions(tournamentDto.extensions())
-                        .status(Status.NEW)
-                        .stage(0)
-                .build());
+        tournamentDao.create(
+                TournamentMapper.INSTANCE.toEntity(tournamentDto)
+        );
     }
 }

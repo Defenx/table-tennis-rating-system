@@ -19,16 +19,16 @@ public class TournamentCreateExtractorService implements TournamentCreateExtract
         var tournamentDateStr = req.getParameter("date");
         var tournamentType = TournamentType.valueOf(tournamentTypeStr);
         var tournamentDate = LocalDate.parse(tournamentDateStr);
-        var defaultStage = 0;
+        var defaultStage = Integer.valueOf(0);
         var defaultStatus = Status.NEW;
 
         return new TournamentDto(
                 tournamentType,
-                tournamentDate,
-                extensions,
                 defaultStatus,
-                defaultStage
-        );
+                tournamentDate,
+                defaultStage,
+                extensions
+                );
     }
 
     private List<Extension> extractExtensions(HttpServletRequest req) {

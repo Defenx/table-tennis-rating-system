@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.Properties;
 
 public class LiquibaseConfig {
@@ -15,8 +16,11 @@ public class LiquibaseConfig {
     public DataSource getDataSource() {
         HikariConfig config = new HikariConfig();
         Properties properties = new Properties();
-        properties.load((LiquibaseConfig.class.getClassLoader().getResourceAsStream("/liquibase/liquibase.properties")));
+        try {
+            properties.load((LiquibaseConfig.class.getClassLoader().getResourceAsStream("/liquibase/liquibase.properties")));
+        } catch (IOException ignor) {
 
+        }
         config.setJdbcUrl(properties.getProperty("url"));
         config.setUsername(properties.getProperty("username"));
         config.setPassword(properties.getProperty("password"));

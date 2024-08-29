@@ -9,9 +9,9 @@ import java.util.List;
 
 public record TournamentDto(
         TournamentType type,
-        LocalDate data,
-        List<Extension> extensions,
         Status status,
-        int stage
+        LocalDate date,
+        Integer stage,
+        List<Extension> extensions
 ) {
 }
