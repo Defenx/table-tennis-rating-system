@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public class TournamentCreateService {
 
     private final TournamentDao tournamentDao;
-    private TournamentMapper tournamentMapper;
+    private final TournamentMapper tournamentMapper;
 
     public void createTournament(TournamentDto tournamentDto) {
         var tournament = tournamentMapper.toEntity(tournamentDto);

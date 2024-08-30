@@ -64,7 +64,7 @@ public class ContextListener implements ServletContextListener {
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
         var validationFactory = new ValidationRegistry(userDao);
         var validationService = new ValidationService(validationFactory);
-        var tournamentMapper = TournamentMapper.INSTANCE;
+        var tournamentMapper = Mappers.getMapper(TournamentMapper.class);
         var tournamentCreateService = new TournamentCreateService(tournamentDao, tournamentMapper);
         var tournamentCreateExtractorService = new TournamentCreateExtractorService();
 
