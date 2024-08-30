@@ -35,6 +35,11 @@ public enum Route {
             PermissionGroup.PERMIT_ALL,
             true
     ),
+    STATISTIC(
+            RouteConstants.STATISTIC,
+            PermissionGroup.PERMIT_ALL,
+            true
+    ),
 
     DELETE_BY_PARTICIPANT_ID(
             RouteConstants.DELETE_BY_PARTICIPANT_ID,
