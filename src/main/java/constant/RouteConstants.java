@@ -10,4 +10,5 @@ public final class RouteConstants {
     public static final String DELETE_TOURNAMENT = "/tournament/delete";
     public static final String ROOT = "/";
     public static final String LOGOUT = "/logout" ;
+    public static final String STATISTIC = "/statistic" ;
 }

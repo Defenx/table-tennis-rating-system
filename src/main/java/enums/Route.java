@@ -45,6 +45,11 @@ public enum Route {
             RouteConstants.DELETE_TOURNAMENT,
             PermissionGroup.ONLY_ADMIN,
             true
+    ),
+    STATISTIC(
+            RouteConstants.STATISTIC,
+            PermissionGroup.PERMIT_ALL,
+            true
     );
 
     private final String path;

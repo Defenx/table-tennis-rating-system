@@ -112,7 +112,7 @@
     </div>
 
     <div class="container-buttons-navigation">
-        <form action="" method="post">
+        <form action="/statistic" method="get">
             <button class="button">Таблица Рейтинга</button>
         </form>
         <form action="/logout" method="post">

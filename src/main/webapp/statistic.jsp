@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Рейтинг пользователей.</title>
-    <link rel="stylesheet" href="css/statistic.css">
+    <link rel="stylesheet" href="static/css/statistic.css">
 </head>
 <body>
     <div class="super-section">
