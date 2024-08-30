@@ -28,9 +28,12 @@ body {
 
 }
 
-.container-table {
+.container-table{
+    display: flex;
+    justify-content: center;
     overflow: auto;
     height: 400px;
+    width: 100%;
 }
 
 .container-buttons {

@@ -22,8 +22,7 @@
     <div class="container-tournament">
         <c:choose>
             <c:when test="${tournament!=null}">
-                <h4>Запись на турнир ${tournament.date}</h4>
-
+                <h2>Запись на турнир ${tournament.date}</h2>
 
                 <c:choose>
                     <c:when test="${!isSomeoneRegisteredForTournament}">
@@ -31,44 +30,47 @@
                     </c:when>
                     <c:otherwise>
                         <div class="container-table">
-                        <table>
-                        <tr>
-                            <th>№</th>
-                            <th>Фамилия</th>
-                            <th>Имя</th>
-                            <th>Рейтинг</th>
-                            <c:if test="${user.role == 'ADMIN'}">
-                                <th></th>
-                            </c:if>
-                        </tr>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>ФИО</th>
+                                    <th>Рейтинг</th>
+                                    <c:if test="${user.role == 'ADMIN'}">
+                                        <th></th>
+                                    </c:if>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <c:forEach items="${tournament.participants}" var="participant" begin="1"
+                                           varStatus="status">
+                                    <tr>
+                                        <td>${status.index}</td>
+                                        <td>${participant.user.surname} ${participant.user.firstname}</td>
+                                        <td>${participant.user.rating}</td>
+
+                                        <c:if test="${user.role == 'ADMIN'}">
+                                            <td>
+                                                <form action="/participant/delete/${participant.id}" method="post">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button class="delete-button" type="submit"
+                                                            onclick="return checkingIntentions()">
+                                                        Удалить
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </c:if>
+                                    </tr>
+
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     </c:otherwise>
                 </c:choose>
 
 
-                <c:forEach items="${tournament.participants}" var="participant" begin="1" varStatus="status">
-
-                    <tr>
-                        <td>${status.index}</td>
-                        <td>${participant.user.surname}</td>
-                        <td>${participant.user.firstname}</td>
-                        <td>${participant.user.rating}</td>
-
-                        <c:if test="${user.role == 'ADMIN'}">
-                            <td>
-                                <form action="/participant/delete/${participant.id}" method="post">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="delete-button" type="submit"
-                                            onclick="return checkingIntentions()">
-                                        Удалить
-                                    </button>
-                                </form>
-                            </td>
-                        </c:if>
-                    </tr>
-                </c:forEach>
-
-                </table>
-                </div>
             </c:when>
             <c:otherwise><h3>Турниров в данный момент нет.</h3></c:otherwise>
 
@@ -113,7 +115,8 @@
                     <c:otherwise>
                         <form action="/tournament/delete" method="post">
                             <input type="hidden" name="_method" value="DELETE">
-                            <button class="delete-button" onclick="return checkingIntentions()">Удалить турнир</button>
+                            <button class="delete-button" onclick="return checkingIntentions()">Удалить турнир
+                            </button>
                         </form>
                     </c:otherwise>
                 </c:choose>
