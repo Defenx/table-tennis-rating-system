@@ -12,10 +12,11 @@ import lombok.AllArgsConstructor;
 public class TournamentCreateService {
 
     private final TournamentDao tournamentDao;
+    private TournamentMapper tournamentMapper;
 
     public void addTournament(TournamentDto tournamentDto) {
         tournamentDao.create(
-                TournamentMapper.INSTANCE.toEntity(tournamentDto)
+                tournamentMapper.toEntity(tournamentDto)
         );
     }
 }

@@ -10,42 +10,52 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tournament-create.css">
 </head>
 <body>
-    <div class="form-container">
-        <h2>Форма регистрации турнира</h2>
-        <form action="/tournament/create" method="post">
-            <!-- Тип турнира -->
-            <label for="type">Тип турнира</label>
-            <select id="type" name="type">
-                <c:forEach var="tournamentType" items="${tournamentTypes}">
-                    <option value="${tournamentType.name()}" ${tournamentType.name() == defaultTournamentType ? 'selected' : ''}>${tournamentType.getDisplayName()}</option>
-                </c:forEach>
-            </select>
+<div class="form-container">
+    <h2>Форма регистрации турнира</h2>
+    <form action="/tournament/create" method="post">
+        <!-- Тип турнира -->
+        <label for="type">Тип турнира</label>
+        <select id="type" name="type">
+            <c:forEach var="tournamentType" items="${tournamentTypes}">
+                <option value="${tournamentType.name()}" ${tournamentType.name() == defaultTournamentType ? 'selected' : ''}>${tournamentType.getDisplayName()}</option>
+            </c:forEach>
+        </select>
 
-            <!-- Дата турнира -->
-            <label for="date">Дата турнира</label>
-            <input type="date" id="date" name="date" required>
+        <!-- Дата турнира -->
+        <label for="date">Дата турнира</label>
+        <input type="date" id="date" name="date" required>
 
-            <!-- Дополнения -->
-            <c:if test="${not empty extensions}">
-                <h3 class="centered">Дополнения:</h3>
-                <c:forEach var="extension" items="${extensions}">
-                    <c:choose>
-                        <c:when test="${extension.getInputType() == 'CHECKBOX'}">
-                            <div class="checkbox-container">
-                                <input type="${extension.getInputType().getName()}" id="${extension}" name="${extension}" ${extension.getHtmlAttributesAsString()}>
-                                <label for="${extension}">${extension.getDisplayName()}</label>
-                            </div>
-                         </c:when>
-                        <c:otherwise>
+        <!-- Дополнения -->
+        <c:if test="${not empty extensions}">
+            <h3 class="centered">Дополнения:</h3>
+            <c:forEach var="extension" items="${extensions}">
+
+                <c:set var="validationErrorsVariable" value="${extension}ValidationErrors" />
+                <c:set var="validationErrors" value="${requestScope[validationErrorsVariable]}" />
+
+                <c:choose>
+                    <c:when test="${extension.getInputType() == 'CHECKBOX'}">
+                        <div class="checkbox-container">
+                            <input type="${extension.getInputType().getName()}" id="${extension}"
+                                   name="${extension}" ${extension.getHtmlAttributesAsString()}>
                             <label for="${extension}">${extension.getDisplayName()}</label>
-                            <input type="${extension.getInputType().getName()}" id="${extension}" name="${extension}" ${extension.getHtmlAttributesAsString()}>
-                        </c:otherwise>
-                    </c:choose>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <label for="${extension}">${extension.getDisplayName()}</label>
+                        <input type="${extension.getInputType().getName()}" id="${extension}"
+                               name="${extension}" ${extension.getHtmlAttributesAsString()}>
+                    </c:otherwise>
+                </c:choose>
+                <c:forEach var="validationError" items="${validationErrors}">
+                    <p class="validation-message">${validationError}</p>
                 </c:forEach>
-            </c:if>
+            </c:forEach>
+        </c:if>
 
-            <button type="submit">Создать турнир</button>
-        </form>
-    </div>
+        <button type="submit">Создать турнир</button>
+    </form>
+
+</div>
 </body>
 </html>

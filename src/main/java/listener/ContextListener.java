@@ -23,6 +23,7 @@ import service.home.TournamentAttributeResolver;
 import service.login.CredentialsExtractor;
 import service.tournament.create.TournamentCreateExtractorService;
 import service.tournament.create.TournamentCreateService;
+import service.tournament.create.TournamentMapper;
 import service.validation.ValidationRegistry;
 import service.validation.ValidationService;
 
@@ -61,7 +62,8 @@ public class ContextListener implements ServletContextListener {
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
         var validationFactory = new ValidationRegistry(userDao);
         var validationService = new ValidationService(validationFactory);
-        var tournamentCreateService = new TournamentCreateService(tournamentDao);
+        var tournamentMapper = TournamentMapper.INSTANCE;
+        var tournamentCreateService = new TournamentCreateService(tournamentDao, tournamentMapper);
         var tournamentCreateExtractorService = new TournamentCreateExtractorService();
 
         Map<String, Object> attributes = Map.ofEntries(

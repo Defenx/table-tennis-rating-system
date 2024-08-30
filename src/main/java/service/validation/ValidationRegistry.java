@@ -1,6 +1,7 @@
 package service.validation;
 
 import dao.UserDao;
+import enums.ExtensionName;
 import service.validation.validator.*;
 import constant.RouteConstants;
 
@@ -45,6 +46,18 @@ public class ValidationRegistry {
                                 new EmptinessValidator()
                         ),
                         "password", List.of(
+                                new EmptinessValidator()
+                        )
+
+                ),
+                RouteConstants.ADMIN_TOURNAMENT_CREATE, Map.of(
+                        ExtensionName.IS_RATING.name(), List.of(
+                                new EmptinessValidator()
+                        ),
+                        ExtensionName.TRAINING_SETS.name(), List.of(
+                                new EmptinessValidator()
+                        ),
+                        ExtensionName.PLAYOFF_SETS.name(), List.of(
                                 new EmptinessValidator()
                         )
 
