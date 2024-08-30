@@ -16,6 +16,7 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
+import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.TournamentService;
 import service.UserService;
@@ -57,6 +58,7 @@ public class ContextListener implements ServletContextListener {
         var bCryptPasswordEncoder = new BCryptPasswordEncoder();
         var userService = new UserService(userDao, bCryptPasswordEncoder);
         var credentialsExtractor = new CredentialsExtractor();
+
         var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
         var tournamentService = new TournamentService(tournamentDao, tournamentParticipantDao);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);

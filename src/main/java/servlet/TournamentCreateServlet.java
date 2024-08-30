@@ -10,7 +10,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import listener.ContextListener;
 import service.tournament.create.TournamentCreateExtractorService;
 import service.tournament.create.TournamentCreateService;
@@ -41,9 +40,7 @@ public class TournamentCreateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var extractTournamentDto = tournamentCreateExtractorService.extract(req);
-        tournamentCreateService.addTournament(extractTournamentDto);
-        resp.sendRedirect(Route.HOME.getPath());
-//        req.getRequestDispatcher(RouteConstants.HOME).forward(req, resp);
-
+        tournamentCreateService.createTournament(extractTournamentDto);
+        resp.sendRedirect(RouteConstants.HOME);
     }
 }
