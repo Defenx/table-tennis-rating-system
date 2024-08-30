@@ -31,9 +31,6 @@ public class TournamentCreateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("defaultTournamentType", TournamentType.SINGLE_PLAYER);
-        req.setAttribute("tournamentTypes", TournamentType.values());
-        req.setAttribute("extensions", ExtensionName.values());
         req.getRequestDispatcher(Route.ADMIN_TOURNAMENT_CREATE.getJspPath()).forward(req, resp);
     }
 

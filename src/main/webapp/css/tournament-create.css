@@ -29,8 +29,8 @@ form {
 }
 
 label {
-    margin-bottom: 5px;
-}
+    margin-top: 15px;
+    margin-bottom: 5px;}
 
 .centered {
     text-align: center;
@@ -41,7 +41,7 @@ input[type="number"],
 input[type="date"],
 select {
     padding: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
@@ -76,7 +76,7 @@ button:hover {
 }
 
 .validation-message {
-    margin: 0.5rem 5px 5px 5px !important;
+    margin: 0px 5px 5px 5px !important;
     color: red;
     font-size: 0.8rem;
 }
