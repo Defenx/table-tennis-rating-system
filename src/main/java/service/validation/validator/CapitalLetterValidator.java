@@ -3,18 +3,20 @@ package service.validation.validator;
 import java.util.Collections;
 import java.util.List;
 
-public class EmptinessValidator implements Validator {
+public class CapitalLetterValidator implements Validator {
+
     private final List<String> errorMessages;
 
-    public EmptinessValidator() {
+    public CapitalLetterValidator() {
         this.errorMessages = List.of(
-                "The field can not be empty"
+                "Вводимые данные должны начинаться с заглавной буквы"
         );
     }
 
     @Override
     public List<String> validate(String value) {
-        if (value == null || value.isEmpty()) {
+
+        if (value.isBlank() || !Character.isUpperCase(value.charAt(0))) {
             return errorMessages;
         }
 

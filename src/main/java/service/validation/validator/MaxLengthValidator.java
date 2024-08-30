@@ -3,20 +3,21 @@ package service.validation.validator;
 import java.util.Collections;
 import java.util.List;
 
-public class LengthValidator implements Validator {
-    private final int minLength;
-    private final List<String> errorMessages;
+public class MaxLengthValidator implements Validator {
 
-    public LengthValidator(int minLength) {
-        this.minLength = minLength;
+    private final List<String> errorMessages;
+    private final int maxLength;
+
+    public MaxLengthValidator(int maxLength) {
+        this.maxLength = maxLength;
         this.errorMessages = List.of(
-                "The field must be at least " + minLength + " characters long"
+                "Поле должно быть длиной не менее " + maxLength + " символов"
         );
     }
 
     @Override
     public List<String> validate(String value) {
-        if (value == null || value.length() < minLength) {
+        if (value == null || value.length() > maxLength) {
             return errorMessages;
         }
 
