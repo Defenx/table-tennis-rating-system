@@ -4,7 +4,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Рейтинг пользователей</title>
+    <title>Рейтинг пользователей.</title>
     <link rel="stylesheet" href="css/statistic.css">
 </head>
 <body>
