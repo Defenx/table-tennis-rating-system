@@ -1,7 +1,6 @@
 package service.validation;
 
 import dao.UserDao;
-import enums.ExtensionName;
 import service.validation.validator.*;
 import constant.RouteConstants;
 
@@ -51,13 +50,10 @@ public class ValidationRegistry {
 
                 ),
                 RouteConstants.ADMIN_TOURNAMENT_CREATE, Map.of(
-                        "isRating", List.of(
+                        "training_sets", List.of(
                                 new EmptinessValidator()
                         ),
-                        "trainingSets", List.of(
-                                new EmptinessValidator()
-                        ),
-                        "playoffSets", List.of(
+                        "playoff_sets", List.of(
                                 new EmptinessValidator()
                         )
 

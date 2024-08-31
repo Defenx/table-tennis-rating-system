@@ -28,16 +28,22 @@ public class TournamentCreateExtractorService implements TournamentCreateExtract
                 tournamentDate,
                 defaultStage,
                 extensions
-                );
+        );
     }
 
     private List<Extension> extractExtensions(HttpServletRequest req) {
         var extensions = new ArrayList<Extension>();
 
         for (var extensionName : ExtensionName.values()) {
-            var extensionValue = req.getParameter(String.valueOf(extensionName));
-            if (extensionValue != null) {
-                var extension = Extension.builder().name(extensionName).value(extensionValue).build();
+            var extensionValue = req.getParameter(extensionName.toString().toLowerCase());
+
+            if (extensionName != ExtensionName.IS_RATING) {
+                if (extensionValue != null) {
+                    var extension = Extension.builder().name(extensionName).value(extensionValue).build();
+                    extensions.add(extension);
+                }
+            } else {
+                var extension = Extension.builder().name(extensionName).value(extensionValue == null ? "нет" : "да").build();
                 extensions.add(extension);
             }
         }

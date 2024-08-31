@@ -28,27 +28,27 @@
         <input type="date" id="date" name="date" required>
 
         <div class="checkbox-container">
-            <input type="checkbox" id="isRating"
-                   name="isRating" checked="">
-            <label for="isRating">Рейтинговый турнир</label>
-            <c:forEach var="ValidationError" items="${isRatingValidationErrors}">
+            <input type="checkbox" id="is_rating"
+                   name="is_rating" checked="">
+            <label for="is_rating">Рейтинговый турнир</label>
+            <c:forEach var="ValidationError" items="${is_ratingValidationErrors}">
                 <p class="validation-message">${ValidationError}</p>
             </c:forEach>
         </div>
 
 
-            <label for="trainingSets">Кол-во побед в тренировочных матчах</label>
-            <input type="number" id="trainingSets"
-                   name="trainingSets" min="1" max="5">
-            <c:forEach var="ValidationError" items="${trainingSetsValidationErrors}">
+            <label for="training_sets">Кол-во побед в тренировочных матчах</label>
+            <input type="number" id="training_sets"
+                   name="training_sets" min="1" max="5">
+            <c:forEach var="ValidationError" items="${training_setsValidationErrors}">
                 <p class="validation-message">${ValidationError}</p>
             </c:forEach>
 
 
-            <label for="playoffSets">Кол-во побед в плейофф матчах</label>
-            <input type="number" id="playoffSets"
-                   name="playoffSets" min="1" max="5">
-            <c:forEach var="ValidationError" items="${playoffSetsValidationErrors}">
+            <label for="playoff_sets">Кол-во побед в плейофф матчах</label>
+            <input type="number" id="playoff_sets"
+                   name="playoff_sets" min="1" max="5">
+            <c:forEach var="ValidationError" items="${playoff_setsValidationErrors}">
                 <p class="validation-message">${ValidationError}</p>
             </c:forEach>
 
