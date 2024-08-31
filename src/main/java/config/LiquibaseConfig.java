@@ -16,11 +16,9 @@ public class LiquibaseConfig {
     public DataSource getDataSource() {
         HikariConfig config = new HikariConfig();
         Properties properties = new Properties();
-        try {
-            properties.load((LiquibaseConfig.class.getClassLoader().getResourceAsStream("/liquibase/liquibase.properties")));
-        } catch (IOException ignor) {
 
-        }
+        properties.load((LiquibaseConfig.class.getClassLoader().getResourceAsStream("/liquibase/liquibase.properties")));
+
         config.setJdbcUrl(properties.getProperty("url"));
         config.setUsername(properties.getProperty("username"));
         config.setPassword(properties.getProperty("password"));
