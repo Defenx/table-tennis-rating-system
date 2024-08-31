@@ -51,13 +51,13 @@ public class ValidationRegistry {
 
                 ),
                 RouteConstants.ADMIN_TOURNAMENT_CREATE, Map.of(
-                        ExtensionName.IS_RATING.name(), List.of(
+                        "isRating", List.of(
                                 new EmptinessValidator()
                         ),
-                        ExtensionName.TRAINING_SETS.name(), List.of(
+                        "trainingSets", List.of(
                                 new EmptinessValidator()
                         ),
-                        ExtensionName.PLAYOFF_SETS.name(), List.of(
+                        "playoffSets", List.of(
                                 new EmptinessValidator()
                         )
 
