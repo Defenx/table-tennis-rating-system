@@ -8,9 +8,8 @@ import entity.TournamentParticipant;
 import enums.ExtensionName;
 import enums.Status;
 import enums.TournamentType;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDate;
@@ -52,47 +51,42 @@ public class TournamentMapperTest {
 
 
     @Test
-    @DisplayName("Сравнение типов турниров")
     public void comparisonOfTypes() {
         //given
         //when
         //then
-        Assertions.assertEquals(tournament.getType(), tournamentFromDto.getType());
+        Assert.assertEquals(tournament.getType(), tournamentFromDto.getType());
     }
 
     @Test
-    @DisplayName("Сравнение статусов турниров")
     public void comparisonOfStatus() {
         //given
         //when
         //then
-        Assertions.assertEquals(tournament.getStatus(), tournamentFromDto.getStatus());
+        Assert.assertEquals(tournament.getStatus(), tournamentFromDto.getStatus());
     }
 
     @Test
-    @DisplayName("Сравнение дат турниров")
     public void comparisonOfDate() {
         //given
         //when
         //then
-        Assertions.assertEquals(tournament.getDate(), tournamentFromDto.getDate());
+        Assert.assertEquals(tournament.getDate(), tournamentFromDto.getDate());
     }
 
     @Test
-    @DisplayName("Сравнение этапов турниров")
     public void comparisonOfStage() {
         //given
         //when
         //then
-        Assertions.assertEquals(tournament.getStage(), tournamentFromDto.getStage());
+        Assert.assertEquals(tournament.getStage(), tournamentFromDto.getStage());
     }
 
     @Test
-    @DisplayName("Сравнение расширений турниров")
     public void comparisonOfExtension() {
         //given
         //when
         //then
-        Assertions.assertEquals(tournament.getExtensions(), tournamentFromDto.getExtensions());
+        Assert.assertEquals(tournament.getExtensions(), tournamentFromDto.getExtensions());
     }
 }
