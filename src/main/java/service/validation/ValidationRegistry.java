@@ -48,6 +48,15 @@ public class ValidationRegistry {
                                 new EmptinessValidator()
                         )
 
+                ),
+                RouteConstants.ADMIN_TOURNAMENT_CREATE, Map.of(
+                        "training_sets", List.of(
+                                new EmptinessValidator()
+                        ),
+                        "playoff_sets", List.of(
+                                new EmptinessValidator()
+                        )
+
                 )
         );
     }
