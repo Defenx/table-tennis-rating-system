@@ -11,7 +11,7 @@
     </head>
     <body>
         <div class="form-auth">
-            <h2 class="auth">Авторизация</h2>
+            <h2 class="auth">Войти</h2>
             <form action="/login" method="post">
                 <div class = container-input-content>
                     <div class = container-label-input>
