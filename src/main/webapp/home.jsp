@@ -43,10 +43,9 @@
                                 </thead>
 
                                 <tbody>
-                                <c:forEach items="${tournament.participants}" var="participant" begin="1"
-                                           varStatus="status">
+                                <c:forEach items="${tournament.participants}" var="participant" varStatus="status">
                                     <tr>
-                                        <td>${status.index}</td>
+                                        <td>${status.index + 1}</td>
                                         <td>${participant.user.surname} ${participant.user.firstname}</td>
                                         <td>${participant.user.rating}</td>
 
@@ -125,7 +124,7 @@
     </div>
 
     <div class="container-buttons-navigation">
-        <form action="" method="post">
+        <form action="/statistic" method="get">
             <button class="button">Таблица Рейтинга</button>
         </form>
         <form action="/logout" method="post">

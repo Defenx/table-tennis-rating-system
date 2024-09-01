@@ -11,7 +11,11 @@ body {
 }
 
 .container-main {
-    width: 70%;
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
     padding: 5px;
     text-align: center;
     background-color: #FFFFFF;
@@ -20,29 +24,11 @@ body {
     max-width: 1200px;
     min-width: 450px;
 }
-.container-tournament {
-    display: flex;
-    gap: 10px;
-    flex-direction: column;
-    align-items: center;
-}
 
-.container-table{
-    display: flex;
-    justify-content: center;
+.container-table {
     overflow: auto;
-    width: 100%;
-}
-
-.container-buttons {
-    display: flex;
-    width: 50%;
-    justify-content: center;
-}
-
-.container-buttons-navigation {
-    display: flex;
-    justify-content: center;
+    height: 400px;
+    width: 80%;
 }
 
 button {
@@ -71,36 +57,10 @@ button:hover {
     background: linear-gradient(0deg, rgba(0,3,255,1) 0%, rgba(2,126,251,1) 100%);
 }
 
-.delete-button {
-    width: content-box;
-    height: content-box;
-    color: #fff;
-    border-radius: 5px;
-    padding: 10px 25px;
-    font-family: 'Lato', sans-serif;
-    font-weight: 500;
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    display: inline-block;
-    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-    7px 7px 20px 0px rgba(0,0,0,.1),
-    4px 4px 5px 0px rgba(0,0,0,.1);
-    outline: none;
-    background: linear-gradient(0deg, rgb(169, 10, 10) 0%, rgb(227, 13, 13) 100%);
-    border: none;
-}
-
-.delete-button:hover {
-    background: rgb(190, 14, 14);
-    background: linear-gradient(0deg, rgb(185, 8, 8) 0%, rgb(241, 14, 14) 100%);
-}
-
 
 table {
     border-collapse: collapse;
-    width: 60%;
+    width: 100%;
 }
 
 td {
@@ -109,12 +69,15 @@ td {
     text-align: center;
 }
 
-tbody tr {
-    height: 50px;
+tbody tr:nth-child(1) {
+    background-color: yellow;
 }
 
-td button {
-    margin-top: 20px;
+tbody tr:nth-child(2) {
+    background-color: lightgray;
+}
+tbody tr:nth-child(3) {
+    background-color: rgba(229, 109, 19, 0.82);
 }
 
 .container-table::-webkit-scrollbar {
