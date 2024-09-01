@@ -1,9 +1,7 @@
 package servlet;
 
 import constant.RouteConstants;
-import enums.ExtensionName;
 import enums.Route;
-import enums.TournamentType;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,7 +18,6 @@ import java.io.IOException;
 public class TournamentCreateServlet extends HttpServlet {
     private TournamentCreateService tournamentCreateService;
     private TournamentCreateExtractorService tournamentCreateExtractorService;
-
 
     @Override
     public void init(ServletConfig config) throws ServletException {
