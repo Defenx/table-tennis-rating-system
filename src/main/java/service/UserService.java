@@ -15,7 +15,6 @@ public class UserService {
     private final UserDao userDao;
     private final BCryptPasswordEncoder passwordEncoder;
 
-
     public Optional<User> getExistedUser(String email, String password) {
         return userDao.findByEmail(email)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()));

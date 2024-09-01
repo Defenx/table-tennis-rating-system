@@ -43,10 +43,9 @@
                                 </thead>
 
                                 <tbody>
-                                <c:forEach items="${tournament.participants}" var="participant" begin="1"
-                                           varStatus="status">
+                                <c:forEach items="${tournament.participants}" var="participant" varStatus="status">
                                     <tr>
-                                        <td>${status.index}</td>
+                                        <td>${status.index + 1}</td>
                                         <td>${participant.user.surname} ${participant.user.firstname}</td>
                                         <td>${participant.user.rating}</td>
 

@@ -29,7 +29,7 @@ public class TournamentMapperTest {
                     TournamentType.SINGLE_PLAYER,
                     Status.NEW,
                     LocalDate.of(2024, 8, 31),
-                    Integer.valueOf(0),
+                    0,
                     extensions
             );
 
@@ -39,7 +39,7 @@ public class TournamentMapperTest {
                     TournamentType.SINGLE_PLAYER,
                     Status.NEW,
                     LocalDate.of(2024, 8, 31),
-                    Integer.valueOf(0),
+                    0,
                     extensions,
                     List.of(TournamentParticipant.builder().build()),
                     List.of(Match.builder().build())
