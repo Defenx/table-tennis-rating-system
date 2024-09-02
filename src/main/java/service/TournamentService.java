@@ -15,8 +15,8 @@ public class TournamentService {
     private final TournamentDao tournamentDao;
     private final TournamentParticipantDao tournamentParticipantDao;
 
-    public Tournament getTournamentById(UUID id) {
-        return tournamentDao.getTournamentById(id);
+    public Tournament getTournamentById(UUID tournamentId) {
+        return tournamentDao.getTournamentById(tournamentId);
     }
 
     public List<Tournament> getNewTournaments() {

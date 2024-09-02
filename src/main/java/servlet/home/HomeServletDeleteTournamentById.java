@@ -17,9 +17,9 @@ public class HomeServletDeleteTournamentById extends BaseHomeServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        UUID userId = UUID.fromString(pathInfo.substring(1));
+        UUID tournamentId = UUID.fromString(pathInfo.substring(1));
 
-        Tournament tournament = tournamentService.getTournamentById(userId);
+        Tournament tournament = tournamentService.getTournamentById(tournamentId);
         tournamentService.deleteTournament(tournament);
 
         resp.sendRedirect(Route.HOME.getPath());

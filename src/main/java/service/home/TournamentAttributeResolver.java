@@ -23,6 +23,7 @@ public class TournamentAttributeResolver {
             attributes.put(RequestAttributes.IS_CURRENT_USER_REGISTERED_FOR_TOURNAMENT_ATTRIBUTE + tournament.getId(),
                     tournamentService.isAlreadyParticipated(user, tournament));
         }
+        attributes.put(RequestAttributes.TOURNAMENTS_WITH_STATUS_NEW,tournaments);
         return attributes;
     }
 }

@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Map;
 
 @WebServlet(RouteConstants.HOME)
 public class HomeServlet extends BaseHomeServlet {
@@ -20,10 +19,8 @@ public class HomeServlet extends BaseHomeServlet {
         User user = (User) req.getSession().getAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE);
 
         var tournaments = tournamentService.getNewTournaments();
-        Map<String, Object> reqAttributes = tournamentAttributeResolver.findNeededAttributes(user, tournaments);
-
+        var reqAttributes = tournamentAttributeResolver.findNeededAttributes(user, tournaments);
         reqAttributes.forEach(req::setAttribute);
-        req.setAttribute("tournaments", tournaments);
 
         req.getRequestDispatcher(Route.HOME.getJspPath()).forward(req, resp);
     }

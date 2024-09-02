@@ -18,10 +18,10 @@
         </h3>
     </div>
 
-    <c:forEach var="tournament" items="${tournaments}">
+    <c:forEach var="tournament" items="${tournamentsWithStatusNew}">
         <div class="container-tournament">
             <c:choose>
-                <c:when test="${fn:length(tournaments) != 0}">
+                <c:when test="${fn:length(tournamentsWithStatusNew) != 0}">
                     <h2>Запись на турнир ${tournament.date}</h2>
 
                     <c:choose>
