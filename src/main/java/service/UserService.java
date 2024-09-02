@@ -33,4 +33,7 @@ public class UserService {
                 .rating(1000)
                 .build());
     }
+    public Optional<User> findByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
 }
