@@ -143,5 +143,15 @@
         }
         return isConfirmed;
     }
+
+    const findAllForms = document.body.querySelectorAll("form");
+    document.addEventListener("DOMContentLoaded", () => {
+        findAllForms.forEach((el) => {
+            let input = el.appendChild(document.createElement("input"));
+            input.setAttribute("name", "salt");
+            input.setAttribute("value", "<c:out value="${salt}" />");
+            input.setAttribute("type", "hidden");
+        })
+    });
 </script>
 </html>
