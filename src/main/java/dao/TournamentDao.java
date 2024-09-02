@@ -36,6 +36,7 @@ public class TournamentDao {
     public Optional<Tournament> findTournamentWhereStatusIsNew() {
         try (Session session = sessionFactory.openSession()) {
             Query<Tournament> query = session.createQuery("FROM Tournament t WHERE t.status = 'NEW'", Tournament.class);
+            query.setMaxResults(1);
             return Optional.of(query.getSingleResult());
         } catch (HibernateException he) {
             throw new RuntimeException(he);

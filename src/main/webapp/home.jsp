@@ -114,7 +114,7 @@
                     <c:otherwise>
                         <form action="/tournament/delete" method="post">
                             <input type="hidden" name="_method" value="DELETE">
-                            <button class="delete-button" onclick="return checkingIntentions()">Удалить турнир
+                            <button class="delete-button" type="submit" onclick="return checkingIntentions()">Удалить турнир
                             </button>
                         </form>
                     </c:otherwise>
