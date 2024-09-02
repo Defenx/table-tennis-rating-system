@@ -8,7 +8,9 @@ public final class RouteConstants {
     public static final String HOME = "/home";
     public static final String DELETE_BY_PARTICIPANT_ID = "/participant/delete/*";
     public static final String DELETE_TOURNAMENT = "/tournament/delete";
+    public static final String RUN_TOURNAMENT = "/tournament/run";
     public static final String ROOT = "/";
     public static final String LOGOUT = "/logout" ;
     public static final String STATISTIC = "/statistic" ;
+
 }

@@ -131,6 +131,17 @@
             <button class="button" type="submit" onclick="return checkingIntentions()">Выйти</button>
         </form>
     </div>
+    <div class="container-run-tournament">
+        <c:if test="${user.role == 'ADMIN'}">
+            <td>
+                <form action="/tournament/run" method="post">
+                    <button class="run-tournament-button" type="submit">
+                        Запустить турнир
+                    </button>
+                </form>
+            </td>
+        </c:if>
+    </div>
 </div>
 
 </body>
