@@ -20,7 +20,7 @@ public class TournamentService {
     }
 
     public void participate(User user, Tournament tournament) {
-        if (alreadyRegistered(user, tournament)) {
+        if (isAlreadyParticipated(user, tournament)) {
             return;
         }
         tournamentParticipantDao.participateUserToTournament(user, tournament);
@@ -47,15 +47,5 @@ public class TournamentService {
     public boolean isAlreadyParticipated(User user, Tournament tournament) {
         return tournament.getParticipants().stream()
                 .anyMatch(participant -> participant.getUser().getId().equals(user.getId()));
-    }
-
-    private boolean alreadyRegistered (User user, Tournament tournament) {
-        for (TournamentParticipant participant: tournament.getParticipants()) {
-            if (participant.getUser().getId().equals(user.getId()) &&
-                    participant.getTournament().getId().equals(tournament.getId())) {
-                return true;
-            }
-        }
-        return false;
     }
 }
