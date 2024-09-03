@@ -117,6 +117,11 @@
                             <button class="delete-button" onclick="return checkingIntentions()">Удалить турнир
                             </button>
                         </form>
+                        <form action="/tournament/run" method="post">
+                            <button class="run-button" type="submit">
+                                Запустить турнир
+                            </button>
+                        </form>
                     </c:otherwise>
                 </c:choose>
             </c:if>
@@ -131,6 +136,7 @@
             <button class="button" type="submit" onclick="return checkingIntentions()">Выйти</button>
         </form>
     </div>
+
 </div>
 
 </body>
