@@ -20,10 +20,9 @@ public class TournamentService {
     }
 
     public void participate(User user, Tournament tournament) {
-        if (isAlreadyParticipated(user, tournament)) {
-            return;
+        if (!isAlreadyParticipated(user, tournament)) {
+            tournamentParticipantDao.participateUserToTournament(user, tournament);
         }
-        tournamentParticipantDao.participateUserToTournament(user, tournament);
     }
 
     public void removeFromTournament(UUID participantId) {
