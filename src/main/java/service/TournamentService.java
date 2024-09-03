@@ -24,7 +24,9 @@ public class TournamentService {
     }
 
     public void participate(User user, Tournament tournament) {
-        tournamentParticipantDao.participateUserToTournament(user, tournament);
+        if (!isAlreadyParticipated(user, tournament)) {
+            tournamentParticipantDao.participateUserToTournament(user, tournament);
+        }
     }
 
     public void removeFromTournament(UUID participantId) {
