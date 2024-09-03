@@ -104,7 +104,7 @@
                         <button class="delete-button" onclick="return checkingIntentions()">Удалить турнир
                         </button>
                     </form>
-                    <form action="/tournament/run/*" method="post">
+                    <form action="/tournament/run/${tournament.id}" method="post">
                         <button class="run-button" type="submit">
                             Запустить турнир
                         </button>
