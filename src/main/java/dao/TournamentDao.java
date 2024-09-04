@@ -1,7 +1,9 @@
 package dao;
 
 import entity.Extension;
+import entity.Match;
 import entity.Tournament;
+import enums.Status;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -65,6 +67,28 @@ public class TournamentDao {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.remove(tournament);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void runTournament(Tournament tournament, List<Match> matches) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+
+            tournament.setStage(1);
+            tournament.setStatus(Status.PROCESSING);
+            for (Match match : matches) {
+                session.persist(match);
+            }
+            tournament.setMatches(matches);
+            session.merge(tournament);
+
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {

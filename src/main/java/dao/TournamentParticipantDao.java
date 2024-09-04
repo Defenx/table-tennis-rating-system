@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.MutationQuery;
+import org.hibernate.query.Query;
 
 import java.util.UUID;
 
@@ -16,6 +17,24 @@ import java.util.UUID;
 public class TournamentParticipantDao {
 
     private final SessionFactory sessionFactory;
+
+    public TournamentParticipant findByUserID(UUID userID) {
+        Transaction transaction = null;
+        TournamentParticipant participant = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Query<TournamentParticipant> query = session.createQuery("FROM TournamentParticipant t WHERE t.user.id = :userId", TournamentParticipant.class);
+            query.setParameter("userId", userID);
+            participant = query.uniqueResult();
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+        return participant;
+    }
 
     public void removeFromTournament(UUID participantId) {
         Transaction transaction = null;

@@ -1,4 +1,4 @@
-package servlet;
+package servlet.tournament;
 
 import constant.RouteConstants;
 import enums.Route;

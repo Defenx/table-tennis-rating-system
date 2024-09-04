@@ -39,12 +39,12 @@ public class Tournament {
 
     private Integer stage;
 
-    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Extension> extensions = new ArrayList<>();
 
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<TournamentParticipant> participants = new ArrayList<>();
 
-    @OneToMany(mappedBy = "tournament")
+    @OneToMany(mappedBy = "tournament", fetch = FetchType.EAGER)
     private List<Match> matches = new ArrayList<>();
 }
