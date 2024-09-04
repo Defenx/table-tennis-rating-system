@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Registration</title>
     <link rel="stylesheet" href="static/css/auth.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 </head>
@@ -23,14 +22,14 @@
                 <div class="input-wrapper">
                     <input type="text" id="firstname" name="firstname" placeholder="Введите имя">
                     <span class="input-icon">
-                        <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="right"
+                        <i class="fas fa-question-circle" data-placement="right"
                            title="${tooltipFirstName}"></i>
                     </span>
                 </div>
+                <c:forEach var="firstnameValidationError" items="${firstnameValidationErrors}">
+                    <p class="validation-message">${firstnameValidationError}</p>
+                </c:forEach>
             </div>
-            <c:forEach var="firstnameValidationError" items="${firstnameValidationErrors}">
-                <p class="validation-message">${firstnameValidationError}</p>
-            </c:forEach>
         </div>
 
         <div class=container-input-content>
@@ -39,7 +38,7 @@
                 <div class="input-wrapper">
                     <input type="text" id="surname" name="surname" placeholder="Введите фамилию">
                     <span class="input-icon">
-                        <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="right"
+                        <i class="fas fa-question-circle" data-placement="right"
                            title="${tooltipSurname}"></i>
                     </span>
                 </div>
@@ -55,7 +54,8 @@
                 <div class="input-wrapper">
                     <input type="email" id="email" name="email" placeholder="Введите почту">
                     <span class="input-icon">
-                        <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="right" title="${tooltipEmail}"></i>
+                        <i class="fas fa-question-circle" data-placement="right"
+                           title="${tooltipEmail}"></i>
                     </span>
                 </div>
             </div>
@@ -69,9 +69,8 @@
                 <label for="password">Пароль:</label>
                 <div class="input-wrapper">
                     <input type="password" id="password" name="password" placeholder="Введите пароль">
-
                     <span class="input-icon">
-                        <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="right"
+                        <i class="fas fa-question-circle" data-placement="right"
                            title="${tooltipPassword}"></i>
                     </span>
                 </div>
@@ -85,26 +84,14 @@
             <button type="submit" class="button">Зарегистрироваться</button>
             <button type="button" class="button" onclick="redirectToLogin()">Уже есть аккаунт</button>
         </div>
+    </form>
 
-</form>
 </div>
 
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" async></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous" async></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous" async></script>
 <script>
     function redirectToLogin() {
         window.location.href = '/login';
     }
-
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    })
 </script>
 </body>
 </html>
