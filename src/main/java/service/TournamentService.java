@@ -7,7 +7,7 @@ import entity.TournamentParticipant;
 import entity.User;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -15,8 +15,12 @@ public class TournamentService {
     private final TournamentDao tournamentDao;
     private final TournamentParticipantDao tournamentParticipantDao;
 
-    public Optional<Tournament> getNewTournament() {
-        return tournamentDao.findTournamentWhereStatusIsNew();
+    public Tournament getTournamentById(UUID tournamentId) {
+        return tournamentDao.getTournamentById(tournamentId);
+    }
+
+    public List<Tournament> getNewTournaments() {
+        return tournamentDao.findTournamentsWhereStatusIsNew();
     }
 
     public void participate(User user, Tournament tournament) {
@@ -38,9 +42,10 @@ public class TournamentService {
         }
     }
 
-    public void deleteTournament() {
-        var tournamentWhereStatusIsNew = tournamentDao.findTournamentWhereStatusIsNew();
-        tournamentWhereStatusIsNew.ifPresent(tournamentDao::deleteTournament);
+    public void deleteTournament(Tournament tournament) {
+        if (tournament != null) {
+            tournamentDao.deleteTournament(tournament);
+        }
     }
 
     public boolean isAlreadyParticipated(User user, Tournament tournament) {

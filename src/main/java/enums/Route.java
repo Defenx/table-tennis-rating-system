@@ -41,13 +41,19 @@ public enum Route {
             PermissionGroup.ONLY_ADMIN,
             true
     ),
-    DELETE_TOURNAMENT(
-            RouteConstants.DELETE_TOURNAMENT,
+    DELETE_TOURNAMENT_BY_ID(
+            RouteConstants.DELETE_TOURNAMENT_BY_ID,
             PermissionGroup.ONLY_ADMIN,
             true
     ),
-    RUN_TOURNAMENT(
-            RouteConstants.RUN_TOURNAMENT,
+    PARTICIPATION_BY_TOURNAMENT_ID(
+            RouteConstants.PARTICIPATION_BY_TOURNAMENT_ID,
+            PermissionGroup.PERMIT_ALL,
+            true
+    ),
+
+    RUN_TOURNAMENT_BY_ID(
+            RouteConstants.RUN_TOURNAMENT_BY_ID,
             PermissionGroup.ONLY_ADMIN,
             true
     ),
