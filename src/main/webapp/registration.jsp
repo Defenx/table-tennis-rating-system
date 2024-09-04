@@ -16,12 +16,13 @@
 <div class="form-auth">
     <h2 class="auth">Регистрация</h2>
     <form action="/registration" method="post">
-        <div class=container-input-content>
-            <div class=container-label-input>
+
+        <div class="container-input-content">
+            <div class="container-label-input">
                 <label for="firstname">Имя:</label>
-                <input type="text" id="firstname" name="firstname" placeholder="Введите имя">
-                <div class="input-group-append">
-                    <span class="input-group-text" id="tooltip-firstname">
+                <div class="input-wrapper">
+                    <input type="text" id="firstname" name="firstname" placeholder="Введите имя">
+                    <span class="input-icon">
                         <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="right"
                            title="${tooltipFirstName}"></i>
                     </span>
@@ -31,29 +32,30 @@
                 <p class="validation-message">${firstnameValidationError}</p>
             </c:forEach>
         </div>
+
         <div class=container-input-content>
             <div class=container-label-input>
                 <label for="surname">Фамилия:</label>
-                <input type="text" id="surname" name="surname" placeholder="Введите фамилию">
-                <div class="input-group-append">
-                    <span class="input-group-text">
+                <div class="input-wrapper">
+                    <input type="text" id="surname" name="surname" placeholder="Введите фамилию">
+                    <span class="input-icon">
                         <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="right"
-                           title="${tooltipFirstName}"></i>
+                           title="${tooltipSurname}"></i>
                     </span>
                 </div>
+                <c:forEach var="surnameValidationError" items="${surnameValidationErrors}">
+                    <p class="validation-message">${surnameValidationError}</p>
+                </c:forEach>
             </div>
-            <c:forEach var="surnameValidationError" items="${surnameValidationErrors}">
-                <p class="validation-message">${surnameValidationError}</p>
-            </c:forEach>
         </div>
+
         <div class=container-input-content>
             <div class=container-label-input>
                 <label for="email">Почта:</label>
-                <input type="email" id="email" name="email" placeholder="Введите почту">
-                <div class="input-group-append">
-                    <span class="input-group-text">
-                        <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="right"
-                           title="${tooltipEmail}"></i>
+                <div class="input-wrapper">
+                    <input type="email" id="email" name="email" placeholder="Введите почту">
+                    <span class="input-icon">
+                        <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="right" title="${tooltipEmail}"></i>
                     </span>
                 </div>
             </div>
@@ -61,12 +63,14 @@
                 <p class="validation-message">${emailValidationError}</p>
             </c:forEach>
         </div>
+
         <div class=container-input-content>
             <div class=container-label-input>
                 <label for="password">Пароль:</label>
-                <input type="password" id="password" name="password" placeholder="Введите пароль">
-                <div class="input-group-append">
-                    <span class="input-group-text">
+                <div class="input-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Введите пароль">
+
+                    <span class="input-icon">
                         <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="right"
                            title="${tooltipPassword}"></i>
                     </span>
@@ -76,19 +80,23 @@
                 <p class="validation-message">${passwordValidationError}</p>
             </c:forEach>
         </div>
+
         <div class="container-buttons">
             <button type="submit" class="button">Зарегистрироваться</button>
             <button type="button" class="button" onclick="redirectToLogin()">Уже есть аккаунт</button>
         </div>
-    </form>
+
+</form>
 </div>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" async></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous" async></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous" async></script>
 <script>
     function redirectToLogin() {
         window.location.href = '/login';
