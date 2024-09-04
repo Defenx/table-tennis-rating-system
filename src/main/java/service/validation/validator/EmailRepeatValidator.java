@@ -1,17 +1,17 @@
 package service.validation.validator;
 
-import dao.UserDao;
+import service.UserService;
 
 import java.util.Collections;
 import java.util.List;
 
 public class EmailRepeatValidator implements Validator{
 
-    private final UserDao userDao;
+    private final UserService userService;
     private final List<String> errorMessages;
 
-    public EmailRepeatValidator(UserDao userDao) {
-        this.userDao = userDao;
+    public EmailRepeatValidator(UserService userService) {
+        this.userService = userService;
         this.errorMessages = List.of(
                 "This email is already registered"
         );
@@ -19,7 +19,7 @@ public class EmailRepeatValidator implements Validator{
 
     @Override
     public List<String> validate(String email) {
-        if (email == null || userDao.findByEmail(email).isPresent()) {
+        if (email == null || userService.findByEmail(email).isPresent()) {
             return errorMessages;
         }
 

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <meta charset="UTF-8"/>
@@ -15,113 +16,109 @@
             Добро пожаловать! <c:out value="${user.surname}"/> <c:out value="${user.firstname}"/>,
             Bаш рейтинг - <c:out value="${user.rating}"/>
         </h3>
-
     </div>
 
+    <c:forEach var="tournament" items="${tournamentsWithStatusNew}">
+        <div class="container-tournament">
+            <c:choose>
+                <c:when test="${fn:length(tournamentsWithStatusNew) != 0}">
+                    <h2>Запись на турнир ${tournament.date}</h2>
 
-    <div class="container-tournament">
-        <c:choose>
-            <c:when test="${tournament!=null}">
-                <h2>Запись на турнир ${tournament.date}</h2>
-
-                <c:choose>
-                    <c:when test="${!isSomeoneRegisteredForTournament}">
-                        <p>В данный момент участников нету</p>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="container-table">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>№</th>
-                                    <th>ФИО</th>
-                                    <th>Рейтинг</th>
-                                    <c:if test="${user.role == 'ADMIN'}">
-                                        <th></th>
-                                    </c:if>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <c:forEach items="${tournament.participants}" var="participant" varStatus="status">
+                    <c:choose>
+                        <c:when test="${fn:length(tournament.participants) == 0}">
+                            <p>В данный момент участников нету</p>
+                            <form action="/tournament/participation/${tournament.id}" method="post">
+                                <button type="submit">Зарегистрируйся первым</button>
+                            </form>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="container-table">
+                                <table>
+                                    <thead>
                                     <tr>
-                                        <td>${status.index + 1}</td>
-                                        <td>${participant.user.surname} ${participant.user.firstname}</td>
-                                        <td>${participant.user.rating}</td>
-
+                                        <th>№</th>
+                                        <th>ФИО</th>
+                                        <th>Рейтинг</th>
                                         <c:if test="${user.role == 'ADMIN'}">
-                                            <td>
-                                                <form action="/participant/delete/${participant.id}" method="post">
-                                                    <input type="hidden" name="_method" value="DELETE">
-                                                    <button class="delete-button" type="submit"
-                                                            onclick="return checkingIntentions()">
-                                                        Удалить
-                                                    </button>
-                                                </form>
-                                            </td>
+                                            <th></th>
                                         </c:if>
                                     </tr>
+                                    </thead>
 
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+                                    <tbody>
+                                    <c:forEach items="${tournament.participants}" var="participant" varStatus="status">
+                                        <tr>
+                                            <td>${status.index + 1}</td>
+                                            <td>${participant.user.surname} ${participant.user.firstname}</td>
+                                            <td>${participant.user.rating}</td>
 
+                                            <c:if test="${user.role == 'ADMIN'}">
+                                                <td>
+                                                    <form action="/participant/delete/${participant.id}" method="post">
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <button class="delete-button" type="submit"
+                                                                onclick="return checkingIntentions()">
+                                                            Удалить
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </c:if>
+                                        </tr>
 
-            </c:when>
-            <c:otherwise><h3>Турниров в данный момент нет.</h3></c:otherwise>
-
-        </c:choose>
-
-        <div class="container-buttons">
-
-            <c:choose>
-
-                <c:when test="${!isCurrentUserRegisteredForTournament}">
-                    <c:if test="${tournament!=null}">
-                        <form action="/home" method="post">
-                            <button type="submit">
-                                <c:choose>
-                                    <c:when test="${!isSomeoneRegisteredForTournament}">
-                                        Зарегистрируйся первым
-                                    </c:when>
-                                    <c:otherwise>
-                                        Записаться
-                                    </c:otherwise>
-                                </c:choose>
-                            </button>
-                        </form>
-                    </c:if>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </c:when>
-                <c:otherwise>
-                    <form action="/home" method="post">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" onclick="return checkingIntentions()">Отменить запись</button>
-                    </form>
-                </c:otherwise>
+
+                <c:otherwise><h3>Турниров в данный момент нет.</h3></c:otherwise>
+
             </c:choose>
 
+            <div class="container-buttons">
 
-            <c:if test="${user.role == 'ADMIN'}">
-                <c:choose>
-                    <c:when test="${tournament==null}">
-                        <form action="/tournament/create" method="get">
-                            <button class="button">Создать турнир</button>
-                        </form>
-                    </c:when>
-                    <c:otherwise>
-                        <form action="/tournament/delete" method="post">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button class="delete-button" type="submit" onclick="return checkingIntentions()">Удалить турнир
-                            </button>
-                        </form>
-                    </c:otherwise>
-                </c:choose>
-            </c:if>
+                <c:if test="${fn:length(tournament.participants) != 0}">
+                    <c:set var="isParticipate" value="isCurrentUserRegisteredForTournament${tournament.id}"/>
+                    <c:choose>
+
+                        <c:when test="${!requestScope[isParticipate]}">
+                            <form action="/tournament/participation/${tournament.id}" method="post">
+                                <button type="submit">Записаться</button>
+                            </form>
+
+                        </c:when>
+                        <c:otherwise>
+                            <form action="/tournament/participation/${tournament.id}" method="post">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" onclick="return checkingIntentions()">Отменить запись</button>
+                            </form>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+
+                <c:if test="${user.role == 'ADMIN'}">
+                    <form action="/tournament/delete/${tournament.id}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button class="delete-button" onclick="return checkingIntentions()">Удалить турнир
+                        </button>
+                    </form>
+                    <form action="/tournament/run/${tournament.id}" method="post">
+                        <button class="run-button" type="submit">
+                            Запустить турнир
+                        </button>
+                    </form>
+                </c:if>
+            </div>
         </div>
-    </div>
+    </c:forEach>
+
+    <c:if test="${user.role == 'ADMIN'}">
+        <form action="/tournament/create" method="get">
+            <button class="button">Создать турнир</button>
+        </form>
+    </c:if>
 
     <div class="container-buttons-navigation">
         <form action="/statistic" method="get">
