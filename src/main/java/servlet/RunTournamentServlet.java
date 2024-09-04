@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(RouteConstants.RUN_TOURNAMENT)
+@WebServlet(RouteConstants.RUN_TOURNAMENT_BY_ID)
 public class RunTournamentServlet extends HttpServlet {
 
     @Override
