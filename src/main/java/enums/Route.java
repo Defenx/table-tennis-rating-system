@@ -35,11 +35,6 @@ public enum Route {
             PermissionGroup.PERMIT_ALL,
             true
     ),
-    STATISTIC(
-            RouteConstants.STATISTIC,
-            PermissionGroup.PERMIT_ALL,
-            true
-    ),
 
     DELETE_BY_PARTICIPANT_ID(
             RouteConstants.DELETE_BY_PARTICIPANT_ID,
@@ -60,6 +55,11 @@ public enum Route {
     RUN_TOURNAMENT_BY_ID(
             RouteConstants.RUN_TOURNAMENT_BY_ID,
             PermissionGroup.ONLY_ADMIN,
+            true
+    ),
+    STATISTIC(
+            RouteConstants.STATISTIC,
+            PermissionGroup.PERMIT_ALL,
             true
     );
 
