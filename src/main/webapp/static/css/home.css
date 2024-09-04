@@ -157,62 +157,43 @@ td button {
     background-color: rgba(0, 42, 255, 0.5);
     border-radius: 7px;
     box-shadow: inset 0 0 6px rgba(0, 72, 255, 0.5);
+}.timer {
+     font-family: 'Arial', sans-serif;
+     font-size: 24px;
+     font-weight: bold;
+     color: #333;
+     background-color: #f0f0f0;
+     border: 2px solid #4CAF50;
+     border-radius: 8px;
+     padding: 15px;
+     text-align: center;
+     display: inline-block;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     margin: 10px;
+     transition: background-color 0.3s, color 0.3s;
+ }
+
+.timer.finished {
+    color: #FF0000;
+    background-color: #fff4f4;
+    border-color: #FF0000;
 }
 
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+.timer span {
+    display: block;
+    font-size: 18px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-    :root {
-        scroll-behavior: smooth;
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
     }
 }
-
-
-body_timer {
-    margin: 0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    background-color: #fff;
-    -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    display: flex;
-    justify-content: center;
-}
-
-.timer__items {
-    display: flex;
-    font-size: 48px;
-}
-
-.timer__item {
-    position: relative;
-    min-width: 60px;
-    margin-left: 10px;
-    margin-right: 10px;
-    padding-bottom: 15px;
-    text-align: center;
-}
-
-.timer__item::before {
-    content: attr(data-title);
-    display: block;
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    font-size: 14px;
-}
-
-.timer__item:not(:last-child)::after {
-    content: ':';
-    position: absolute;
-    right: -15px;
+.timer {
+    animation: pulse 1s infinite;
 }

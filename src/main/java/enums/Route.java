@@ -61,11 +61,6 @@ public enum Route {
             RouteConstants.RUN_TOURNAMENT_BY_ID,
             PermissionGroup.ONLY_ADMIN,
             true
-    ),
-    STATISTIC(
-            RouteConstants.STATISTIC,
-            PermissionGroup.PERMIT_ALL,
-            true
     );
 
     private final String path;
