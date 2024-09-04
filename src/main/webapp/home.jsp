@@ -24,6 +24,8 @@
                 <c:when test="${fn:length(tournamentsWithStatusNew) != 0}">
                     <h2>Запись на турнир ${tournament.date}</h2>
 
+                    <div class="timer" data-date="${tournament.date}" data-time="19:00:00" id="timer-${tournament.id}"></div>
+
                     <c:choose>
                         <c:when test="${fn:length(tournament.participants) == 0}">
                             <p>В данный момент участников нету</p>
@@ -131,6 +133,7 @@
 </div>
 
 </body>
+<script src="scripts/timer.js"></script>
 <script>
     function checkingIntentions() {
         var isConfirmed = confirm('Are you sure?');
@@ -141,4 +144,5 @@
         return isConfirmed;
     }
 </script>
+
 </html>
