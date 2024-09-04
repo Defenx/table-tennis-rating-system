@@ -2,6 +2,7 @@ package listener;
 
 import config.HibernateConfig;
 import config.LiquibaseConfig;
+import constant.RouteConstants;
 import dao.TournamentDao;
 import dao.TournamentParticipantDao;
 import dao.UserDao;
@@ -27,9 +28,11 @@ import service.tournament.create.TournamentCreateService;
 import service.tournament.create.TournamentMapper;
 import service.validation.ValidationRegistry;
 import service.validation.ValidationService;
+import service.validation.validator.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.util.List;
 import java.util.Map;
 
 @WebListener
@@ -53,24 +56,19 @@ public class ContextListener implements ServletContextListener {
         initializeLiquibase();
         SessionFactory sessionFactory = new HibernateConfig().buildSessionFactory();
 
+        var credentialsExtractor = new CredentialsExtractor();
         var userDao = new UserDao(sessionFactory);
         var tournamentDao = new TournamentDao(sessionFactory);
-        var bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        var userService = new UserService(userDao, bCryptPasswordEncoder);
-        var credentialsExtractor = new CredentialsExtractor();
-
-        var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
-        var tournamentService = new TournamentService(tournamentDao, tournamentParticipantDao);
+        var userService = initUserService(userDao);
+        var tournamentService = initTournamentService(tournamentDao, sessionFactory);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
-        var validationFactory = new ValidationRegistry(userDao);
-        var validationService = new ValidationService(validationFactory);
-        var tournamentMapper = Mappers.getMapper(TournamentMapper.class);
-        var tournamentCreateService = new TournamentCreateService(tournamentDao, tournamentMapper);
+        var validationService = initValidation(userService);
+        var tournamentCreateService = initTournamentCreateService(tournamentDao);
         var tournamentCreateExtractorService = new TournamentCreateExtractorService();
 
         Map<String, Object> attributes = Map.ofEntries(
-                Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),
                 Map.entry(SESSION_FACTORY, sessionFactory),
+                Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),
                 Map.entry(USER_DAO, userDao),
                 Map.entry(TOURNAMENT_DAO, tournamentDao),
                 Map.entry(USER_SERVICE, userService),
@@ -107,5 +105,84 @@ public class ContextListener implements ServletContextListener {
                 .getAttribute("sessionFactory");
 
         sessionFactory.close();
+    }
+
+    private ValidationService initValidation(UserService userService) {
+        var emptinessValidator = new EmptinessValidator();
+        var languageValidator = new LanguageValidator();
+        var capitalLetterValidator = new CapitalLetterValidator();
+        var emailPatternValidator = new EmailPatternValidator();
+        var emailRepeatValidator = new EmailRepeatValidator(userService);
+        var minLengthValidator = new MinLengthValidator(5);
+        var maxLengthValidator = new MaxLengthValidator(16);
+        var specialCharacterValidator = new SpecialCharacterValidator(1);
+        var spaceSymbolsValidator = new SpaceSymbolsValidator();
+
+        Map<String, Map<String, List<Validator>>> routesToValidationMap =
+                Map.of(
+                        RouteConstants.REGISTRATION, Map.of(
+                                "firstname", List.of(
+                                        emptinessValidator,
+                                        languageValidator,
+                                        capitalLetterValidator
+                                ),
+
+                                "surname", List.of(
+                                        emptinessValidator,
+                                        languageValidator,
+                                        capitalLetterValidator
+                                ),
+
+                                "email", List.of(
+                                        emptinessValidator,
+                                        emailPatternValidator,
+                                        emailRepeatValidator
+                                ),
+
+                                "password", List.of(
+                                        emptinessValidator,
+                                        minLengthValidator,
+                                        maxLengthValidator,
+                                        specialCharacterValidator,
+                                        spaceSymbolsValidator
+                                )
+                        ),
+                        RouteConstants.LOGIN, Map.of(
+                                "email", List.of(
+                                        emptinessValidator
+                                ),
+                                "password", List.of(
+                                        emptinessValidator
+                                )
+
+                        ),
+                        RouteConstants.ADMIN_TOURNAMENT_CREATE, Map.of(
+                                "training_sets", List.of(
+                                        emptinessValidator
+                                ),
+                                "playoff_sets", List.of(
+                                        emptinessValidator
+                                )
+
+                        )
+                );
+
+        var validationFactory = new ValidationRegistry(routesToValidationMap);
+        return new ValidationService(validationFactory);
+    }
+
+    private UserService initUserService(UserDao userDao){
+        var bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return new UserService(userDao, bCryptPasswordEncoder);
+    }
+
+    private TournamentService initTournamentService(TournamentDao tournamentDao, SessionFactory sessionFactory){
+        var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
+        return new TournamentService(tournamentDao, tournamentParticipantDao);
+    }
+
+    private TournamentCreateService initTournamentCreateService(TournamentDao tournamentDao) {
+        var tournamentMapper = Mappers.getMapper(TournamentMapper.class);
+        return new TournamentCreateService(tournamentDao, tournamentMapper);
     }
 }
