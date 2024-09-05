@@ -165,7 +165,7 @@ input {
 .input-wrapper input:hover + .tooltip,
 .input-wrapper input:focus + .tooltip {
     display: block;
-    top: 100%; /* Adjust based on your layout */
+    top: 100%;
     left: 0;
 }
 
