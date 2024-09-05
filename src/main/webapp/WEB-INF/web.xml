@@ -44,7 +44,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>ValidateSalt</filter-name>
-        <url-pattern>/statistic</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>MethodFilter</filter-name>

@@ -14,7 +14,7 @@ public class ValidateSalt extends BaseFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if(request.getServletPath().equals("/")){
+        if(request.getServletPath().equals("/") || request.getMethod().equals("GET")){
             chain.doFilter(request, response);
         }
         String csrfToken = request.getParameter(SessionAttributes.CSRF_TOKEN_ATTRIBUTE);
