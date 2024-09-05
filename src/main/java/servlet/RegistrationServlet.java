@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import listener.ContextListener;
 import service.UserService;
 import service.registration.RegistrationDataExtractor;
+import servlet.util.TooltipUtil;
 
 import java.io.IOException;
 
@@ -30,6 +31,7 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        TooltipUtil.setTooltips(req);
         req.getRequestDispatcher(Route.REGISTRATION.getJspPath()).forward(req, resp);
     }
 
