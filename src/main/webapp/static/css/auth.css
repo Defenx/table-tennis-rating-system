@@ -1,5 +1,4 @@
 body {
-    font-family: "Times New Roman", serif;
     background-image: url("../table-tennis.jpg");
     display: flex;
     justify-content: center;
@@ -60,7 +59,7 @@ label {
 }
 
 .container-buttons{
-    display: block;
+    display: flex;
     justify-content: center;
 }
 
