@@ -35,22 +35,17 @@
 
     <filter-mapping>
         <filter-name>LoadSalt</filter-name>
-        <url-pattern>/tournament/delete</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <filter-mapping>
-        <filter-name>LoadSalt</filter-name>
-        <url-pattern>/tournament/create</url-pattern>
-    </filter-mapping>
+
     <filter-mapping>
         <filter-name>ValidateSalt</filter-name>
         <url-pattern>/tournament/delete</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>ValidateSalt</filter-name>
-        <url-pattern>/tournament/create</url-pattern>
+        <url-pattern>/statistic</url-pattern>
     </filter-mapping>
-
-
     <filter-mapping>
         <filter-name>MethodFilter</filter-name>
         <url-pattern>/*</url-pattern>
