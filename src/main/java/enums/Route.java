@@ -57,6 +57,16 @@ public enum Route {
             PermissionGroup.ONLY_ADMIN,
             true
     ),
+    LAUNCHED_TOURNAMENTS(
+            RouteConstants.LAUNCHED_TOURNAMENTS,
+            PermissionGroup.PERMIT_ALL,
+            true
+    ),
+    TOURNAMENT_BY_ID(
+            RouteConstants.TOURNAMENT_BY_ID,
+            PermissionGroup.PERMIT_ALL,
+            true
+    ),
     STATISTIC(
             RouteConstants.STATISTIC,
             PermissionGroup.PERMIT_ALL,

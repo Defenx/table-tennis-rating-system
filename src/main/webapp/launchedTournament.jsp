@@ -41,20 +41,16 @@
     </c:forEach>
 </div>
 <div>
-    <c:choose>
-        <c:when test="${user.role == 'ADMIN'}">
-        <form  action="/tournament/round/*" method="post">
+    <c:if test="${user.role == 'ADMIN'}">
+        <form action="/tournament/round/*" method="post">
             <button type="button" class="button">Завершить раунд</button>
         </form>
-        </c:when>
-        <c:otherwise>
-            <button type="button" class="button" onclick="redirectToLogin()">Вернутся на главную</button>
-        </c:otherwise>
-    </c:choose>
+    </c:if>
+    <button type="button" class="button" onclick="redirectToLogin()">Вернутся к турнирам</button>
 </div>
 <script>
     function redirectToLogin() {
-        window.location.href = '/home';
+        window.location.href = '/tournaments';
     }
 </script>
 </body>

@@ -121,6 +121,9 @@
     </c:if>
 
     <div class="container-buttons-navigation">
+        <form action="/tournaments" method="get">
+            <button class="button">Турниры в процессе</button>
+        </form>
         <form action="/statistic" method="get">
             <button class="button">Таблица Рейтинга</button>
         </form>

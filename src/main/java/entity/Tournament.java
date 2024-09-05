@@ -3,12 +3,7 @@ package entity;
 import enums.Status;
 import enums.TournamentType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
@@ -45,6 +40,6 @@ public class Tournament {
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<TournamentParticipant> participants = new ArrayList<>();
 
-    @OneToMany(mappedBy = "tournament", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tournament", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<Match> matches = new ArrayList<>();
 }

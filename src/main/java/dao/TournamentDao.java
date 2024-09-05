@@ -83,9 +83,6 @@ public class TournamentDao {
 
             tournament.setStage(1);
             tournament.setStatus(Status.PROCESSING);
-            for (Match match : matches) {
-                session.persist(match);
-            }
             tournament.setMatches(matches);
             session.merge(tournament);
 
@@ -95,6 +92,15 @@ public class TournamentDao {
                 transaction.rollback();
             }
             throw e;
+        }
+    }
+
+    public List<Tournament> getLaunchedTournaments() {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Tournament> query = session.createQuery("FROM Tournament t WHERE t.status = 'PROCESSING'", Tournament.class);
+            return query.getResultList();
+        } catch (HibernateException he) {
+            throw new RuntimeException(he);
         }
     }
 }

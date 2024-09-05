@@ -3,7 +3,6 @@ package listener;
 import config.HibernateConfig;
 import config.LiquibaseConfig;
 import constant.RouteConstants;
-import dao.MatchDao;
 import dao.TournamentDao;
 import dao.TournamentParticipantDao;
 import dao.UserDao;
@@ -172,15 +171,14 @@ public class ContextListener implements ServletContextListener {
         return new ValidationService(validationFactory);
     }
 
-    private UserService initUserService(UserDao userDao){
+    private UserService initUserService(UserDao userDao) {
         var bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return new UserService(userDao, bCryptPasswordEncoder);
     }
 
-    private TournamentService initTournamentService(TournamentDao tournamentDao, SessionFactory sessionFactory){
+    private TournamentService initTournamentService(TournamentDao tournamentDao, SessionFactory sessionFactory) {
         var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
-        var matchDao = new MatchDao(sessionFactory);
-        return new TournamentService(tournamentDao, tournamentParticipantDao, matchDao);
+        return new TournamentService(tournamentDao, tournamentParticipantDao);
     }
 
     private TournamentCreateService initTournamentCreateService(TournamentDao tournamentDao) {
