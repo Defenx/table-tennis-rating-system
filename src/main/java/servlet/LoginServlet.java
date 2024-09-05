@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
             req.getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, existedUser.get());
             resp.sendRedirect(RouteConstants.HOME);
         } else {
-            req.setAttribute("loginError", "Неверный логин и/или пароль");
+            req.setAttribute("loginError", "Неверный логин или пароль");
             req.getRequestDispatcher(Route.LOGIN.getJspPath()).forward(req, resp);
         }
     }
