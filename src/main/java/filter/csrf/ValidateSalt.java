@@ -14,16 +14,20 @@ public class ValidateSalt extends BaseFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String salt = request.getParameter(SessionAttributes.SALT_ATTRIBUTE);
+        String csrfToken = request.getParameter(SessionAttributes.CSRF_TOKEN_ATTRIBUTE);
+
+        System.out.println(csrfToken);
 
         Cache<String, Boolean> csrfPreventionSaltCache = (Cache<String, Boolean>) request
                 .getSession()
-                .getAttribute(SessionAttributes.CSRF_SALT_CACHE_ATTRIBUTE);
+                .getAttribute(SessionAttributes.CSRF_TOKEN_CACHE_ATTRIBUTE);
+
+        System.out.println(csrfPreventionSaltCache.asMap());
 
         if (
                 csrfPreventionSaltCache != null
-                        && salt != null
-                        && csrfPreventionSaltCache.getIfPresent(salt) != null
+                        && csrfToken != null
+                        && csrfPreventionSaltCache.getIfPresent(csrfToken) != null
         ) {
             chain.doFilter(request, response);
         } else {

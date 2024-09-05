@@ -146,7 +146,7 @@
         findAllForms.forEach((el) => {
             let input = el.appendChild(document.createElement("input"));
             input.setAttribute("name", "salt");
-            input.setAttribute("value", "<c:out value="${salt}" />");
+            input.setAttribute("value", "<c:out value="${csrfToken}" />");
             input.setAttribute("type", "hidden");
         })
     });

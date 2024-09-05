@@ -20,16 +20,23 @@ public class LoadSalt extends BaseFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        Cache<String, Boolean> csrfSaltCache = (Cache<String, Boolean>) session.getAttribute(SessionAttributes.CSRF_SALT_CACHE_ATTRIBUTE);
+
+        Cache<String, Boolean> csrfSaltCache = (Cache<String, Boolean>) session.getAttribute(SessionAttributes.CSRF_TOKEN_CACHE_ATTRIBUTE);
+
         if (csrfSaltCache == null) {
             csrfSaltCache = CacheBuilder.newBuilder()
                     .maximumSize(5000)
-                    .expireAfterWrite(30, TimeUnit.MINUTES).build();
-            session.setAttribute(SessionAttributes.CSRF_SALT_CACHE_ATTRIBUTE, csrfSaltCache);
+                    .expireAfterWrite(4, TimeUnit.HOURS).build();
+
+            session.setAttribute(SessionAttributes.CSRF_TOKEN_CACHE_ATTRIBUTE, csrfSaltCache);
         }
-        String salt = RandomStringUtils.random(20, 0, 0, true, true, null, new SecureRandom());
-        csrfSaltCache.put(salt, true);
-        request.setAttribute(SessionAttributes.SALT_ATTRIBUTE, salt);
+
+        String csrfToken = RandomStringUtils.random(20, 0, 0, true, true, null, new SecureRandom());
+
+        csrfSaltCache.put(csrfToken, Boolean.TRUE);
+
+        request.setAttribute(SessionAttributes.CSRF_TOKEN_ATTRIBUTE, csrfToken);
+
         chain.doFilter(request, response);
     }
 }
