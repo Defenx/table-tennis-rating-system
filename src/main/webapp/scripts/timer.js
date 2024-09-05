@@ -16,7 +16,7 @@ function setupTimers() {
 
             if (timeDifference <= 0) {
                 clearInterval(timerInterval);
-                timerElement.textContent = "Таймер завершен!";
+                timerElement.textContent = "Время начинать!";
                 timerElement.classList.add('finished');
             } else {
                 const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
@@ -26,7 +26,7 @@ function setupTimers() {
 
                 timerElement.textContent = `${days}д ${hours}ч ${minutes}м ${seconds}с`;
             }
-        }, 1000);
+        });
     });
 }
 document.addEventListener("DOMContentLoaded", setupTimers);
