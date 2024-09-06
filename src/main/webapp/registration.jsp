@@ -23,7 +23,7 @@
                     <input type="text" id="firstname" name="firstname" placeholder="Введите имя">
                     <span class="input-icon">
                         <i class="fas fa-question-circle" data-placement="right"
-                           title="${tooltipFirstName}"></i>
+                           title="Имя должно состоять только из букв русского алфавита и начинаться с заглавной буквы"></i>
                     </span>
                 </div>
 
@@ -45,7 +45,7 @@
                     <input type="text" id="surname" name="surname" placeholder="Введите фамилию">
                     <span class="input-icon">
                         <i class="fas fa-question-circle" data-placement="right"
-                           title="${tooltipSurname}"></i>
+                           title="Фамилия должна состоять только из букв русского алфавита и начинаться с заглавной буквы"></i>
                     </span>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                     <input type="email" id="email" name="email" placeholder="Введите почту">
                     <span class="input-icon">
                         <i class="fas fa-question-circle" data-placement="right"
-                           title="${tooltipEmail}"></i>
+                           title="Email должен соответствовать формату, например: mail@example.com"></i>
                     </span>
                 </div>
             </div>
@@ -85,7 +85,7 @@
                     <input type="password" id="password" name="password" placeholder="Введите пароль">
                     <span class="input-icon">
                         <i class="fas fa-question-circle" data-placement="right"
-                           title="${tooltipPassword}"></i>
+                           title="Пароль: 5-16 символов, минимум 1 специальный символ (!@#$%()^&*), без пробелов"></i>
                     </span>
                 </div>
             </div>
