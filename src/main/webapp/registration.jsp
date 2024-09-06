@@ -26,10 +26,16 @@
                            title="${tooltipFirstName}"></i>
                     </span>
                 </div>
-                <c:forEach var="firstnameValidationError" items="${firstnameValidationErrors}">
-                    <p class="validation-message">${firstnameValidationError}</p>
-                </c:forEach>
+
+
             </div>
+            <c:if test="${not empty firstnameValidationErrors}">
+                <div>
+                    <c:forEach var="firstnameValidationError" items="${firstnameValidationErrors}">
+                        <p class="validation-message">${firstnameValidationError}</p>
+                    </c:forEach>
+                </div>
+            </c:if>
         </div>
 
         <div class=container-input-content>
@@ -42,11 +48,15 @@
                            title="${tooltipSurname}"></i>
                     </span>
                 </div>
+            </div>
+        </div>
+        <c:if test="${not empty surnameValidationErrors}">
+            <div>
                 <c:forEach var="surnameValidationError" items="${surnameValidationErrors}">
                     <p class="validation-message">${surnameValidationError}</p>
                 </c:forEach>
             </div>
-        </div>
+        </c:if>
 
         <div class=container-input-content>
             <div class=container-label-input>
@@ -59,10 +69,14 @@
                     </span>
                 </div>
             </div>
-            <c:forEach var="emailValidationError" items="${emailValidationErrors}">
-                <p class="validation-message">${emailValidationError}</p>
-            </c:forEach>
         </div>
+        <c:if test="${not empty emailValidationErrors}">
+            <div>
+                <c:forEach var="emailValidationError" items="${emailValidationErrors}">
+                    <p class="validation-message">${emailValidationError}</p>
+                </c:forEach>
+            </div>
+        </c:if>
 
         <div class=container-input-content>
             <div class=container-label-input>
@@ -75,10 +89,15 @@
                     </span>
                 </div>
             </div>
-            <c:forEach var="passwordValidationError" items="${passwordValidationErrors}">
-                <p class="validation-message">${passwordValidationError}</p>
-            </c:forEach>
+
         </div>
+        <c:if test="${not empty passwordValidationErrors}">
+            <div>
+                <c:forEach var="passwordValidationError" items="${passwordValidationErrors}">
+                    <p class="validation-message">${passwordValidationError}</p>
+                </c:forEach>
+            </div>
+        </c:if>
 
         <div class="container-buttons">
             <button type="submit" class="button">Зарегистрироваться</button>
