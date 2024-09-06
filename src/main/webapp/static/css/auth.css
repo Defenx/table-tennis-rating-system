@@ -60,7 +60,7 @@ label {
 }
 
 .container-buttons{
-    display: block;
+    display: flex;
     justify-content: center;
 }
 
