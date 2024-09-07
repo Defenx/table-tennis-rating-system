@@ -1,4 +1,5 @@
 body {
+    font-family: "Times New Roman", serif;
     background-image: url("../table-tennis.jpg");
     display: flex;
     justify-content: center;
@@ -105,9 +106,9 @@ input {
     height: content-box;
     color: #fff;
     border-radius: 5px;
-    padding: 7px 15px;
+    padding: 10px 25px;
     font-family: 'Lato', sans-serif;
-    font-weight: 400;
+    font-weight: 500;
     background: transparent;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -164,7 +165,7 @@ input {
 .input-wrapper input:hover + .tooltip,
 .input-wrapper input:focus + .tooltip {
     display: block;
-    top: 100%; /* Adjust based on your layout */
+    top: 100%;
     left: 0;
 }
 
@@ -177,4 +178,17 @@ input {
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent #333 transparent;
+}
+
+.error-container {
+    border: 1px solid red;
+    background-color: #ffcccc;
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 5px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    text-align: center;
 }
