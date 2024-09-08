@@ -12,7 +12,9 @@ public enum ExtensionName {
         }
     },
     TRAINING_SETS,
-    PLAYOFF_SETS;
+    PLAYOFF_SETS,
+    NUMBER_OF_PARTICIPANTS,
+    AVERAGE_RATING;
 
     public Extension buildExtension(String extensionValue) {
         return Extension.builder()
