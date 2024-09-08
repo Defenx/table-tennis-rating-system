@@ -34,14 +34,15 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            var credentials = credentialsExtractor.extract(req);
-            var existedUser = userService.getExistedUser(credentials.username(), credentials.password());
-            existedUser.ifPresent((user) -> req.getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, user));
+        var credentials = credentialsExtractor.extract(req);
+        var existedUser = userService.getExistedUser(credentials.username(), credentials.password());
 
-            resp.sendRedirect(req.getContextPath() + RouteConstants.HOME);
-        } catch (Exception e) {
-            req.getRequestDispatcher(RouteConstants.LOGIN).forward(req, resp);
+        if (existedUser.isPresent()) {
+            req.getSession().setAttribute(SessionAttributes.USER_SESSION_ATTRIBUTE, existedUser.get());
+            resp.sendRedirect(RouteConstants.HOME);
+        } else {
+            req.setAttribute("loginError", "Неверный логин или пароль");
+            req.getRequestDispatcher(Route.LOGIN.getJspPath()).forward(req, resp);
         }
     }
 
