@@ -53,6 +53,8 @@
         let errorContainer = document.getElementById('errorContainer');
         if ("${loginError}" !== "") {
             errorContainer.style.display = 'flex';
+        } else {
+            errorContainer.style.display = 'none';
         }
     }
 </script>
