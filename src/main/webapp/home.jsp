@@ -126,6 +126,9 @@
         <form action="/statistic" method="get">
             <button class="button">Таблица Рейтинга</button>
         </form>
+        <form action="/Здесь_могла_быть_ваша_реклама" method="get">
+            <button class="button">Проходящие Турниры</button>
+        </form>
         <form action="/logout" method="post">
             <button class="button" type="submit" onclick="return checkingIntentions()">Выйти</button>
         </form>
