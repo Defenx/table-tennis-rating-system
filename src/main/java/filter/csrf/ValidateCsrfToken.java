@@ -1,7 +1,9 @@
 package filter.csrf;
 
 import com.google.common.cache.Cache;
+import constant.RouteConstants;
 import constant.SessionAttributes;
+import enums.FormMethod;
 import filter.BaseFilter;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +16,7 @@ public class ValidateCsrfToken extends BaseFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if(request.getServletPath().equals("/") || request.getMethod().equals("GET")){
+        if(request.getServletPath().equals(RouteConstants.ROOT) || request.getMethod().equals(FormMethod.GET.toString())){
             chain.doFilter(request, response);
         }
         String csrfToken = request.getParameter(SessionAttributes.CSRF_TOKEN_ATTRIBUTE);
