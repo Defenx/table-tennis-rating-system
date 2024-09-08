@@ -16,6 +16,7 @@
             Добро пожаловать! <c:out value="${user.surname}"/> <c:out value="${user.firstname}"/>,
             Bаш рейтинг - <c:out value="${user.rating}"/>
         </h3>
+
     </div>
 
     <c:forEach var="tournament" items="${tournamentsWithStatusNew}">
@@ -143,6 +144,15 @@
         }
         return isConfirmed;
     }
+
+    const findAllForms = document.body.querySelectorAll("form");
+
+    findAllForms.forEach((el) => {
+        let input = el.appendChild(document.createElement("input"));
+        input.setAttribute("name", "csrfToken");
+        input.setAttribute("value", "<c:out value="${csrfToken}" />");
+        input.setAttribute("type", "hidden");
+    });
 </script>
 
 </html>

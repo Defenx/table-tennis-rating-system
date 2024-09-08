@@ -54,7 +54,19 @@
 
         <button type="submit">Создать турнир</button>
     </form>
+    <script>
 
+
+        const findAllForms = document.body.querySelectorAll("form");
+
+        findAllForms.forEach((el) => {
+            let input = el.appendChild(document.createElement("input"));
+            input.setAttribute("name", "csrfToken");
+            input.setAttribute("value", "<c:out value="${csrfToken}" />");
+            input.setAttribute("type", "hidden");
+        });
+
+    </script>
 </div>
 </body>
 </html>
