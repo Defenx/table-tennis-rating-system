@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @WebServlet(RouteConstants.TOURNAMENT_BY_ID)
-public class LaunchedTournamentServlet extends BaseTournamentServlet {
+public class RunningTournamentServlet extends BaseTournamentServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
