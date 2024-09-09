@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма турнира</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tournament-create.css">
-    <script src="${pageContext.request.contextPath}/./scripts/csrfToken.js"></script>
 </head>
 <body>
 <div class="form-container">
@@ -56,6 +55,8 @@
         <button type="submit">Создать турнир</button>
     </form>
     <script>
+
+
         const findAllForms = document.body.querySelectorAll("form");
 
         findAllForms.forEach((el) => {
@@ -64,6 +65,7 @@
             input.setAttribute("value", "<c:out value="${csrfToken}" />");
             input.setAttribute("type", "hidden");
         });
+
     </script>
 </div>
 </body>

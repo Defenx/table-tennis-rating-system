@@ -17,7 +17,6 @@
             Добро пожаловать! <c:out value="${user.surname}"/> <c:out value="${user.firstname}"/>,
             Bаш рейтинг - <c:out value="${user.rating}"/>
         </h3>
-
     </div>
 
     <c:forEach var="tournament" items="${tournamentsWithStatusNew}">
@@ -27,6 +26,7 @@
                     <h2>Запись на турнир ${tournament.date}</h2>
 
                     <div class="timer" data-date="${tournament.date}" data-time="19:30:00" id="timer-${tournament.id}"></div>
+                    <h3>Зарегистрировано: ${fn:length(tournament.participants)}</h3>
 
                     <c:choose>
                         <c:when test="${fn:length(tournament.participants) == 0}">
@@ -128,6 +128,9 @@
         <form action="/statistic" method="get">
             <button class="button">Таблица Рейтинга</button>
         </form>
+        <form action="/Здесь_могла_быть_ваша_реклама" method="get">
+            <button class="button">Проходящие Турниры</button>
+        </form>
         <form action="/logout" method="post">
             <button class="button" type="submit" onclick="return checkingIntentions()">Выйти</button>
         </form>
@@ -145,15 +148,6 @@
         }
         return isConfirmed;
     }
-
-    const findAllForms = document.body.querySelectorAll("form");
-
-    findAllForms.forEach((el) => {
-        let input = el.appendChild(document.createElement("input"));
-        input.setAttribute("name", "csrfToken");
-        input.setAttribute("value", "<c:out value="${csrfToken}" />");
-        input.setAttribute("type", "hidden");
-    });
 </script>
 
 </html>

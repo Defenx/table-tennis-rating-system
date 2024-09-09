@@ -49,7 +49,6 @@
     </div>
 
 </div>
-
 <script type="text/javascript">
     const findAllForms = document.body.querySelectorAll("form");
 
