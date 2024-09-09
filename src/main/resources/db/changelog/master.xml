@@ -5,6 +5,6 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <include file="/db/changelog/add_tables.sql" />
-    <include file="/db/changelog/rating_type_change.sql" />
+    <include file="/db/changelog/change_field_rating_type.sql" />
 
 </databaseChangeLog>
