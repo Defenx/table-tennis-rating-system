@@ -10,9 +10,9 @@
 <body>
 <div>
     <h2>Турнир в процессе!</h2>
-    <h2><c:out value="Раунд ${stage}"/></h2>
-    <h2><c:out value="Average rating: ${requestScope.avg}"/></h2>
-    <c:forEach var="match" items="${requestScope.matches}">
+    <h2><c:out value="Раунд ${requestScope.tournament.stage}"/></h2>
+    <h2><c:out value="Average rating: ${requestScope.averageRating}"/></h2>
+    <c:forEach var="match" items="${requestScope.tournament.matches}">
         <div style="display: flex">
             <h2 style="color: blue"><c:out
                     value="${match.user1.surname} ${match.user1.firstname}"/></h2>

@@ -2,20 +2,21 @@ package service;
 
 import dao.TournamentDao;
 import dao.TournamentParticipantDao;
-import entity.Match;
 import entity.Tournament;
 import entity.TournamentParticipant;
 import entity.User;
 import lombok.RequiredArgsConstructor;
-import service.tournament.run.ParticipantsSplitter;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 public class TournamentService {
     private final TournamentDao tournamentDao;
     private final TournamentParticipantDao tournamentParticipantDao;
+    private final UserService userService;
 
     public Tournament getTournamentById(UUID tournamentId) {
         return tournamentDao.getTournamentById(tournamentId);
@@ -56,19 +57,28 @@ public class TournamentService {
     }
 
     public void runTournament(Tournament tournament) {
-        List<Match> matches = ParticipantsSplitter.splitParticipants(tournament);
-        tournamentDao.runTournament(tournament, matches);
-        Match incompleteMatch = tournament.getMatches().stream().filter(match -> match.getUser2() == null).findFirst().orElse(null);
-        if (incompleteMatch != null) {
-            User magicUser = User.builder()
-                    .firstname("user")
-                    .surname("Magic")
-                    .build();
-            incompleteMatch.setUser2(magicUser);
+        if (tournament.getParticipants().size() % 2 != 0) {
+            addMagicUserToTournament(tournament);
         }
+        tournamentDao.runTournament(tournament);
     }
 
     public List<Tournament> getLaunchedTournaments() {
         return tournamentDao.getLaunchedTournaments();
+    }
+
+    private void addMagicUserToTournament(Tournament tournament) {
+        int rating = (int) tournament.getParticipants().stream()
+                .map(p -> p.getUser().getRating())
+                .filter(Objects::nonNull)
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElseThrow(() -> new RuntimeException("Unable to calculate average rating"));
+        Optional<User> magicUser = userService.findByEmail("fake@mail.com");
+
+        if (magicUser.isPresent()) {
+            userService.updateUserRating(magicUser.get(), rating);
+            tournamentParticipantDao.participateUserToTournament(magicUser.get(), tournament);
+        }
     }
 }

@@ -36,4 +36,8 @@ public class UserService {
     public Optional<User> findByEmail(String email) {
         return userDao.findByEmail(email);
     }
+
+    public void updateUserRating(User user, int rating) {
+        userDao.updateUserRating(user,rating);
+    }
 }

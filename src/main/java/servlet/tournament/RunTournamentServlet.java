@@ -21,6 +21,6 @@ public class RunTournamentServlet extends BaseTournamentServlet {
         Tournament tournament = tournamentService.getTournamentById(tournamentId);
         tournamentService.runTournament(tournament);
 
-        resp.sendRedirect(RouteConstants.LAUNCHED_TOURNAMENTS);
+        resp.sendRedirect(RouteConstants.TOURNAMENT_BY_ID.replace("*", tournamentId.toString()));
     }
 }
