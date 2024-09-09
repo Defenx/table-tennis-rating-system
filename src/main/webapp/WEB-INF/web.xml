@@ -32,10 +32,12 @@
         <filter-class>filter.csrf.ValidateCsrfToken</filter-class>
     </filter>
 
+
     <filter-mapping>
         <filter-name>LoadCsrfToken</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
     <filter-mapping>
         <filter-name>ValidateCsrfToken</filter-name>
         <url-pattern>/*</url-pattern>
