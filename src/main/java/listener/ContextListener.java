@@ -60,7 +60,7 @@ public class ContextListener implements ServletContextListener {
         var userDao = new UserDao(sessionFactory);
         var tournamentDao = new TournamentDao(sessionFactory);
         var userService = initUserService(userDao);
-        var tournamentService = initTournamentService(tournamentDao, sessionFactory);
+        var tournamentService = initTournamentService(tournamentDao, userService, sessionFactory);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
         var validationService = initValidation(userService);
         var tournamentCreateService = initTournamentCreateService(tournamentDao);
@@ -117,6 +117,7 @@ public class ContextListener implements ServletContextListener {
         var maxLengthValidator = new MaxLengthValidator(16);
         var specialCharacterValidator = new SpecialCharacterValidator(1);
         var spaceSymbolsValidator = new SpaceSymbolsValidator();
+
 
         Map<String, Map<String, List<Validator>>> routesToValidationMap =
                 Map.of(
@@ -176,9 +177,9 @@ public class ContextListener implements ServletContextListener {
         return new UserService(userDao, bCryptPasswordEncoder);
     }
 
-    private TournamentService initTournamentService(TournamentDao tournamentDao, SessionFactory sessionFactory){
+    private TournamentService initTournamentService(TournamentDao tournamentDao, UserService userService, SessionFactory sessionFactory){
         var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
-        return new TournamentService(tournamentDao, tournamentParticipantDao);
+        return new TournamentService(tournamentDao, tournamentParticipantDao, userService);
     }
 
     private TournamentCreateService initTournamentCreateService(TournamentDao tournamentDao) {

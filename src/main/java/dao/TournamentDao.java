@@ -1,7 +1,12 @@
 package dao;
 
+import dao.tournamentDaoHandler.AverageRatingCalculator;
+import dao.tournamentDaoHandler.ParticipantsSplitter;
 import entity.Extension;
+import entity.Match;
 import entity.Tournament;
+import enums.ExtensionName;
+import enums.Status;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -65,6 +70,31 @@ public class TournamentDao {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.remove(tournament);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
+
+    public void runTournament(Tournament tournament) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            List<Match> matches = ParticipantsSplitter.distribute(tournament);
+            Extension extension = Extension.builder()
+                    .tournament(tournament)
+                    .name(ExtensionName.AVERAGE_RATING)
+                    .value(String.valueOf(AverageRatingCalculator.calculate(tournament.getParticipants())))
+                    .build();
+            tournament.getExtensions().add(extension);
+            tournament.setStage(1);
+            tournament.setStatus(Status.PROCESSING);
+            tournament.setMatches(matches);
+            session.merge(tournament);
+
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {

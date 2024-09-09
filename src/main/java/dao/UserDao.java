@@ -78,4 +78,18 @@ public class UserDao {
         }
     }
 
+    public void updateUserRating(User user, int rating) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            user.setRating(rating);
+            session.merge(user);
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw e;
+        }
+    }
 }
