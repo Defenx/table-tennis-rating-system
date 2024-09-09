@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.UuidGenerator;
+import java.math.BigDecimal;
 
 import java.util.UUID;
 
@@ -37,7 +38,7 @@ public class User {
 
     private String surname;
 
-    private Integer rating;
+    private BigDecimal rating;
 
     @Enumerated(EnumType.STRING)
     private Role role;
