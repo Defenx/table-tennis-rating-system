@@ -8,7 +8,7 @@ public class EmptinessValidator implements Validator {
 
     public EmptinessValidator() {
         this.errorMessages = List.of(
-                "The field can not be empty"
+                "Поле не может быть пустым"
         );
     }
 
