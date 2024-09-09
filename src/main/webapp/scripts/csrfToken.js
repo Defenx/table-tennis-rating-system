@@ -1,21 +1,26 @@
-let builder = String();
 let url = window.location.href;
 let urlParametersIndex = url.indexOf("?");
-let path = url.substring(0, urlParametersIndex);
-let parameters = url.substring(urlParametersIndex + 1);
-let parametersArray = parameters.split("&");
+let path;
+let parameters;
+let parametersArray;
+let newUrl = "";
 
-parametersArray = parametersArray.filter((el) => !el.includes("csrfToken"));
+if (urlParametersIndex > -1) {
 
-builder += path;
+    path = url.substring(0, urlParametersIndex);
+    parameters = url.substring(urlParametersIndex + 1);
+    parametersArray = parameters.split("&");
+    parametersArray = parametersArray.filter((el) => !el.includes("csrfToken"));
 
-if (parametersArray.length !== 0) {
-    builder += "?";
+    if (parametersArray.length > 1) {
+        path += "?";
+    }
+
+    newUrl += path;
 
     for (let parameter of parametersArray) {
-        builder += parameter;
+        newUrl += parameter;
     }
 }
 
-
-window.history.pushState({}, "/", new URL(builder));
+window.history.pushState({}, "/", newUrl === "" ? new URL(url) : new URL(newUrl));

@@ -35,7 +35,6 @@ public class ValidateCsrfToken extends BaseFilter {
                         && csrfToken != null
                         && csrfPreventionSaltCache.getIfPresent(csrfToken) != null
         ) {
-            csrfPreventionSaltCache.cleanUp();
             chain.doFilter(request, response);
         } else {
             throw new IllegalStateException("CSRF error!");

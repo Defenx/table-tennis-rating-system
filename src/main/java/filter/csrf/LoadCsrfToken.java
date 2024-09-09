@@ -15,7 +15,7 @@ import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings(value = "unchecked")
-public class LoadSalt extends BaseFilter {
+public class LoadCsrfToken extends BaseFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
