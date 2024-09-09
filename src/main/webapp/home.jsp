@@ -25,6 +25,7 @@
                     <h2>Запись на турнир ${tournament.date}</h2>
 
                     <div class="timer" data-date="${tournament.date}" data-time="19:30:00" id="timer-${tournament.id}"></div>
+                    <h3>Зарегистрировано: ${fn:length(tournament.participants)}</h3>
 
                     <c:choose>
                         <c:when test="${fn:length(tournament.participants) == 0}">
