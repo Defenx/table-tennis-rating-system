@@ -16,10 +16,15 @@ public class ValidateCsrfToken extends BaseFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if(request.getServletPath().equals(RouteConstants.ROOT) || request.getMethod().equals(FormMethod.GET.toString())){
+        if(
+                request.getServletPath().equals(RouteConstants.ROOT)
+                        || request.getMethod().equals(FormMethod.GET.toString())
+                        || request.getServletPath().equals(RouteConstants.LOGIN)
+        ){
             chain.doFilter(request, response);
             return;
         }
+
         String csrfToken = request.getParameter(SessionAttributes.CSRF_TOKEN_ATTRIBUTE);
 
         Cache<String, Boolean> csrfPreventionSaltCache = (Cache<String, Boolean>) request
