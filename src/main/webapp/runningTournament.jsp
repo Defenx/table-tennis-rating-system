@@ -25,9 +25,9 @@
                     <c:choose>
                         <c:when test="${user.role == 'ADMIN'}">
                             <form action="/tournament/round" method="post">
-                                <input type="number" style="color: black;" class="score-input"/>
+                                <input type="number" style="color: black;" class="score-input" min="0"/>
                                 <button class="button">Внести</button>
-                                <input type="number" style="color: black;" class="score-input"/>
+                                <input type="number" style="color: black;" class="score-input" min="0"/>
                             </form>
                         </c:when>
                         <c:otherwise>

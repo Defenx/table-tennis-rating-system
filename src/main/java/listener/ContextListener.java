@@ -26,6 +26,7 @@ import service.login.CredentialsExtractor;
 import service.tournament.create.TournamentCreateExtractorService;
 import service.tournament.create.TournamentCreateService;
 import service.tournament.create.TournamentMapper;
+import service.tournament.running.ExtensionVariableTypeResolver;
 import service.validation.ValidationRegistry;
 import service.validation.ValidationService;
 import service.validation.validator.*;
@@ -47,6 +48,7 @@ public class ContextListener implements ServletContextListener {
     public static final String TOURNAMENT_CREATE_EXTRACTOR_SERVICE = "tournamentCreateExtractorService";
     public static final String TOURNAMENT_SERVICE = "tournamentService";
     public static final String TOURNAMENT_ATTRIBUTE_RESOLVER = "tournamentAttributeResolver";
+    public static final String EXTENSION_VARIABLE_TYPE_RESOLVER = "extensionVariableTypeResolver";
 
     @Override
     @SneakyThrows
@@ -65,6 +67,7 @@ public class ContextListener implements ServletContextListener {
         var validationService = initValidation(userService);
         var tournamentCreateService = initTournamentCreateService(tournamentDao);
         var tournamentCreateExtractorService = new TournamentCreateExtractorService();
+        var extensionVariableTypeResolver = new ExtensionVariableTypeResolver();
 
         Map<String, Object> attributes = Map.ofEntries(
                 Map.entry(SESSION_FACTORY, sessionFactory),
@@ -76,7 +79,8 @@ public class ContextListener implements ServletContextListener {
                 Map.entry(TOURNAMENT_ATTRIBUTE_RESOLVER, tournamentAttributeResolver),
                 Map.entry(VALIDATION_SERVICE, validationService),
                 Map.entry(TOURNAMENT_CREATE_SERVICE, tournamentCreateService),
-                Map.entry(TOURNAMENT_CREATE_EXTRACTOR_SERVICE, tournamentCreateExtractorService)
+                Map.entry(TOURNAMENT_CREATE_EXTRACTOR_SERVICE, tournamentCreateExtractorService),
+                Map.entry(EXTENSION_VARIABLE_TYPE_RESOLVER, extensionVariableTypeResolver)
         );
 
         attributes.forEach(servletContext::setAttribute);

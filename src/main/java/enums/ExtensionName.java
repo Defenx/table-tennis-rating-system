@@ -11,9 +11,11 @@ public enum ExtensionName {
             return extensionValue == null ? "нет" : "да";
         }
     },
-    AVERAGE_RATING,
     TRAINING_SETS,
-    PLAYOFF_SETS;
+    PLAYOFF_SETS,
+    NUMBER_OF_PARTICIPANTS,
+    AVERAGE_RATING;
+
 
     public Extension buildExtension(String extensionValue) {
         return Extension.builder()

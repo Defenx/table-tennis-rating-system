@@ -3,7 +3,6 @@ package servlet.tournament;
 import constant.RequestAttributes;
 import constant.RouteConstants;
 import constant.RouteConstantsJSP;
-import entity.Extension;
 import entity.Tournament;
 import enums.ExtensionName;
 import jakarta.servlet.ServletException;
@@ -22,14 +21,7 @@ public class RunningTournamentServlet extends BaseTournamentServlet {
         UUID tournamentId = UUID.fromString(pathInfo.substring(1));
         Tournament tournament = tournamentService.getTournamentById(tournamentId);
 
-        int trainingSets = Integer.MAX_VALUE;
-        for (Extension extension : tournament.getExtensions()) {
-            if (extension.getName().equals(ExtensionName.TRAINING_SETS)) {
-                trainingSets = Integer.parseInt(extension.getValue());
-            }
-            break;
-        }
-
+        int trainingSets = extensionVariableTypeResolver.getTrainingSets(tournament);
         if (tournament.getStage() <= trainingSets) {
             req.setAttribute(RequestAttributes.TOURNAMENT, tournament);
             req.setAttribute(RequestAttributes.AVERAGE_RATING, tournament.getExtensions().stream()
@@ -41,6 +33,5 @@ public class RunningTournamentServlet extends BaseTournamentServlet {
             req.getRequestDispatcher(RouteConstantsJSP.LAUNCHED_TOURNAMENT_JSP).forward(req, resp);
         } else
             resp.sendRedirect(RouteConstants.HOME); // заглушка
-
     }
 }
