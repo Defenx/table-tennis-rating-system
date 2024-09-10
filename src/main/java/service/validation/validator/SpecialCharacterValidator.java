@@ -12,9 +12,9 @@ public class SpecialCharacterValidator implements Validator {
         this.requiredCount = requiredCount;
         this.specialCharacters = "!@#$%^&*()";
         this.errorMessages = List.of(
-                "The field must contain at least %d special %s (%s)".formatted(
+                "Поле должно содержать как минимум %d %s (%s)".formatted(
                         requiredCount,
-                        (requiredCount > 1 ? "characters" : "character"),
+                        (requiredCount > 1 ? "специальных символов" : "специальный символ"),
                         specialCharacters)
         );
     }
