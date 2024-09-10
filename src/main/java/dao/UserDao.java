@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -78,7 +79,7 @@ public class UserDao {
         }
     }
 
-    public void updateUserRating(User user, int rating) {
+    public void updateUserRating(User user, BigDecimal rating) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();

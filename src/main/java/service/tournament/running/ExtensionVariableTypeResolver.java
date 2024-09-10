@@ -4,6 +4,8 @@ import entity.Extension;
 import entity.Tournament;
 import enums.ExtensionName;
 
+import java.math.BigDecimal;
+
 public class ExtensionVariableTypeResolver {
 
     public int getTrainingSets(Tournament tournament) {
@@ -22,8 +24,8 @@ public class ExtensionVariableTypeResolver {
         return Integer.parseInt(getExtension(ExtensionName.NUMBER_OF_PARTICIPANTS,tournament));
     }
 
-    public double getAverageRating(Tournament tournament) {
-        return Double.parseDouble(getExtension(ExtensionName.AVERAGE_RATING,tournament));
+    public BigDecimal getAverageRating(Tournament tournament) {
+        return new BigDecimal(getExtension(ExtensionName.AVERAGE_RATING,tournament));
     }
 
     /**
@@ -32,7 +34,7 @@ public class ExtensionVariableTypeResolver {
      * @param extensionName
      * @param tournament
      * @return Возвращает строковое представление значения по названию ExtensionName.
-     *
+     * <p>
      * В ином случае возвращаем строку с ошибкой, которой в принципе не должно быть,
      * и она указывает на то что ошибка в базе или при создании турнира возникла ошибка
      * при создании Extension

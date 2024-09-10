@@ -8,6 +8,8 @@ import enums.Status;
 import lombok.RequiredArgsConstructor;
 import service.tournament.TransactionHandler;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -74,12 +76,7 @@ public class TournamentService {
     }
 
     private void addMagicUserToTournament(Tournament tournament) {
-        int rating = (int) tournament.getParticipants().stream()
-                .map(p -> p.getUser().getRating())
-                .filter(Objects::nonNull)
-                .mapToInt(Integer::intValue)
-                .average()
-                .orElseThrow(() -> new RuntimeException("Unable to calculate average rating"));
+        BigDecimal rating = calculateAverageRating(tournament.getParticipants());
 
         Optional<User> magicUser = userService.findByEmail("fake@mail.com");
         if (magicUser.isPresent()) {
@@ -120,12 +117,13 @@ public class TournamentService {
         return listOfMatches;
     }
 
-    public double calculateAverageRating(List<TournamentParticipant> participants) {
-        return participants.stream()
-                .map(p -> p.getUser().getRating())
-                .filter(Objects::nonNull)
-                .mapToInt(Integer::intValue)
-                .average()
-                .orElseThrow(() -> new RuntimeException("Unable to calculate average rating"));
+    public BigDecimal calculateAverageRating(List<TournamentParticipant> participants) {
+        BigDecimal avg = BigDecimal.valueOf(0.0);
+        for (TournamentParticipant p : participants) {
+            BigDecimal rating = p.getUser().getRating();
+            avg = avg.add(rating);
+        }
+        avg = avg.divide(BigDecimal.valueOf(participants.size()), 0, RoundingMode.HALF_UP);
+        return avg;
     }
 }

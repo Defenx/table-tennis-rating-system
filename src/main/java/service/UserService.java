@@ -38,7 +38,7 @@ public class UserService {
         return userDao.findByEmail(email);
     }
 
-    public void updateUserRating(User user, int rating) {
+    public void updateUserRating(User user, BigDecimal rating) {
         userDao.updateUserRating(user,rating);
     }
 }
