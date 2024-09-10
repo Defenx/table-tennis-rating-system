@@ -16,13 +16,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
 public class TournamentMapperTest {
 
     List<Extension> extensions = List.of(
             Extension.builder().name(ExtensionName.IS_RATING).value("on").build(),
-            Extension.builder().name(ExtensionName.PLAYOFF_SETS).value("1").build(),
-            Extension.builder().name(ExtensionName.TRAINING_SETS).value("1").build()
+            Extension.builder().name(ExtensionName.VICTORIES_IN_PLAYOFF_MATCHES).value("1").build(),
+            Extension.builder().name(ExtensionName.VICTORIES_IN_TRAINING_MATCHES).value("1").build(),
+            Extension.builder().name(ExtensionName.AVERAGE_RATING).value("100").build(),
+            Extension.builder().name(ExtensionName.NUMBER_OF_TRAINING_MATCHES).value("10").build(),
+            Extension.builder().name(ExtensionName.NUMBER_OF_PARTICIPANTS).value("10").build()
     );
     final TournamentDto tournamentDto =
             new TournamentDto(

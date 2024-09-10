@@ -11,8 +11,9 @@ public enum ExtensionName {
             return extensionValue == null ? "нет" : "да";
         }
     },
-    TRAINING_SETS,
-    PLAYOFF_SETS,
+    VICTORIES_IN_TRAINING_MATCHES,
+    VICTORIES_IN_PLAYOFF_MATCHES,
+    NUMBER_OF_TRAINING_MATCHES,
     NUMBER_OF_PARTICIPANTS,
     AVERAGE_RATING;
 
