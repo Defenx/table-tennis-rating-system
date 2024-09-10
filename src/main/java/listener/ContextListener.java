@@ -23,6 +23,7 @@ import service.TournamentService;
 import service.UserService;
 import service.home.TournamentAttributeResolver;
 import service.login.CredentialsExtractor;
+import service.tournament.TransactionHandler;
 import service.tournament.create.TournamentCreateExtractorService;
 import service.tournament.create.TournamentCreateService;
 import service.tournament.create.TournamentMapper;
@@ -183,7 +184,8 @@ public class ContextListener implements ServletContextListener {
 
     private TournamentService initTournamentService(TournamentDao tournamentDao, UserService userService, SessionFactory sessionFactory){
         var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
-        return new TournamentService(tournamentDao, tournamentParticipantDao, userService);
+        var transactionHandler = new TransactionHandler(sessionFactory);
+        return new TournamentService(tournamentDao, tournamentParticipantDao, userService, transactionHandler);
     }
 
     private TournamentCreateService initTournamentCreateService(TournamentDao tournamentDao) {

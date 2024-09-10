@@ -2,21 +2,20 @@ package service;
 
 import dao.TournamentDao;
 import dao.TournamentParticipantDao;
-import entity.Tournament;
-import entity.TournamentParticipant;
-import entity.User;
+import entity.*;
+import enums.ExtensionName;
+import enums.Status;
 import lombok.RequiredArgsConstructor;
+import service.tournament.TransactionHandler;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class TournamentService {
     private final TournamentDao tournamentDao;
     private final TournamentParticipantDao tournamentParticipantDao;
     private final UserService userService;
+    private final TransactionHandler transactionHandler;
 
     public Tournament getTournamentById(UUID tournamentId) {
         return tournamentDao.getTournamentById(tournamentId);
@@ -60,7 +59,18 @@ public class TournamentService {
         if (tournament.getParticipants().size() % 2 != 0) {
             addMagicUserToTournament(tournament);
         }
-        tournamentDao.runTournament(tournament);
+        transactionHandler.executeWithTransaction(session -> {
+            List<Match> matches = matchmaker(tournament);
+            tournament.getExtensions().add(Extension.builder()
+                    .tournament(tournament)
+                    .name(ExtensionName.AVERAGE_RATING)
+                    .value(String.valueOf(calculateAverageRating(tournament.getParticipants())))
+                    .build());
+            tournament.setStage(1);
+            tournament.setStatus(Status.PROCESSING);
+            tournament.setMatches(matches);
+            session.merge(tournament);
+        });
     }
 
     private void addMagicUserToTournament(Tournament tournament) {
@@ -76,5 +86,55 @@ public class TournamentService {
             userService.updateUserRating(magicUser.get(), rating);
             tournamentParticipantDao.participateUserToTournament(magicUser.get(), tournament);
         }
+    }
+
+    public List<Match> matchmaker(Tournament tournament) {
+        List<TournamentParticipant> participants = tournament.getParticipants();
+        if (!participants.isEmpty() && participants.size() % 2 == 0) {
+            List<Match> listOfMatches = new ArrayList<>();
+            participants.sort(Comparator.comparing((TournamentParticipant tp) -> tp.getUser().getRating()).reversed());
+
+            List<TournamentParticipant> firstPartParticipants;
+            List<TournamentParticipant> secondPartParticipants;
+
+            if ((participants.size() / 2) % 2 != 0) {
+                firstPartParticipants = participants.subList(0, participants.size() / 2 + 1);
+                secondPartParticipants = participants.subList(participants.size() / 2 + 1, participants.size());
+            } else {
+                firstPartParticipants = participants.subList(0, participants.size() / 2);
+                secondPartParticipants = participants.subList(participants.size() / 2, participants.size());
+            }
+
+            Collections.shuffle(firstPartParticipants);
+            Collections.shuffle(secondPartParticipants);
+            listOfMatches.addAll(distributeParticipantsForMatches(firstPartParticipants, tournament));
+            listOfMatches.addAll(distributeParticipantsForMatches(secondPartParticipants, tournament));
+
+            return listOfMatches;
+
+        } else
+            throw new RuntimeException("The number of participants is not even");
+    }
+
+    public List<Match> distributeParticipantsForMatches(List<TournamentParticipant> participants, Tournament tournament) {
+        List<Match> listOfMatches = new ArrayList<>();
+        for (int i = 0; i < participants.size(); i = i + 2) {
+            Match match = Match.builder()
+                    .tournament(tournament)
+                    .user1(participants.get(i).getUser())
+                    .user2(participants.get(i + 1).getUser())
+                    .build();
+            listOfMatches.add(match);
+        }
+        return listOfMatches;
+    }
+
+    public double calculateAverageRating(List<TournamentParticipant> participants) {
+        return participants.stream()
+                .map(p -> p.getUser().getRating())
+                .filter(Objects::nonNull)
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElseThrow(() -> new RuntimeException("Unable to calculate average rating"));
     }
 }
