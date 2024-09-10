@@ -4,7 +4,6 @@ import constant.RequestAttributes;
 import constant.RouteConstants;
 import constant.RouteConstantsJSP;
 import entity.Tournament;
-import enums.ExtensionName;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,15 +20,9 @@ public class RunningTournamentServlet extends BaseTournamentServlet {
         UUID tournamentId = UUID.fromString(pathInfo.substring(1));
         Tournament tournament = tournamentService.getTournamentById(tournamentId);
 
-        int trainingSets = extensionVariableTypeResolver.getTrainingSets(tournament);
-        if (tournament.getStage() <= trainingSets) {
+        if (tournament.getStage() <= extensionVariableTypeResolver.getTrainingSets(tournament)) {
             req.setAttribute(RequestAttributes.TOURNAMENT, tournament);
-            req.setAttribute(RequestAttributes.AVERAGE_RATING, tournament.getExtensions().stream()
-                    .filter(extension -> extension.getName().equals(ExtensionName.AVERAGE_RATING))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Can`t get rating"))
-                    .getValue()
-            );
+            req.setAttribute(RequestAttributes.AVERAGE_RATING, extensionVariableTypeResolver.getAverageRating(tournament));
             req.getRequestDispatcher(RouteConstantsJSP.LAUNCHED_TOURNAMENT_JSP).forward(req, resp);
         } else
             resp.sendRedirect(RouteConstants.HOME); // заглушка
