@@ -17,8 +17,7 @@ public class ValidateCsrfToken extends BaseFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         if(
-                request.getServletPath().equals(RouteConstants.ROOT)
-                        || request.getMethod().equals(FormMethod.GET.toString())
+                        request.getMethod().equals(FormMethod.GET.name())
                         || request.getServletPath().equals(RouteConstants.LOGIN)
         ){
             chain.doFilter(request, response);

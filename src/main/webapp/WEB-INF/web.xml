@@ -33,14 +33,7 @@
     </filter>
 
 
-    <filter-mapping>
-        <filter-name>LoadCsrfToken</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>ValidateCsrfToken</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+
     <filter-mapping>
         <filter-name>MethodFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -51,6 +44,14 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>RootRedirectFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoadCsrfToken</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ValidateCsrfToken</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
