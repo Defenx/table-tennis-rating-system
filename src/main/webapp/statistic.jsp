@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Рейтинг пользователей</title>
     <link rel="stylesheet" href="static/css/statistic.css">
-    <script src="scripts/csrfToken.js"></script>
+    <script src="scripts/cutterCsrfToken.js"></script>
 </head>
 <body>
 <div class="container-main">
