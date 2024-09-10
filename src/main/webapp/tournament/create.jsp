@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="enums.ExtensionName"%>
 <%@page import="enums.TournamentType" %>
 
 <!DOCTYPE html>
@@ -37,18 +36,18 @@
         </div>
 
 
-            <label for="training_sets">Кол-во побед в тренировочных матчах</label>
-            <input type="number" id="training_sets"
-                   name="training_sets" min="1" max="5">
-            <c:forEach var="ValidationError" items="${training_setsValidationErrors}">
+            <label for="victories_in_training_matches">Кол-во побед в тренировочных матчах</label>
+            <input type="number" id="victories_in_training_matches"
+                   name="victories_in_training_matches" min="1" max="5">
+            <c:forEach var="ValidationError" items="${victories_in_training_matchesValidationErrors}">
                 <p class="validation-message">${ValidationError}</p>
             </c:forEach>
 
 
-            <label for="playoff_sets">Кол-во побед в плейофф матчах</label>
-            <input type="number" id="playoff_sets"
-                   name="playoff_sets" min="1" max="5">
-            <c:forEach var="ValidationError" items="${playoff_setsValidationErrors}">
+            <label for="victories_in_playoff_matches">Кол-во побед в плейофф матчах</label>
+            <input type="number" id="victories_in_playoff_matches"
+                   name="victories_in_playoff_matches" min="1" max="5">
+            <c:forEach var="ValidationError" items="${victories_in_playoff_matchesValidationErrors}">
                 <p class="validation-message">${ValidationError}</p>
             </c:forEach>
 
