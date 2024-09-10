@@ -23,25 +23,7 @@
         <filter-name>PermissionFilter</filter-name>
         <filter-class>filter.PermissionFilter</filter-class>
     </filter>
-    <filter>
-        <filter-name>LoadCsrfToken</filter-name>
-        <filter-class>filter.csrf.LoadCsrfToken</filter-class>
-    </filter>
-    <filter>
-        <filter-name>ValidateCsrfToken</filter-name>
-        <filter-class>filter.csrf.ValidateCsrfToken</filter-class>
-    </filter>
 
-
-    <filter-mapping>
-        <filter-name>LoadCsrfToken</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>ValidateCsrfToken</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
     <filter-mapping>
         <filter-name>MethodFilter</filter-name>
         <url-pattern>/*</url-pattern>
