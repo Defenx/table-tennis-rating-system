@@ -32,7 +32,7 @@ public class UserService {
                 .firstname(userData.firstname())
                 .surname(userData.surname())
                 .role(Role.USER)
-                .rating(BigDecimal.valueOf(100))
+                .rating(BigDecimal.valueOf(100, 0))
                 .build());
     }
 

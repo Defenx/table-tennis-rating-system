@@ -6,11 +6,14 @@ import entity.*;
 import enums.ExtensionName;
 import enums.Status;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.ListUtils;
 import service.tournament.TransactionHandler;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 public class TournamentService {
@@ -72,43 +75,42 @@ public class TournamentService {
     }
 
     public List<Match> matchmaker(Tournament tournament) {
-        List<TournamentParticipant> participants = tournament.getParticipants();
-        int size = participants.size();
-        if (size != 0 && size % 2 == 0) {
-            List<Match> listOfMatches = new ArrayList<>();
-            participants.sort(Comparator.comparing((TournamentParticipant tp) -> tp.getUser().getRating()).reversed());
+        var participants = tournament.getParticipants().stream()
+                .sorted(Comparator.comparing((TournamentParticipant p) -> p.getUser().getRating()).reversed())
+                .toList();
 
-            boolean even = (size / 2) % 2 == 0;
-            List<TournamentParticipant> firstPart = participants.subList(0, even ? (size / 2) : (size / 2) + 1);
-            List<TournamentParticipant> secondPart = participants.subList(even ? (size / 2) : (size / 2) + 1, size);
+        var halfOfParticipantsList = participants.size() / 2;
+        var partitionSize = participants.size() % 4 == 0 ? halfOfParticipantsList : halfOfParticipantsList + 1;
 
-            listOfMatches.addAll(distributeParticipantsForMatches(firstPart, tournament));
-            listOfMatches.addAll(distributeParticipantsForMatches(secondPart, tournament));
+        var partitions = ListUtils.partition(participants, partitionSize);
 
-            return listOfMatches;
-        } else
-            throw new RuntimeException("The number of participants is not even");
+        return partitions.stream()
+                .flatMap(partition -> distributeParticipantsForMatches(partition, tournament).stream())
+                .toList();
     }
 
-    public List<Match> distributeParticipantsForMatches(List<TournamentParticipant> participants, Tournament tournament) {
+    private List<Match> distributeParticipantsForMatches(List<TournamentParticipant> participants, Tournament tournament) {
         Collections.shuffle(participants);
-        List<Match> listOfMatches = new ArrayList<>();
-        for (int i = 0; i < participants.size(); i = i + 2) {
-            listOfMatches.add(Match.builder()
-                    .tournament(tournament)
-                    .user1(participants.get(i).getUser())
-                    .user2(participants.get(i + 1).getUser())
-                    .build());
-        }
-        return listOfMatches;
+
+        return IntStream.range(0, participants.size() / 2).mapToObj(i ->
+                        buildMatch(participants, tournament, i))
+                .collect(Collectors.toList());
     }
 
-    public BigDecimal calculateAverageRating(List<TournamentParticipant> participants) {
-        BigDecimal average = BigDecimal.valueOf(0);
-        for (TournamentParticipant participant : participants) {
-            average = average.add(participant.getUser().getRating());
-        }
-        average = average.divide(BigDecimal.valueOf(participants.size()), 0, RoundingMode.HALF_UP);
-        return average;
+    private Match buildMatch(List<TournamentParticipant> participants, Tournament tournament, int i) {
+        return Match.builder()
+                .tournament(tournament)
+                .user1(participants.get(i * 2).getUser())
+                .user2(participants.get(i * 2 + 1).getUser())
+                .build();
+    }
+
+    private BigDecimal calculateAverageRating(List<TournamentParticipant> participants) {
+        var average = participants.stream()
+                .map(participant -> participant.getUser().getRating())
+                .reduce(BigDecimal::add)
+                .map(sum -> sum.divide(BigDecimal.valueOf(participants.size()), RoundingMode.HALF_EVEN));
+
+        return average.orElse(BigDecimal.ZERO);
     }
 }
