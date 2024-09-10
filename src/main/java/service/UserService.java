@@ -7,6 +7,7 @@ import enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class UserService {
                 .firstname(userData.firstname())
                 .surname(userData.surname())
                 .role(Role.USER)
-                .rating(1000)
+                .rating(BigDecimal.valueOf(100))
                 .build());
     }
     public Optional<User> findByEmail(String email) {

@@ -25,6 +25,7 @@
                     <h2>Запись на турнир ${tournament.date}</h2>
 
                     <div class="timer" data-date="${tournament.date}" data-time="19:30:00" id="timer-${tournament.id}"></div>
+                    <h3>Зарегистрировано: ${fn:length(tournament.participants)}</h3>
 
                     <c:choose>
                         <c:when test="${fn:length(tournament.participants) == 0}">
@@ -125,6 +126,9 @@
     <div class="container-buttons-navigation">
         <form action="/statistic" method="get">
             <button class="button">Таблица Рейтинга</button>
+        </form>
+        <form action="/Здесь_могла_быть_ваша_реклама" method="get">
+            <button class="button">Проходящие Турниры</button>
         </form>
         <form action="/logout" method="post">
             <button class="button" type="submit" onclick="return checkingIntentions()">Выйти</button>
