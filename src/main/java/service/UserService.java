@@ -20,7 +20,8 @@ public class UserService {
         return userDao.findByEmail(email)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()));
     }
-    public List<User> getOrderByRatingAsc(){
+
+    public List<User> getOrderByRatingAsc() {
         return userDao.findAllOrderByRatingAsc();
     }
 
@@ -34,11 +35,8 @@ public class UserService {
                 .rating(BigDecimal.valueOf(100))
                 .build());
     }
+
     public Optional<User> findByEmail(String email) {
         return userDao.findByEmail(email);
-    }
-
-    public void updateUserRating(User user, BigDecimal rating) {
-        userDao.updateUserRating(user,rating);
     }
 }

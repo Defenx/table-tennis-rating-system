@@ -9,7 +9,6 @@ import org.hibernate.Transaction;
 import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -76,21 +75,6 @@ public class UserDao {
         } catch (HibernateException he) {
             he.printStackTrace();
             throw new RuntimeException(he);
-        }
-    }
-
-    public void updateUserRating(User user, BigDecimal rating) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            user.setRating(rating);
-            session.merge(user);
-            transaction.commit();
-        } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw e;
         }
     }
 }

@@ -4,12 +4,14 @@ import constant.RequestAttributes;
 import constant.RouteConstants;
 import constant.RouteConstantsJSP;
 import entity.Tournament;
+import enums.ExtensionName;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @WebServlet(RouteConstants.TOURNAMENT_BY_ID)
@@ -20,9 +22,12 @@ public class RunningTournamentServlet extends BaseTournamentServlet {
         UUID tournamentId = UUID.fromString(pathInfo.substring(1));
         Tournament tournament = tournamentService.getTournamentById(tournamentId);
 
-        if (tournament.getStage() <= extensionVariableTypeResolver.getTrainingSets(tournament)) {
+        int trainingSets = extensionVariableTypeResolver.getExtensionValue(ExtensionName.TRAINING_SETS, tournament);
+        BigDecimal averageRating = extensionVariableTypeResolver.getExtensionValue(ExtensionName.AVERAGE_RATING, tournament);
+
+        if (tournament.getStage() <= trainingSets) {
             req.setAttribute(RequestAttributes.TOURNAMENT, tournament);
-            req.setAttribute(RequestAttributes.AVERAGE_RATING, extensionVariableTypeResolver.getAverageRating(tournament));
+            req.setAttribute(RequestAttributes.AVERAGE_RATING, averageRating);
             req.getRequestDispatcher(RouteConstantsJSP.LAUNCHED_TOURNAMENT_JSP).forward(req, resp);
         } else
             resp.sendRedirect(RouteConstants.HOME); // заглушка

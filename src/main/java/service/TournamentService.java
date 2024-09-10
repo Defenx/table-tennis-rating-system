@@ -16,7 +16,6 @@ import java.util.*;
 public class TournamentService {
     private final TournamentDao tournamentDao;
     private final TournamentParticipantDao tournamentParticipantDao;
-    private final UserService userService;
     private final TransactionHandler transactionHandler;
 
     public Tournament getTournamentById(UUID tournamentId) {
@@ -58,9 +57,6 @@ public class TournamentService {
     }
 
     public void runTournament(Tournament tournament) {
-        if (tournament.getParticipants().size() % 2 != 0) {
-            addMagicUserToTournament(tournament);
-        }
         transactionHandler.executeWithTransaction(session -> {
             List<Match> matches = matchmaker(tournament);
             tournament.getExtensions().add(Extension.builder()
@@ -73,16 +69,6 @@ public class TournamentService {
             tournament.setMatches(matches);
             session.merge(tournament);
         });
-    }
-
-    private void addMagicUserToTournament(Tournament tournament) {
-        BigDecimal rating = calculateAverageRating(tournament.getParticipants());
-
-        Optional<User> magicUser = userService.findByEmail("fake@mail.com");
-        if (magicUser.isPresent()) {
-            userService.updateUserRating(magicUser.get(), rating);
-            tournamentParticipantDao.participateUserToTournament(magicUser.get(), tournament);
-        }
     }
 
     public List<Match> matchmaker(Tournament tournament) {
@@ -118,12 +104,11 @@ public class TournamentService {
     }
 
     public BigDecimal calculateAverageRating(List<TournamentParticipant> participants) {
-        BigDecimal avg = BigDecimal.valueOf(0.0);
-        for (TournamentParticipant p : participants) {
-            BigDecimal rating = p.getUser().getRating();
-            avg = avg.add(rating);
+        BigDecimal average = BigDecimal.valueOf(0);
+        for (TournamentParticipant participant : participants) {
+            average = average.add(participant.getUser().getRating());
         }
-        avg = avg.divide(BigDecimal.valueOf(participants.size()), 0, RoundingMode.HALF_UP);
-        return avg;
+        average = average.divide(BigDecimal.valueOf(participants.size()), 0, RoundingMode.HALF_UP);
+        return average;
     }
 }

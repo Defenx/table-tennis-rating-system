@@ -5,46 +5,36 @@ import entity.Tournament;
 import enums.ExtensionName;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class ExtensionVariableTypeResolver {
 
-    public int getTrainingSets(Tournament tournament) {
-        return Integer.parseInt(getExtension(ExtensionName.TRAINING_SETS,tournament));
+    private final Map<ExtensionName, Function<String, ?>> conversionMap;
+
+    public ExtensionVariableTypeResolver() {
+        conversionMap = new HashMap<>();
+        conversionMap.put(ExtensionName.TRAINING_SETS, Integer::parseInt);
+        conversionMap.put(ExtensionName.PLAYOFF_SETS, Integer::parseInt);
+        conversionMap.put(ExtensionName.IS_RATING, value -> value);
+        conversionMap.put(ExtensionName.NUMBER_OF_PARTICIPANTS, Integer::parseInt);
+        conversionMap.put(ExtensionName.AVERAGE_RATING, BigDecimal::new);
     }
 
-    public int getPlayOffSets(Tournament tournament) {
-        return Integer.parseInt(getExtension(ExtensionName.PLAYOFF_SETS,tournament));
+    public <T> T getExtensionValue(ExtensionName extensionName, Tournament tournament) {
+        String extensionValue = getExtension(extensionName, tournament);
+        Function<String, ?> converter = conversionMap.get(extensionName);
+
+        return (T) converter.apply(extensionValue);
     }
 
-    public String getIsRatingValue(Tournament tournament) {
-        return getExtension(ExtensionName.IS_RATING,tournament);
-    }
-
-    public int getNumberOfParticipants(Tournament tournament) {
-        return Integer.parseInt(getExtension(ExtensionName.NUMBER_OF_PARTICIPANTS,tournament));
-    }
-
-    public BigDecimal getAverageRating(Tournament tournament) {
-        return new BigDecimal(getExtension(ExtensionName.AVERAGE_RATING,tournament));
-    }
-
-    /**
-     * Получаем значение value класса Extension по его названию.
-     *
-     * @param extensionName
-     * @param tournament
-     * @return Возвращает строковое представление значения по названию ExtensionName.
-     * <p>
-     * В ином случае возвращаем строку с ошибкой, которой в принципе не должно быть,
-     * и она указывает на то что ошибка в базе или при создании турнира возникла ошибка
-     * при создании Extension
-     */
     public String getExtension(ExtensionName extensionName, Tournament tournament) {
         for (Extension extension : tournament.getExtensions()) {
             if (extension.getName().equals(extensionName)) {
                 return extension.getValue();
             }
         }
-        return  "Не удалось найти расширение с именем " + extensionName.toString();
+        throw new IllegalArgumentException("Не удалось найти расширение с именем " + extensionName);
     }
 }

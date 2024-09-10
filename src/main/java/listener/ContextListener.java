@@ -63,7 +63,7 @@ public class ContextListener implements ServletContextListener {
         var userDao = new UserDao(sessionFactory);
         var tournamentDao = new TournamentDao(sessionFactory);
         var userService = initUserService(userDao);
-        var tournamentService = initTournamentService(tournamentDao, userService, sessionFactory);
+        var tournamentService = initTournamentService(tournamentDao, sessionFactory);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
         var validationService = initValidation(userService);
         var tournamentCreateService = initTournamentCreateService(tournamentDao);
@@ -182,10 +182,10 @@ public class ContextListener implements ServletContextListener {
         return new UserService(userDao, bCryptPasswordEncoder);
     }
 
-    private TournamentService initTournamentService(TournamentDao tournamentDao, UserService userService, SessionFactory sessionFactory){
+    private TournamentService initTournamentService(TournamentDao tournamentDao, SessionFactory sessionFactory){
         var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
         var transactionHandler = new TransactionHandler(sessionFactory);
-        return new TournamentService(tournamentDao, tournamentParticipantDao, userService, transactionHandler);
+        return new TournamentService(tournamentDao, tournamentParticipantDao, transactionHandler);
     }
 
     private TournamentCreateService initTournamentCreateService(TournamentDao tournamentDao) {
