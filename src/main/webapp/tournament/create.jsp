@@ -52,8 +52,8 @@
             </c:forEach>
 
         <button type="submit">Создать турнир</button>
+        <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
     </form>
-
 </div>
 </body>
 </html>
