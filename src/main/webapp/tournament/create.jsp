@@ -63,7 +63,6 @@
             <p class="validation-message">${ValidationError}</p>
         </c:forEach>
 
-
         <button type="submit">Создать турнир</button>
     </form>
 
