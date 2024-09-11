@@ -62,7 +62,7 @@ public class TournamentService {
 
     public void runTournament(Tournament tournament) {
         transactionHandler.executeWithTransaction(session -> {
-            List<Match> matches = tournamentParticipantSeparator(tournament);
+            List<Match> matches = divideTournamentParticipants(tournament);
             tournament.getExtensions().add(Extension.builder()
                     .tournament(tournament)
                     .name(ExtensionName.AVERAGE_RATING)
@@ -75,7 +75,7 @@ public class TournamentService {
         });
     }
 
-    public List<Match> tournamentParticipantSeparator(Tournament tournament) {
+    public List<Match> divideTournamentParticipants(Tournament tournament) {
         var participants = tournament.getParticipants().stream()
                 .sorted(Comparator.comparing((TournamentParticipant p) -> p.getUser().getRating()).reversed())
                 .toList();

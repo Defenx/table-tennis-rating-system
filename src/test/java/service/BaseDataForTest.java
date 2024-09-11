@@ -9,9 +9,6 @@ import service.tournament.TournamentService;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 public class BaseDataForTest {
     protected TournamentService tournamentService;
     protected ExtensionService extensionService;
@@ -28,11 +25,8 @@ public class BaseDataForTest {
     protected TournamentParticipant participant9;
     protected TournamentParticipant participant10;
 
-    protected TournamentParticipant createMockParticipant(BigDecimal rating) {
-        TournamentParticipant participant = mock(TournamentParticipant.class);
-        User user = mock(User.class);
-        when(user.getRating()).thenReturn(rating);
-        when(participant.getUser()).thenReturn(user);
-        return participant;
+    protected TournamentParticipant createParticipant(BigDecimal rating) {
+        User user = User.builder().rating(rating).build();
+        return TournamentParticipant.builder().user(user).build();
     }
 }
