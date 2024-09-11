@@ -33,6 +33,7 @@
                             <p>В данный момент участников нету</p>
                             <form action="/tournament/participation/${tournament.id}" method="post">
                                 <button type="submit">Зарегистрируйся первым</button>
+                                <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
                             </form>
                         </c:when>
                         <c:otherwise>
@@ -64,6 +65,7 @@
                                                                 onclick="return checkingIntentions()">
                                                             Удалить
                                                         </button>
+                                                        <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
                                                     </form>
                                                 </td>
                                             </c:if>
@@ -90,6 +92,7 @@
                         <c:when test="${!requestScope[isParticipate]}">
                             <form action="/tournament/participation/${tournament.id}" method="post">
                                 <button type="submit">Записаться</button>
+                                <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
                             </form>
 
                         </c:when>
@@ -97,6 +100,7 @@
                             <form action="/tournament/participation/${tournament.id}" method="post">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" onclick="return checkingIntentions()">Отменить запись</button>
+                                <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
                             </form>
                         </c:otherwise>
                     </c:choose>
@@ -107,11 +111,13 @@
                         <input type="hidden" name="_method" value="DELETE">
                         <button class="delete-button" onclick="return checkingIntentions()">Удалить турнир
                         </button>
+                        <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
                     </form>
                     <form action="/tournament/run/${tournament.id}" method="post">
                         <button class="run-button" type="submit">
                             Запустить турнир
                         </button>
+                        <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
                     </form>
                 </c:if>
             </div>
@@ -133,6 +139,7 @@
         </form>
         <form action="/logout" method="post">
             <button class="button" type="submit" onclick="return checkingIntentions()">Выйти</button>
+            <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
         </form>
     </div>
 </div>
@@ -148,15 +155,6 @@
         }
         return isConfirmed;
     }
-
-    const findAllForms = document.body.querySelectorAll("form");
-
-    findAllForms.forEach((el) => {
-        let input = el.appendChild(document.createElement("input"));
-        input.setAttribute("name", "csrfToken");
-        input.setAttribute("value", "<c:out value="${csrfToken}" />");
-        input.setAttribute("type", "hidden");
-    });
 </script>
 
 </html>
