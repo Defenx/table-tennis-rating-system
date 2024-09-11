@@ -117,6 +117,7 @@ public class ContextListener implements ServletContextListener {
         var maxLengthValidator = new MaxLengthValidator(16);
         var specialCharacterValidator = new SpecialCharacterValidator(1);
         var spaceSymbolsValidator = new SpaceSymbolsValidator();
+//        var victoriesTrainingMatchesValidator = new VictoriesTrainingMatchesValidator();
 
         Map<String, Map<String, List<Validator>>> routesToValidationMap =
                 Map.of(
@@ -159,8 +160,15 @@ public class ContextListener implements ServletContextListener {
                         RouteConstants.ADMIN_TOURNAMENT_CREATE, Map.of(
                                 "victories_in_training_matches", List.of(
                                         emptinessValidator
+//                                        ,victoriesTrainingMatchesValidator
                                 ),
                                 "victories_in_playoff_matches", List.of(
+                                        emptinessValidator
+                                ),
+                                "number_of_training_matches", List.of(
+                                        emptinessValidator
+                                ),
+                                "number_of_participants", List.of(
                                         emptinessValidator
                                 )
 

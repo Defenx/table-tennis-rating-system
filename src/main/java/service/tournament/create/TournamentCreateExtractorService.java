@@ -33,6 +33,7 @@ public class TournamentCreateExtractorService implements TournamentCreateExtract
 
     private List<Extension> extractExtensions(HttpServletRequest req) {
         return Arrays.stream(ExtensionName.values())
+                .filter(extensionName -> extensionName != ExtensionName.AVERAGE_RATING)
                 .map(extensionName -> extensionName.buildExtension(req.getParameter(extensionName.name().toLowerCase())))
                 .toList();
     }

@@ -35,21 +35,34 @@
             </c:forEach>
         </div>
 
+        <label for="number_of_training_matches">Кол-во тренировочных матчей</label>
+        <input type="number" id="number_of_training_matches"
+               name="number_of_training_matches" min="1" max="5">
+        <c:forEach var="ValidationError" items="${number_of_training_matchesValidationErrors}">
+            <p class="validation-message">${ValidationError}</p>
+        </c:forEach>
 
-            <label for="victories_in_training_matches">Кол-во побед в тренировочных матчах</label>
-            <input type="number" id="victories_in_training_matches"
-                   name="victories_in_training_matches" min="1" max="5">
-            <c:forEach var="ValidationError" items="${victories_in_training_matchesValidationErrors}">
-                <p class="validation-message">${ValidationError}</p>
-            </c:forEach>
+        <label for="victories_in_training_matches">Кол-во побед в тренировочных матчах</label>
+        <input type="number" id="victories_in_training_matches"
+               name="victories_in_training_matches" min="1" max="5">
+        <c:forEach var="ValidationError" items="${victories_in_training_matchesValidationErrors}">
+            <p class="validation-message">${ValidationError}</p>
+        </c:forEach>
 
+        <label for="victories_in_playoff_matches">Кол-во побед в плейофф матчах</label>
+        <input type="number" id="victories_in_playoff_matches"
+               name="victories_in_playoff_matches" min="1" max="5">
+        <c:forEach var="ValidationError" items="${victories_in_playoff_matchesValidationErrors}">
+            <p class="validation-message">${ValidationError}</p>
+        </c:forEach>
 
-            <label for="victories_in_playoff_matches">Кол-во побед в плейофф матчах</label>
-            <input type="number" id="victories_in_playoff_matches"
-                   name="victories_in_playoff_matches" min="1" max="5">
-            <c:forEach var="ValidationError" items="${victories_in_playoff_matchesValidationErrors}">
-                <p class="validation-message">${ValidationError}</p>
-            </c:forEach>
+        <label for="number_of_participants">Кол-во участников</label>
+        <input type="number" id="number_of_participants"
+               name="number_of_participants" min="2" >
+        <c:forEach var="ValidationError" items="${number_of_participantsValidationErrors}">
+            <p class="validation-message">${ValidationError}</p>
+        </c:forEach>
+
 
         <button type="submit">Создать турнир</button>
     </form>
