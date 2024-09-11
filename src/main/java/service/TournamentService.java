@@ -61,7 +61,7 @@ public class TournamentService {
 
     public void runTournament(Tournament tournament) {
         transactionHandler.executeWithTransaction(session -> {
-            List<Match> matches = matchmaker(tournament);
+            List<Match> matches = tournamentParticipantSeparator(tournament);
             tournament.getExtensions().add(Extension.builder()
                     .tournament(tournament)
                     .name(ExtensionName.AVERAGE_RATING)
@@ -74,7 +74,7 @@ public class TournamentService {
         });
     }
 
-    public List<Match> matchmaker(Tournament tournament) {
+    public List<Match> tournamentParticipantSeparator(Tournament tournament) {
         var participants = tournament.getParticipants().stream()
                 .sorted(Comparator.comparing((TournamentParticipant p) -> p.getUser().getRating()).reversed())
                 .toList();
@@ -89,11 +89,12 @@ public class TournamentService {
                 .toList();
     }
 
-    private List<Match> distributeParticipantsForMatches(List<TournamentParticipant> participants, Tournament tournament) {
+    private List<Match> distributeParticipantsForMatches(List<TournamentParticipant> participantsImmutable, Tournament tournament) {
+        var participants = new ArrayList<>(participantsImmutable);
         Collections.shuffle(participants);
 
-        return IntStream.range(0, participants.size() / 2).mapToObj(i ->
-                        buildMatch(participants, tournament, i))
+        return IntStream.range(0, participants.size() / 2)
+                .mapToObj(i -> buildMatch(participants, tournament, i))
                 .collect(Collectors.toList());
     }
 
@@ -105,7 +106,7 @@ public class TournamentService {
                 .build();
     }
 
-    private BigDecimal calculateAverageRating(List<TournamentParticipant> participants) {
+    public BigDecimal calculateAverageRating(List<TournamentParticipant> participants) {
         var average = participants.stream()
                 .map(participant -> participant.getUser().getRating())
                 .reduce(BigDecimal::add)
