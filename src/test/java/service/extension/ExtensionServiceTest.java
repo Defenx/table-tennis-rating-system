@@ -1,11 +1,9 @@
 package service.extension;
 
-import entity.Tournament;
 import entity.TournamentParticipant;
 import org.junit.Before;
 import org.junit.Test;
 import service.BaseDataForTest;
-import service.tournament.TournamentService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,16 +11,13 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
 
 public class ExtensionServiceTest extends BaseDataForTest {
 
     @Before
     public void setUp() {
         extensionService = new ExtensionService();
-        tournamentService = mock(TournamentService.class);
 
-        tournament = mock(Tournament.class);
         participants = new ArrayList<>();
         participant1 = createMockParticipant(BigDecimal.valueOf(250));
         participant2 = createMockParticipant(BigDecimal.valueOf(200));
