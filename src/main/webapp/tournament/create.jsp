@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма турнира</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tournament-create.css">
-    <script src="${pageContext.request.contextPath}/scripts/cutterCsrfToken.js"></script>
 </head>
 <body>
 <div class="form-container">

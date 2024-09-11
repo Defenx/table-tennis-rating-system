@@ -7,7 +7,6 @@
     <title>Турнир</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="static/css/home.css">
-    <script src="scripts/cutterCsrfToken.js"></script>
 </head>
 <body>
 <div class="container-main">
