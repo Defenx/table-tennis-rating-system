@@ -1,4 +1,4 @@
-package service;
+package service.user;
 
 import dao.UserDao;
 import dto.RegistrationFormDto;

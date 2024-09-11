@@ -1,4 +1,4 @@
-package service;
+package service.tournament;
 
 import dao.TournamentDao;
 import dao.TournamentParticipantDao;
@@ -7,10 +7,9 @@ import enums.ExtensionName;
 import enums.Status;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.ListUtils;
-import service.tournament.TransactionHandler;
+import service.TransactionHandler;
+import service.extension.ExtensionService;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,6 +19,8 @@ public class TournamentService {
     private final TournamentDao tournamentDao;
     private final TournamentParticipantDao tournamentParticipantDao;
     private final TransactionHandler transactionHandler;
+    private final ExtensionService extensionService;
+
 
     public Tournament getTournamentById(UUID tournamentId) {
         return tournamentDao.getTournamentById(tournamentId);
@@ -65,7 +66,7 @@ public class TournamentService {
             tournament.getExtensions().add(Extension.builder()
                     .tournament(tournament)
                     .name(ExtensionName.AVERAGE_RATING)
-                    .value(String.valueOf(calculateAverageRating(tournament.getParticipants())))
+                    .value(String.valueOf(extensionService.calculateAverageRating(tournament.getParticipants())))
                     .build());
             tournament.setStage(1);
             tournament.setStatus(Status.PROCESSING);
@@ -104,14 +105,5 @@ public class TournamentService {
                 .user1(participants.get(i * 2).getUser())
                 .user2(participants.get(i * 2 + 1).getUser())
                 .build();
-    }
-
-    public BigDecimal calculateAverageRating(List<TournamentParticipant> participants) {
-        var average = participants.stream()
-                .map(participant -> participant.getUser().getRating())
-                .reduce(BigDecimal::add)
-                .map(sum -> sum.divide(BigDecimal.valueOf(participants.size()), RoundingMode.HALF_EVEN));
-
-        return average.orElse(BigDecimal.ZERO);
     }
 }

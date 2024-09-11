@@ -1,4 +1,4 @@
-package service.tournament.running;
+package service.extension;
 
 import entity.Tournament;
 import enums.ExtensionName;

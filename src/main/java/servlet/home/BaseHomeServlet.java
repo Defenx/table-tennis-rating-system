@@ -4,7 +4,7 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import listener.ContextListener;
-import service.TournamentService;
+import service.tournament.TournamentService;
 import service.home.TournamentAttributeResolver;
 
 public class BaseHomeServlet extends HttpServlet {

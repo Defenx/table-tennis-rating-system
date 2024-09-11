@@ -4,8 +4,8 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import listener.ContextListener;
-import service.TournamentService;
-import service.tournament.running.ExtensionVariableTypeResolver;
+import service.tournament.TournamentService;
+import service.extension.ExtensionVariableTypeResolver;
 
 public class BaseTournamentServlet extends HttpServlet {
     protected TournamentService tournamentService;

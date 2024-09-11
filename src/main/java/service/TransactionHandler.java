@@ -1,4 +1,4 @@
-package service.tournament;
+package service;
 
 import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
