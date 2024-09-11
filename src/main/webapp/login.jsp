@@ -35,9 +35,11 @@
                 <p class="validation-message">${passwordValidationError}</p>
             </c:forEach>
         </div>
-        <div class="error-container" id="errorContainer">
-            <p>${loginError}</p>
-        </div>
+        <c:if test="${not empty loginError}">
+            <div class="error-container" id="errorContainer">
+                <p>${loginError}</p>
+            </div>
+        </c:if>
         <div class="container-buttons">
             <button type="submit" class="button">Войти</button>
             <button type="button" class="button" onclick="redirectToRegistration()">Регистрация</button>
@@ -47,13 +49,6 @@
 <script>
     function redirectToRegistration() {
         window.location.href = "/registration";
-    }
-
-    window.onload = function () {
-        let errorContainer = document.getElementById('errorContainer');
-        if ("${loginError}" !== "") {
-            errorContainer.style.display = 'flex';
-        }
     }
 
     const findAllForms = document.body.querySelectorAll("form");
