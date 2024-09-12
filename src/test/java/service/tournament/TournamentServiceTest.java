@@ -30,12 +30,15 @@ public class TournamentServiceTest {
                 .toList();
 
         var strongerParticipants = participants.subList(0, 6).stream().map(TournamentParticipant::getUser).toList();
+        var expectedAmountOfMatches = participants.size()/2;
 
         //then
         List<Match> actual = tournamentService.divideTournamentParticipants(Tournament.builder()
                 .participants(participants)
                 .build()
         );
+
+        assertEquals("The number of matches does not match",expectedAmountOfMatches, actual.size());
 
         actual.forEach(match -> {
             assertNotNull(match.getUser1());
@@ -54,12 +57,15 @@ public class TournamentServiceTest {
                 .toList().subList(0, 8);
 
         var strongerParticipants = participants.subList(0, 4).stream().map(TournamentParticipant::getUser).toList();
+        var expectedAmountOfMatches = participants.size()/2;
 
         //then
         List<Match> actual = tournamentService.divideTournamentParticipants(Tournament.builder()
                 .participants(participants)
                 .build()
         );
+
+        assertEquals("The number of matches does not match",expectedAmountOfMatches, actual.size());
 
         actual.forEach(match -> {
             assertNotNull(match.getUser1());
