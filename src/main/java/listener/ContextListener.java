@@ -172,6 +172,12 @@ public class ContextListener implements ServletContextListener {
                                 ),
                                 "victories_in_playoff_matches", List.of(
                                         emptinessValidator
+                                ),
+                                "number_of_training_matches", List.of(
+                                        emptinessValidator
+                                ),
+                                "number_of_participants", List.of(
+                                        emptinessValidator
                                 )
 
                         )
