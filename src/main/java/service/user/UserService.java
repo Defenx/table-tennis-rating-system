@@ -1,4 +1,4 @@
-package service;
+package service.user;
 
 import dao.UserDao;
 import dto.RegistrationFormDto;
@@ -20,7 +20,8 @@ public class UserService {
         return userDao.findByEmail(email)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()));
     }
-    public List<User> getOrderByRatingAsc(){
+
+    public List<User> getOrderByRatingAsc() {
         return userDao.findAllOrderByRatingAsc();
     }
 
@@ -31,9 +32,10 @@ public class UserService {
                 .firstname(userData.firstname())
                 .surname(userData.surname())
                 .role(Role.USER)
-                .rating(BigDecimal.valueOf(100))
+                .rating(BigDecimal.valueOf(100, 0))
                 .build());
     }
+
     public Optional<User> findByEmail(String email) {
         return userDao.findByEmail(email);
     }

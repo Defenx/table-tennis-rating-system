@@ -1,6 +1,6 @@
 package service.validation.validator;
 
-import service.UserService;
+import service.user.UserService;
 
 import java.util.Collections;
 import java.util.List;

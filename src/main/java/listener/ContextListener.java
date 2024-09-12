@@ -19,13 +19,16 @@ import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import service.TournamentService;
-import service.UserService;
+import service.tournament.TournamentService;
+import service.user.UserService;
+import service.extension.ExtensionService;
 import service.home.TournamentAttributeResolver;
 import service.login.CredentialsExtractor;
+import service.TransactionHandler;
 import service.tournament.create.TournamentCreateExtractorService;
 import service.tournament.create.TournamentCreateService;
 import service.tournament.create.TournamentMapper;
+import service.extension.ExtensionVariableTypeResolver;
 import service.validation.ValidationRegistry;
 import service.validation.ValidationService;
 import service.validation.validator.*;
@@ -47,6 +50,8 @@ public class ContextListener implements ServletContextListener {
     public static final String TOURNAMENT_CREATE_EXTRACTOR_SERVICE = "tournamentCreateExtractorService";
     public static final String TOURNAMENT_SERVICE = "tournamentService";
     public static final String TOURNAMENT_ATTRIBUTE_RESOLVER = "tournamentAttributeResolver";
+    public static final String EXTENSION_VARIABLE_TYPE_RESOLVER = "extensionVariableTypeResolver";
+    public static final String EXTENSION_SERVICE = "extensionService";
 
     @Override
     @SneakyThrows
@@ -60,11 +65,13 @@ public class ContextListener implements ServletContextListener {
         var userDao = new UserDao(sessionFactory);
         var tournamentDao = new TournamentDao(sessionFactory);
         var userService = initUserService(userDao);
-        var tournamentService = initTournamentService(tournamentDao, sessionFactory);
+        var extensionService = new ExtensionService();
+        var tournamentService = initTournamentService(tournamentDao, sessionFactory, extensionService);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
         var validationService = initValidation(userService);
         var tournamentCreateService = initTournamentCreateService(tournamentDao);
         var tournamentCreateExtractorService = new TournamentCreateExtractorService();
+        var extensionVariableTypeResolver = new ExtensionVariableTypeResolver();
 
         Map<String, Object> attributes = Map.ofEntries(
                 Map.entry(SESSION_FACTORY, sessionFactory),
@@ -76,7 +83,9 @@ public class ContextListener implements ServletContextListener {
                 Map.entry(TOURNAMENT_ATTRIBUTE_RESOLVER, tournamentAttributeResolver),
                 Map.entry(VALIDATION_SERVICE, validationService),
                 Map.entry(TOURNAMENT_CREATE_SERVICE, tournamentCreateService),
-                Map.entry(TOURNAMENT_CREATE_EXTRACTOR_SERVICE, tournamentCreateExtractorService)
+                Map.entry(TOURNAMENT_CREATE_EXTRACTOR_SERVICE, tournamentCreateExtractorService),
+                Map.entry(EXTENSION_VARIABLE_TYPE_RESOLVER, extensionVariableTypeResolver),
+                Map.entry(EXTENSION_SERVICE, extensionService)
         );
 
         attributes.forEach(servletContext::setAttribute);
@@ -117,6 +126,7 @@ public class ContextListener implements ServletContextListener {
         var maxLengthValidator = new MaxLengthValidator(16);
         var specialCharacterValidator = new SpecialCharacterValidator(1);
         var spaceSymbolsValidator = new SpaceSymbolsValidator();
+
 
         Map<String, Map<String, List<Validator>>> routesToValidationMap =
                 Map.of(
@@ -176,9 +186,10 @@ public class ContextListener implements ServletContextListener {
         return new UserService(userDao, bCryptPasswordEncoder);
     }
 
-    private TournamentService initTournamentService(TournamentDao tournamentDao, SessionFactory sessionFactory){
+    private TournamentService initTournamentService(TournamentDao tournamentDao, SessionFactory sessionFactory, ExtensionService extensionService){
         var tournamentParticipantDao = new TournamentParticipantDao(sessionFactory);
-        return new TournamentService(tournamentDao, tournamentParticipantDao);
+        var transactionHandler = new TransactionHandler(sessionFactory);
+        return new TournamentService(tournamentDao, tournamentParticipantDao, transactionHandler, extensionService);
     }
 
     private TournamentCreateService initTournamentCreateService(TournamentDao tournamentDao) {

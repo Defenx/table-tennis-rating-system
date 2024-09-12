@@ -5,7 +5,7 @@ import entity.Tournament;
 import entity.TournamentParticipant;
 import entity.User;
 import lombok.RequiredArgsConstructor;
-import service.TournamentService;
+import service.tournament.TournamentService;
 
 import java.util.Comparator;
 import java.util.HashMap;
