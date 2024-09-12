@@ -28,16 +28,12 @@ public class ExtensionServiceTest extends BaseDataForTest {
         value3 = BigDecimal.valueOf(180);
         value4 = BigDecimal.valueOf(160);
 
-        participants = new ArrayList<>();
-        participant1 = createParticipant(value1);
-        participant2 = createParticipant(value2);
-        participant3 = createParticipant(value3);
-        participant4 = createParticipant(value4);
-
-        participants.add(participant1);
-        participants.add(participant2);
-        participants.add(participant3);
-        participants.add(participant4);
+        participants = List.of(
+        participant1 = createParticipant(value1),
+        participant2 = createParticipant(value2),
+        participant3 = createParticipant(value3),
+        participant4 = createParticipant(value4)
+        );
 
         participantsSize = BigDecimal.valueOf(participants.size());
     }

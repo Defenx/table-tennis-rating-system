@@ -13,7 +13,6 @@ import service.TransactionHandler;
 import service.extension.ExtensionService;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,28 +30,18 @@ public class TournamentServiceTest extends BaseDataForTest {
         ExtensionService extensionService = mock(ExtensionService.class);
         tournamentService = new TournamentService(tournamentDao, tournamentParticipantDao, transactionHandler, extensionService);
 
-        participants = new ArrayList<>();
-        participant1 = createParticipant(BigDecimal.valueOf(250));
-        participant2 = createParticipant(BigDecimal.valueOf(200));
-        participant3 = createParticipant(BigDecimal.valueOf(180));
-        participant4 = createParticipant(BigDecimal.valueOf(165));
-        participant5 = createParticipant(BigDecimal.valueOf(170));
-        participant6 = createParticipant(BigDecimal.valueOf(165));
-        participant7 = createParticipant(BigDecimal.valueOf(160));
-        participant8 = createParticipant(BigDecimal.valueOf(150));
-        participant9 = createParticipant(BigDecimal.valueOf(145));
-        participant10 = createParticipant(BigDecimal.valueOf(135));
-        // добавляем в лист учитывая сортировку
-        participants.add(participant1);
-        participants.add(participant2);
-        participants.add(participant3);
-        participants.add(participant4);
-        participants.add(participant5);
-        participants.add(participant6);
-        participants.add(participant7);
-        participants.add(participant8);
-        participants.add(participant9);
-        participants.add(participant10);
+        participants = List.of(
+                participant1 = createParticipant(BigDecimal.valueOf(250)),
+                participant2 = createParticipant(BigDecimal.valueOf(200)),
+                participant3 = createParticipant(BigDecimal.valueOf(180)),
+                participant4 = createParticipant(BigDecimal.valueOf(165)),
+                participant5 = createParticipant(BigDecimal.valueOf(170)),
+                participant6 = createParticipant(BigDecimal.valueOf(165)),
+                participant7 = createParticipant(BigDecimal.valueOf(160)),
+                participant8 = createParticipant(BigDecimal.valueOf(150)),
+                participant9 = createParticipant(BigDecimal.valueOf(145)),
+                participant10 = createParticipant(BigDecimal.valueOf(135))
+        );
 
         tournament = Tournament.builder().participants(participants).build();
     }
