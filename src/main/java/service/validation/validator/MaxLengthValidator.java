@@ -11,7 +11,7 @@ public class MaxLengthValidator implements Validator {
     public MaxLengthValidator(int maxLength) {
         this.maxLength = maxLength;
         this.errorMessages = List.of(
-                "Поле должно быть длиной не менее " + maxLength + " символов"
+                "Поле должно быть длиной не более " + maxLength + " символов"
         );
     }
 

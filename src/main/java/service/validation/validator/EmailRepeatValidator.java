@@ -13,7 +13,7 @@ public class EmailRepeatValidator implements Validator{
     public EmailRepeatValidator(UserService userService) {
         this.userService = userService;
         this.errorMessages = List.of(
-                "This email is already registered"
+                "Этот адрес электронной почты уже зарегистрирован"
         );
     }
 

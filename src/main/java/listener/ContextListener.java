@@ -167,10 +167,10 @@ public class ContextListener implements ServletContextListener {
 
                         ),
                         RouteConstants.ADMIN_TOURNAMENT_CREATE, Map.of(
-                                "training_sets", List.of(
+                                "victories_in_training_matches", List.of(
                                         emptinessValidator
                                 ),
-                                "playoff_sets", List.of(
+                                "victories_in_playoff_matches", List.of(
                                         emptinessValidator
                                 )
 
