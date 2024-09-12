@@ -14,8 +14,9 @@ public class ExtensionVariableTypeResolver {
 
     public ExtensionVariableTypeResolver() {
         conversionMap = new HashMap<>();
-        conversionMap.put(ExtensionName.TRAINING_SETS, Integer::parseInt);
-        conversionMap.put(ExtensionName.PLAYOFF_SETS, Integer::parseInt);
+        conversionMap.put(ExtensionName.NUMBER_OF_TRAINING_MATCHES, Integer::parseInt);
+        conversionMap.put(ExtensionName.VICTORIES_IN_TRAINING_MATCHES, Integer::parseInt);
+        conversionMap.put(ExtensionName.VICTORIES_IN_PLAYOFF_MATCHES, Integer::parseInt);
         conversionMap.put(ExtensionName.IS_RATING, Function.identity());
         conversionMap.put(ExtensionName.NUMBER_OF_PARTICIPANTS, Integer::parseInt);
         conversionMap.put(ExtensionName.AVERAGE_RATING, BigDecimal::new);

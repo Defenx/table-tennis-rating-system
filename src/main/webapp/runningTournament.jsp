@@ -6,7 +6,7 @@
     <meta charset="UTF-8"/>
     <title>Турнир</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="../static/css/runningTournament.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/runningTournament.css">
 </head>
 <body>
 <div class="container-main">

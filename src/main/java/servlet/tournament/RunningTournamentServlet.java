@@ -22,7 +22,7 @@ public class RunningTournamentServlet extends BaseTournamentServlet {
         UUID tournamentId = UUID.fromString(pathInfo.substring(1));
         Tournament tournament = tournamentService.getTournamentById(tournamentId);
 
-        int trainingSets = extensionVariableTypeResolver.getExtensionValue(ExtensionName.TRAINING_SETS, tournament);
+        int trainingSets = extensionVariableTypeResolver.getExtensionValue(ExtensionName.VICTORIES_IN_TRAINING_MATCHES, tournament);
         BigDecimal averageRating = extensionVariableTypeResolver.getExtensionValue(ExtensionName.AVERAGE_RATING, tournament);
 
         if (tournament.getStage() <= trainingSets) {
