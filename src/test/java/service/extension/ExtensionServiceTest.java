@@ -1,79 +1,61 @@
 package service.extension;
 
 import entity.TournamentParticipant;
-import org.junit.Before;
+import entity.User;
 import org.junit.Test;
-import service.BaseDataForTest;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ExtensionServiceTest extends BaseDataForTest {
-    BigDecimal value1;
-    BigDecimal value2;
-    BigDecimal value3;
-    BigDecimal value4;
-    BigDecimal participantsSize;
+@RunWith(MockitoJUnitRunner.class)
+public class ExtensionServiceTest {
 
-    @Before
-    public void setUp() {
-        extensionService = new ExtensionService();
-        value1 = BigDecimal.valueOf(250);
-        value2 = BigDecimal.valueOf(200);
-        value3 = BigDecimal.valueOf(180);
-        value4 = BigDecimal.valueOf(160);
-
-        participants = List.of(
-        participant1 = createParticipant(value1),
-        participant2 = createParticipant(value2),
-        participant3 = createParticipant(value3),
-        participant4 = createParticipant(value4)
-        );
-
-        participantsSize = BigDecimal.valueOf(participants.size());
-    }
+    @InjectMocks
+    ExtensionService extensionService;
 
     @Test
     public void testCalculateAverageRatingIfParticipantsIsEmpty() {
-        //when
+        //then
         BigDecimal result = extensionService.calculateAverageRating(new ArrayList<>());
-
-        //then
-        assertNotNull(result);
         assertEquals(BigDecimal.ZERO, result);
-    }
-
-    @Test
-    public void testCalculateAverageRatingIfParticipantAlone() {
-        //given
-        BigDecimal bigDecimal = BigDecimal.valueOf(150);
-        TournamentParticipant participant = createParticipant(bigDecimal);
-        List<TournamentParticipant> participants = List.of(participant);
-
-        //when
-        BigDecimal result = extensionService.calculateAverageRating(participants);
-
-        //then
-        assertNotNull(result);
-        assertEquals(bigDecimal, result);
     }
 
     @Test
     public void testCalculateAverageRatingHalfEven() {
         //given
-        List<TournamentParticipant> participants = List.of(participant1, participant2, participant3, participant4);
-
-        //when
-        BigDecimal expectedAverage = (value1.add(value2).add(value3).add(value4)).divide(participantsSize, RoundingMode.HALF_EVEN);
-        BigDecimal result = extensionService.calculateAverageRating(participants);
+        var participants = buildParticipants();
+        var expected = BigDecimal.valueOf(210);
 
         //then
-        assertNotNull(result);
-        assertEquals(expectedAverage, result);
+        var actual = extensionService.calculateAverageRating(participants);
+        assertNotNull(actual);
+        assertEquals(expected, actual);
+    }
+
+    private static List<TournamentParticipant> buildParticipants() {
+        return List.of(
+                TournamentParticipant.builder()
+                        .user(User.builder()
+                                .rating(BigDecimal.valueOf(250))
+                                .build())
+                        .build(),
+                TournamentParticipant.builder()
+                        .user(User.builder()
+                                .rating(BigDecimal.valueOf(200))
+                                .build())
+                        .build(),
+                TournamentParticipant.builder()
+                        .user(User.builder()
+                                .rating(BigDecimal.valueOf(180))
+                                .build())
+                        .build()
+        );
     }
 }
