@@ -14,25 +14,25 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ExtensionServiceTest extends BaseDataForTest {
-    BigDecimal v1;
-    BigDecimal v2;
-    BigDecimal v3;
-    BigDecimal v4;
+    BigDecimal value1;
+    BigDecimal value2;
+    BigDecimal value3;
+    BigDecimal value4;
     BigDecimal participantsSize;
 
     @Before
     public void setUp() {
         extensionService = new ExtensionService();
-        v1 = BigDecimal.valueOf(250);
-        v2 = BigDecimal.valueOf(200);
-        v3 = BigDecimal.valueOf(180);
-        v4 = BigDecimal.valueOf(160);
+        value1 = BigDecimal.valueOf(250);
+        value2 = BigDecimal.valueOf(200);
+        value3 = BigDecimal.valueOf(180);
+        value4 = BigDecimal.valueOf(160);
 
         participants = new ArrayList<>();
-        participant1 = createParticipant(v1);
-        participant2 = createParticipant(v2);
-        participant3 = createParticipant(v3);
-        participant4 = createParticipant(v4);
+        participant1 = createParticipant(value1);
+        participant2 = createParticipant(value2);
+        participant3 = createParticipant(value3);
+        participant4 = createParticipant(value4);
 
         participants.add(participant1);
         participants.add(participant2);
@@ -73,7 +73,7 @@ public class ExtensionServiceTest extends BaseDataForTest {
         List<TournamentParticipant> participants = List.of(participant1, participant2, participant3, participant4);
 
         //when
-        BigDecimal expectedAverage = (v1.add(v2).add(v3).add(v4)).divide(participantsSize, RoundingMode.HALF_EVEN);
+        BigDecimal expectedAverage = (value1.add(value2).add(value3).add(value4)).divide(participantsSize, RoundingMode.HALF_EVEN);
         BigDecimal result = extensionService.calculateAverageRating(participants);
 
         //then
