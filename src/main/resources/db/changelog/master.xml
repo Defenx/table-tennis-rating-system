@@ -6,5 +6,6 @@
 
     <include file="/db/changelog/add_tables.sql" />
     <include file="/db/changelog/change_field_rating_type.sql" />
+    <include file="/db/changelog/add_column_created_date_into_tournament_participant.sql"/>
 
 </databaseChangeLog>
