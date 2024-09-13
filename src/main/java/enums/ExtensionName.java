@@ -15,7 +15,17 @@ public enum ExtensionName {
     VICTORIES_IN_PLAYOFF_MATCHES,
     NUMBER_OF_TRAINING_MATCHES,
     NUMBER_OF_PARTICIPANTS,
-    AVERAGE_RATING;
+    AVERAGE_RATING(false);
+
+    private final boolean isSaveOnCreation;
+
+    ExtensionName() {
+        this.isSaveOnCreation = true;
+    }
+
+    ExtensionName(boolean isSaveOnCreation) {
+        this.isSaveOnCreation = isSaveOnCreation;
+    }
 
     public Extension buildExtension(String extensionValue) {
         return Extension.builder()

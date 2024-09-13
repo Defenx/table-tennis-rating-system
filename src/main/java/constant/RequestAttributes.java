@@ -8,6 +8,11 @@ public class RequestAttributes {
 
     public static final String ERROR_MESSAGE_ATTRIBUTE = "errorMessage";
 
+    public static final String TOURNAMENT = "tournament";
+
+    public static final String AVERAGE_RATING = "averageRating";
+
+
     private RequestAttributes() {
     }
 }

@@ -1,21 +1,21 @@
-package servlet.home;
+package servlet.tournament;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import listener.ContextListener;
 import service.tournament.TournamentService;
-import service.home.TournamentAttributeResolver;
+import service.extension.ExtensionVariableTypeResolver;
 
-public class BaseHomeServlet extends HttpServlet {
-    protected TournamentAttributeResolver tournamentAttributeResolver;
+public class BaseTournamentServlet extends HttpServlet {
     protected TournamentService tournamentService;
+    protected ExtensionVariableTypeResolver extensionVariableTypeResolver;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         var servletContext = config.getServletContext();
-        tournamentAttributeResolver = (TournamentAttributeResolver) servletContext.getAttribute(ContextListener.TOURNAMENT_ATTRIBUTE_RESOLVER);
+        extensionVariableTypeResolver = (ExtensionVariableTypeResolver) servletContext.getAttribute(ContextListener.EXTENSION_VARIABLE_TYPE_RESOLVER);
         tournamentService = (TournamentService) servletContext.getAttribute(ContextListener.TOURNAMENT_SERVICE);
     }
 }
