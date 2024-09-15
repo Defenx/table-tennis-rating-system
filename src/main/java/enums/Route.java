@@ -68,6 +68,11 @@ public enum Route {
             RouteConstants.STATISTIC,
             PermissionGroup.PERMIT_ALL,
             true
+    ),
+    TOURNAMENTS(
+            RouteConstants.TOURNAMENTS,
+            PermissionGroup.PERMIT_ALL,
+            true
     );
 
     private final String path;

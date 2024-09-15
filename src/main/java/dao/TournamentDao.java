@@ -2,6 +2,7 @@ package dao;
 
 import entity.Extension;
 import entity.Tournament;
+import enums.Status;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -50,10 +51,22 @@ public class TournamentDao {
             throw e;
         }
     }
-
-    public List<Tournament> findTournamentsWhereStatusIsNew() {
+    public List<Tournament> findTournamentsWithTheDesiredStatus(Status status) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Tournament> query = session.createQuery("FROM Tournament t WHERE t.status = 'NEW'", Tournament.class);
+            Query<Tournament> query = session.createQuery("FROM Tournament t WHERE t.status = :status", Tournament.class);
+            query.setParameter("status", status);
+            return query.getResultList();
+        } catch (HibernateException he) {
+            throw new RuntimeException(he);
+        }
+    }
+    public List<Object[]> findTournamentsAndCountParticipants(Status status) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Object[]> query = session.createQuery(
+                    "SELECT t.id, t.date, t.type, COUNT(tp.id) FROM Tournament t left JOIN TournamentParticipant tp ON t.id = tp.tournament.id WHERE t.status = :status  GROUP BY t.id, t.date,t.type",
+                                                              Object[].class
+            );
+            query.setParameter("status", status);
             return query.getResultList();
         } catch (HibernateException he) {
             throw new RuntimeException(he);

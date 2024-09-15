@@ -27,9 +27,11 @@ public class TournamentService {
     }
 
     public List<Tournament> getNewTournaments() {
-        return tournamentDao.findTournamentsWhereStatusIsNew();
+        return tournamentDao.findTournamentsWithTheDesiredStatus(Status.NEW);
     }
-
+    public List<Object[]> getProcessingTournaments() {
+        return tournamentDao.findTournamentsAndCountParticipants(Status.PROCESSING);
+    }
     public void participate(User user, Tournament tournament) {
         if (!isAlreadyParticipated(user, tournament)) {
             tournamentParticipantDao.participateUserToTournament(user, tournament);
