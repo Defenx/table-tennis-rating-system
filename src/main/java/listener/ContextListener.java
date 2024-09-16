@@ -126,6 +126,9 @@ public class ContextListener implements ServletContextListener {
         var maxLengthValidator = new MaxLengthValidator(16);
         var specialCharacterValidator = new SpecialCharacterValidator(1);
         var spaceSymbolsValidator = new SpaceSymbolsValidator();
+        var isNumericValidator = new IsNumericValidator();
+        var countOfParticipantValidator = new CountOfParticipantValidator();
+        var negativeValueValidator = new NegativeValueValidator();
 
 
         Map<String, Map<String, List<Validator>>> routesToValidationMap =
@@ -177,7 +180,10 @@ public class ContextListener implements ServletContextListener {
                                         emptinessValidator
                                 ),
                                 "number_of_participants", List.of(
-                                        emptinessValidator
+                                        emptinessValidator,
+                                        isNumericValidator,
+                                        countOfParticipantValidator,
+                                        negativeValueValidator
                                 )
 
                         )
