@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
@@ -14,12 +14,17 @@
     <div class="section-welcome">
         <h3>
             Добро пожаловать! <c:out value="${user.surname}"/> <c:out value="${user.firstname}"/>,
-            Bаш рейтинг - <c:out value="${user.rating}"/>
+            Ваш рейтинг - <c:out value="${user.rating}"/>
         </h3>
     </div>
 
+    <div class="tournament-navigation">
+        <c:set var="totalTournaments" value="${fn:length(tournamentsWithStatusNew)}" />
+        <button id="prevTournament">←-- Prev</button>
+        <button id="nextTournament">Next --→</button>
+    </div>
     <c:forEach var="tournament" items="${tournamentsWithStatusNew}">
-        <div class="container-tournament">
+        <div class="container-tournament" id="tournament-${status.index}">
             <c:choose>
                 <c:when test="${fn:length(tournamentsWithStatusNew) != 0}">
                     <h2>Запись на турнир ${tournament.date}</h2>
@@ -29,7 +34,7 @@
 
                     <c:choose>
                         <c:when test="${fn:length(tournament.participants) == 0}">
-                            <p>В данный момент участников нету</p>
+                            <p>В данный момент участников нет</p>
                             <form action="/tournament/participation/${tournament.id}" method="post">
                                 <button type="submit">Зарегистрируйся первым</button>
                                 <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
@@ -108,7 +113,7 @@
                 <c:if test="${user.role == 'ADMIN'}">
                     <form action="/tournament/delete/${tournament.id}" method="post">
                         <input type="hidden" name="_method" value="DELETE">
-                        <button class="delete-button" onclick="return checkingIntentions()">Удалить турнир
+                        <button class="delete-button" onclick="return checkingIntentions() && clearTournamentIndex();">Удалить турнир
                         </button>
                         <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
                     </form>
@@ -137,7 +142,7 @@
             <button class="button">Проходящие Турниры</button>
         </form>
         <form action="/logout" method="post">
-            <button class="button" type="submit" onclick="return checkingIntentions()">Выйти</button>
+            <button class="button" type="submit" onclick="return checkingIntentions() && clearTournamentIndex();">Выйти</button>
             <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
         </form>
     </div>
@@ -145,15 +150,11 @@
 
 </body>
 <script src="scripts/timer.js"></script>
+<script src="scripts/home.js"></script>
 <script>
-    function checkingIntentions() {
-        var isConfirmed = confirm('Are you sure?');
-
-        if (isConfirmed) {
-            window.location.href = '/login';
-        }
-        return isConfirmed;
-    }
+    window.appData = {
+        totalTournaments: ${totalTournaments}
+    };
 </script>
 
 </html>

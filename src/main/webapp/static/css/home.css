@@ -1,13 +1,15 @@
 body {
     font-family: "Times New Roman", serif;
     background-image: url("../table-tennis.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed; /* Фиксирует изображение относительно окна */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
 .container-main {
@@ -22,14 +24,24 @@ body {
 }
 
 .container-tournament {
-    display: flex;
+    display: none;
+    /*display: flex;*/
     gap: 10px;
     flex-direction: column;
     align-items: center;
     margin: 10px;
     padding: 10px;
+    position: relative;
 }
 
+.container-tournament.hidden {
+    visibility: hidden; /* Скрываем элемент, но он остается в потоке */
+    position: absolute; /* Можно использовать для перекрытия элементов друг на друга */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
 .container-table {
     display: flex;
     justify-content: center;
@@ -39,8 +51,8 @@ body {
 
 .container-buttons {
     display: flex;
-    width: 50%;
     justify-content: center;
+    width: 100%;
 }
 
 .container-buttons-navigation {
@@ -74,6 +86,10 @@ button:hover {
     background: linear-gradient(0deg, rgba(0, 3, 255, 1) 0%, rgba(2, 126, 251, 1) 100%);
 }
 
+button.disabled {
+    background: #d3d3d3; /* Цвет для неактивной кнопки */
+    cursor: not-allowed; /* Указывает, что кнопка неактивна */
+}
 .delete-button {
     width: content-box;
     height: content-box;
@@ -129,6 +145,13 @@ button:hover {
 table {
     border-collapse: collapse;
     width: 60%;
+    margin: 0 auto; /* Центрирует таблицу */
+}
+th, td {
+    border: 1px solid black;
+    padding: 15px;
+    text-align: center; /* Центрирует текст и кнопки */
+    vertical-align: middle; /* Центрирует элементы по вертикали */
 }
 
 td {
@@ -142,8 +165,11 @@ tbody tr {
 }
 
 td button {
-    margin-top: 20px;
+    margin: 0 auto; /* Центрирует кнопку внутри ячейки */
+    display: block; /* Чтобы margin: 0 auto сработал */
+    width: 120px; /* Фиксированная ширина для всех кнопок */
 }
+
 
 .container-table::-webkit-scrollbar {
     width: 4px;
