@@ -142,6 +142,68 @@ button.disabled {
     background: linear-gradient(0deg, rgb(8, 185, 8) 0%, rgb(14, 241, 14) 100%);
 }
 
+.arrow-button {
+    width: 50px;
+    height: 50px;
+    background-color: #007bff; /* Цвет кнопок */
+    border: none;
+    border-radius: 50%; /* Сделать кнопки круглыми */
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+.arrow-button:hover:disabled {
+    background-color: #d3d3d3; /* Цвет фона для кнопок в состоянии disabled */
+    cursor: not-allowed; /* Курсор для кнопок в состоянии disabled */
+}
+
+.arrow-button:hover {
+    background-color: #0056b3; /* Цвет кнопок при наведении */
+}
+
+.prev-button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 20px solid white; /* Цвет стрелки */
+    transform: translate(-50%, -50%);
+}
+
+.tournament-navigation{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px; /* Расстояние между кнопками */
+    margin: 0;
+
+}
+
+.next-button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 20px solid white; /* Цвет стрелки */
+    transform: translate(-50%, -50%);
+}
+
+.page-title{
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0;
+}
+
 table {
     border-collapse: collapse;
     width: 60%;

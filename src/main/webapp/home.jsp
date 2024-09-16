@@ -7,6 +7,7 @@
     <title>Турнир</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="static/css/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <div class="container-main">
@@ -19,17 +20,20 @@
     </div>
 
     <div class="tournament-navigation">
-        <c:set var="totalTournaments" value="${fn:length(tournamentsWithStatusNew)}" />
-        <button id="prevTournament">←-- Prev</button>
-        <button id="nextTournament">Next --→</button>
+        <c:set var="totalTournaments" value="${fn:length(tournamentsWithStatusNew)}"/>
+        <button id="prevTournament" class="arrow-button prev-button"></button>
+        <label for="prevTournament"> Предыдущий</label>
+        <h2 class="page-title">Запись на турнир</h2>
+        <label for="nextTournament"> Следующий</label>
+        <button id="nextTournament" class="arrow-button next-button"></button>
     </div>
     <c:forEach var="tournament" items="${tournamentsWithStatusNew}">
         <div class="container-tournament" id="tournament-${status.index}">
             <c:choose>
                 <c:when test="${fn:length(tournamentsWithStatusNew) != 0}">
-                    <h2>Запись на турнир ${tournament.date}</h2>
-
-                    <div class="timer" data-date="${tournament.date}" data-time="19:30:00" id="timer-${tournament.id}"></div>
+                    <h2>Дата проведения: ${tournament.date}</h2>
+                    <div class="timer" data-date="${tournament.date}" data-time="19:30:00"
+                         id="timer-${tournament.id}"></div>
                     <h3>Зарегистрировано: ${fn:length(tournament.participants)}</h3>
 
                     <c:choose>
@@ -69,7 +73,8 @@
                                                                 onclick="return checkingIntentions()">
                                                             Удалить
                                                         </button>
-                                                        <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
+                                                        <input type="hidden" name="csrfToken"
+                                                               value="<c:out value="${csrfToken}" />">
                                                     </form>
                                                 </td>
                                             </c:if>
@@ -113,7 +118,8 @@
                 <c:if test="${user.role == 'ADMIN'}">
                     <form action="/tournament/delete/${tournament.id}" method="post">
                         <input type="hidden" name="_method" value="DELETE">
-                        <button class="delete-button" onclick="return checkingIntentions() && clearTournamentIndex();">Удалить турнир
+                        <button class="delete-button" onclick="return checkingIntentions() && clearTournamentIndex();">
+                            Удалить турнир
                         </button>
                         <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
                     </form>
@@ -142,7 +148,9 @@
             <button class="button">Проходящие Турниры</button>
         </form>
         <form action="/logout" method="post">
-            <button class="button" type="submit" onclick="return checkingIntentions() && clearTournamentIndex();">Выйти</button>
+            <button class="button" type="submit" onclick="return checkingIntentions() && clearTournamentIndex();">
+                Выйти
+            </button>
             <input type="hidden" name="csrfToken" value="<c:out value="${csrfToken}" />">
         </form>
     </div>
