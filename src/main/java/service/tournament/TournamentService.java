@@ -62,13 +62,13 @@ public class TournamentService {
 
     public void runTournament(Tournament tournament) {
         transactionHandler.executeWithTransaction(session -> {
+            tournament.setStage(1);
             List<Match> matches = divideTournamentParticipants(tournament);
             tournament.getExtensions().add(Extension.builder()
                     .tournament(tournament)
                     .name(ExtensionName.AVERAGE_RATING)
                     .value(String.valueOf(extensionService.calculateAverageRating(tournament.getParticipants())))
                     .build());
-            tournament.setStage(1);
             tournament.setStatus(Status.PROCESSING);
             tournament.setMatches(matches);
             session.merge(tournament);
@@ -104,6 +104,7 @@ public class TournamentService {
                 .tournament(tournament)
                 .user1(participants.get(i * 2).getUser())
                 .user2(participants.get(i * 2 + 1).getUser())
+                .stage(tournament.getStage())
                 .build();
     }
 }
