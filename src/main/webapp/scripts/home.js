@@ -11,7 +11,6 @@ let currentTournamentIndex =  0;
 let totalTournaments = 0;
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Получаем сохраненный индекс турнира из localStorage
     totalTournaments = window.appData.totalTournaments; // Получаем значение из глобального объекта
     console.log(totalTournaments); // Проверка
     const savedIndex = localStorage.getItem('currentTournamentIndex');
@@ -68,11 +67,9 @@ function updateNavigationButtons() {
     const prevButton = document.getElementById('prevTournament');
     const nextButton = document.getElementById('nextTournament');
 
-    // Отключаем кнопку "Предыдущий турнир", если текущий турнир первый
     prevButton.disabled = currentTournamentIndex === 0;
     prevButton.classList.toggle('disabled', prevButton.disabled);
 
-    // Отключаем кнопку "Следующий турнир", если текущий турнир последний
     nextButton.disabled = currentTournamentIndex === totalTournaments - 1;
     nextButton.classList.toggle('disabled', nextButton.disabled);
 }

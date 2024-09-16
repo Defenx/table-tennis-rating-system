@@ -4,7 +4,7 @@ body {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-attachment: fixed; /* Фиксирует изображение относительно окна */
+    background-attachment: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,7 +25,6 @@ body {
 
 .container-tournament {
     display: none;
-    /*display: flex;*/
     gap: 10px;
     flex-direction: column;
     align-items: center;
@@ -35,8 +34,8 @@ body {
 }
 
 .container-tournament.hidden {
-    visibility: hidden; /* Скрываем элемент, но он остается в потоке */
-    position: absolute; /* Можно использовать для перекрытия элементов друг на друга */
+    visibility: hidden;
+    position: absolute;
     left: 0;
     top: 0;
     width: 100%;
@@ -53,11 +52,15 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
+    margin: 10px;
+    gap: 10px;
 }
 
 .container-buttons-navigation {
     display: flex;
     justify-content: center;
+    width: 100%;
+    gap: 10px;
 }
 
 button {
@@ -145,21 +148,21 @@ button.disabled {
 .arrow-button {
     width: 50px;
     height: 50px;
-    background-color: #007bff; /* Цвет кнопок */
+    background-color: #007bff;
     border: none;
-    border-radius: 50%; /* Сделать кнопки круглыми */
+    border-radius: 50%;
     cursor: pointer;
     position: relative;
     outline: none;
     transition: background-color 0.3s ease;
 }
 .arrow-button:hover:disabled {
-    background-color: #d3d3d3; /* Цвет фона для кнопок в состоянии disabled */
-    cursor: not-allowed; /* Курсор для кнопок в состоянии disabled */
+    background-color: #d3d3d3;
+    cursor: not-allowed;
 }
 
 .arrow-button:hover {
-    background-color: #0056b3; /* Цвет кнопок при наведении */
+    background-color: #0056b3;
 }
 
 .prev-button::before {
@@ -171,7 +174,7 @@ button.disabled {
     height: 0;
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-right: 20px solid white; /* Цвет стрелки */
+    border-right: 20px solid white;
     transform: translate(-50%, -50%);
 }
 
@@ -179,7 +182,7 @@ button.disabled {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 50px; /* Расстояние между кнопками */
+    gap: 50px;
     margin: 0;
 
 }
@@ -193,7 +196,7 @@ button.disabled {
     height: 0;
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-left: 20px solid white; /* Цвет стрелки */
+    border-left: 20px solid white;
     transform: translate(-50%, -50%);
 }
 
@@ -207,13 +210,13 @@ button.disabled {
 table {
     border-collapse: collapse;
     width: 60%;
-    margin: 0 auto; /* Центрирует таблицу */
+    margin: 0 auto 10px;
 }
 th, td {
     border: 1px solid black;
     padding: 15px;
-    text-align: center; /* Центрирует текст и кнопки */
-    vertical-align: middle; /* Центрирует элементы по вертикали */
+    text-align: center;
+    vertical-align: middle;
 }
 
 td {
@@ -227,9 +230,9 @@ tbody tr {
 }
 
 td button {
-    margin: 0 auto; /* Центрирует кнопку внутри ячейки */
-    display: block; /* Чтобы margin: 0 auto сработал */
-    width: 120px; /* Фиксированная ширина для всех кнопок */
+    margin: 0 auto;
+    display: block;
+    width: 120px;
 }
 
 
