@@ -18,15 +18,21 @@
             Ваш рейтинг - <c:out value="${user.rating}"/>
         </h3>
     </div>
-
-    <div class="tournament-navigation">
-        <c:set var="totalTournaments" value="${fn:length(tournamentsWithStatusNew)}"/>
-        <button id="prevTournament" class="arrow-button prev-button"></button>
-        <label for="prevTournament"> Предыдущий</label>
-        <h2 class="page-title">Запись на турнир</h2>
-        <label for="nextTournament"> Следующий</label>
-        <button id="nextTournament" class="arrow-button next-button"></button>
-    </div>
+    <c:choose>
+        <c:when test="${fn:length(tournamentsWithStatusNew) != 0}">
+            <div class="tournament-navigation">
+                <c:set var="totalTournaments" value="${fn:length(tournamentsWithStatusNew)}"/>
+                <button id="prevTournament" class="arrow-button prev-button"></button>
+                <label for="prevTournament"> Предыдущий</label>
+                <h2 class="page-title">Запись на турнир</h2>
+                <label for="nextTournament"> Следующий</label>
+                <button id="nextTournament" class="arrow-button next-button"></button>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <h2>На данный момент турниров нет</h2>
+        </c:otherwise>
+    </c:choose>
     <c:forEach var="tournament" items="${tournamentsWithStatusNew}">
         <div class="container-tournament" id="tournament-${status.index}">
             <c:choose>
