@@ -44,7 +44,7 @@ public class Match {
     @JoinColumn(name = "next_match")
     private Match nextMatch;
 
-    @OneToMany(mappedBy = "match")
+    @OneToMany(mappedBy = "match", fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<Round> rounds;
 

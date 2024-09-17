@@ -22,7 +22,6 @@ public class TournamentService {
     private final TransactionHandler transactionHandler;
     private final ExtensionService extensionService;
 
-
     public Tournament getTournamentById(UUID tournamentId) {
         return tournamentDao.getTournamentById(tournamentId);
     }
@@ -109,15 +108,19 @@ public class TournamentService {
                 .build();
     }
 
-    public Match getMatchById(UUID matchId, Session session) {
-        return tournamentDao.getMatchById(matchId, session);
+    public List<Round> getRoundsByMatchId(UUID matchId, Session session) {
+        return tournamentDao.getRoundsByMatchId(matchId, session);
     }
 
     public void updateMatchScores(UUID matchId, Integer scoringRoundInMatch, Integer score1, Integer score2) {
         transactionHandler.executeWithTransaction(session -> {
             Match match = tournamentDao.getMatchById(matchId, session);
-            Round round = tournamentDao.getRoundByNumberInMatch(matchId, session, scoringRoundInMatch);
-            if(round == null){
+            if (match == null) {
+                throw new IllegalArgumentException("Match with id " + matchId + " not found");
+            }
+
+            Round round = tournamentDao.getRoundByNumberInMatch(matchId, scoringRoundInMatch, session);
+            if (round == null) {
                 Round newRound = new Round();
                 newRound.setRoundNumber(match.getRounds().size() + 1);
                 newRound.setScore1(score1);

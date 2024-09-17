@@ -15,8 +15,9 @@
     <h2><c:out value="Среднее значение рейтинга игроков: ${requestScope.averageRating}"/></h2>
 
     <div class="container-table">
-
         <c:forEach var="match" items="${requestScope.tournament.matches}">
+            <c:out value="турнир ${match.rounds}"/>
+            <h2><c:out value="Количество раундов матча: ${roundCount}"/></h2>
             <div class="player-info">
                 <div class="column">
                     <h2><c:out value="${match.user1.surname} ${match.user1.firstname}"/></h2>
@@ -30,9 +31,8 @@
                                 <input type="hidden" name="userId1" value="${match.user1.id}"/>
                                 <input type="hidden" name="userId2" value="${match.user2.id}"/>
                                 <input type="hidden" name="csrfToken" value="${csrfToken}"/>
-                                <input type="hidden" name="roundToEdit" value="${roundToEdit}"
-                                <c:set var="victoriesInTrainingMatches" value="0"/>
-                                <c:set var="roundsInMatch" value="${requestScope.roundsInMatch}" />
+                                <input type="hidden" name="scoringRoundInMatch" value="0"/>
+                                <c:set var="victoriesInTrainingMatches" value="0" />
                                 <c:forEach var="extension" items="${requestScope.tournament.extensions}">
                                     <c:choose>
                                         <c:when test="${extension.name == 'VICTORIES_IN_TRAINING_MATCHES'}">
@@ -42,11 +42,9 @@
                                 </c:forEach>
                                 <c:set var="inputName1" value="score1"/>
                                 <c:set var="inputName2" value="score2"/>
-                                <input type="number" name="${inputName1}" class="score-input" min="0"/>
                                 <button class="button" id="changeScoreButton" type="submit">Внести</button>
+                                <input type="number" name="${inputName1}" class="score-input" min="0"/>
                                 <input type="number" name="${inputName2}" class="score-input" min="0"/>
-
-<%--                                <c:set var="roundCount" value="${fn:length(requestScope.match.rounds)}"/>--%>
                             </form>
                         </c:when>
 
@@ -78,8 +76,6 @@
     function redirectToLogin() {
         window.location.href = '/tournaments';
     }
-
-
 </script>
 
 </body>
