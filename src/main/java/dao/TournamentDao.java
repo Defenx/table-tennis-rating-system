@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Extension;
+import entity.Match;
 import entity.Tournament;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
@@ -72,5 +73,9 @@ public class TournamentDao {
             }
             throw e;
         }
+    }
+
+    public Match getMatchById(UUID matchId, Session session) {
+        return session.get(Match.class, matchId);
     }
 }

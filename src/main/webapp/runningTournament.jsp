@@ -16,7 +16,6 @@
 
     <div class="container-table">
         <c:forEach var="match" items="${requestScope.tournament.matches}">
-
             <div class="player-info">
                 <div class="column">
                     <h2><c:out value="${match.user1.surname} ${match.user1.firstname}"/></h2>
@@ -24,10 +23,14 @@
                 <div class="column">
                     <c:choose>
                         <c:when test="${user.role == 'ADMIN'}">
-                            <form action="/tournament/round" method="post">
-                                <input type="number" style="color: black;" class="score-input" min="0"/>
+                            <form action="/tournament/watch/${requestScope.tournament.id}" method="post">
+                                <input type="hidden" name="matchId" value="${match.id}"/>
+                                <input type="hidden" name="userId1" value="${match.user1.id}"/>
+                                <input type="hidden" name="userId2" value="${match.user2.id}"/>
+                                <input type="hidden" name="csrfToken" value="${csrfToken}"/>
+                                <input type="number" name="score1" style="color: black;" class="score-input" min="0"/>
                                 <button class="button">Внести</button>
-                                <input type="number" style="color: black;" class="score-input" min="0"/>
+                                <input type="number" name="score2" style="color: black;" class="score-input" min="0"/>
                             </form>
                         </c:when>
                         <c:otherwise>

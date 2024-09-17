@@ -107,4 +107,23 @@ public class TournamentService {
                 .stage(tournament.getStage())
                 .build();
     }
+
+    public void updateMatchScore(UUID matchId, UUID userId1, UUID userId2, int score1, int score2) {
+        transactionHandler.executeWithTransaction(session -> {
+            System.out.println("Updating match score, matchId: " + matchId);
+            Match match = tournamentDao.getMatchById(matchId, session);
+
+            if (match != null && match.getUser1().getId().equals(userId1) && match.getUser2().getId().equals(userId2)) {
+                Round newRound = new Round();
+                newRound.setRoundNumber(match.getRounds().size() + 1);
+                newRound.setScore1(score1);
+                newRound.setScore2(score2);
+                newRound.setMatch(match);
+
+                match.getRounds().add(newRound);
+                session.persist(newRound);
+                session.merge(match);
+            }
+        });
+    }
 }
