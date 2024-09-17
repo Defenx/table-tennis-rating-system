@@ -84,7 +84,7 @@ public enum Route {
 
     public static Optional<Route> fromPath(String path) {
         return Arrays.stream(values())
-                .filter(route -> (route.getPath().equals(path) || route.getJspPath().equals(path)))
+                .filter(route -> (route.getPath().equals(path) || route.getJspPath().equals(path) || (route.getPath().contains(path) && route.getPath().contains("/*"))))
                 .findAny();
     }
 
