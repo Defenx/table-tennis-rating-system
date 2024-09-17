@@ -3,16 +3,18 @@ package servlet.tournament;
 import constant.RequestAttributes;
 import constant.RouteConstants;
 import constant.RouteConstantsJSP;
+import entity.Match;
 import entity.Tournament;
 import enums.ExtensionName;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.UUID;
+import java.util.*;
 
 @WebServlet(RouteConstants.TOURNAMENT_BY_ID)
 public class RunningTournamentServlet extends BaseTournamentServlet {
@@ -24,12 +26,12 @@ public class RunningTournamentServlet extends BaseTournamentServlet {
 
         int trainingSets = extensionVariableTypeResolver.getExtensionValue(ExtensionName.VICTORIES_IN_TRAINING_MATCHES, tournament);
         BigDecimal averageRating = extensionVariableTypeResolver.getExtensionValue(ExtensionName.AVERAGE_RATING, tournament);
-
         if (tournament.getStage() <= trainingSets) {
             req.setAttribute(RequestAttributes.TOURNAMENT, tournament);
             req.setAttribute(RequestAttributes.AVERAGE_RATING, averageRating);
             req.getRequestDispatcher(RouteConstantsJSP.LAUNCHED_TOURNAMENT_JSP).forward(req, resp);
-        } else
+        }
+        else
             resp.sendRedirect(RouteConstants.HOME);
     }
 
@@ -39,19 +41,15 @@ public class RunningTournamentServlet extends BaseTournamentServlet {
         String matchId = req.getParameter("matchId");
         String userId1 = req.getParameter("userId1");
         String userId2 = req.getParameter("userId2");
-        String score1 = req.getParameter("score1");
-        String score2 = req.getParameter("score2");
-
-
+        Integer score1 = Integer.parseInt(req.getParameter("score1"));
+        Integer score2 = Integer.parseInt(req.getParameter("score2"));
+        Integer scoringRoundInMatch = Integer.parseInt(req.getParameter("roundsInMatch"));
         UUID tournamentId = UUID.fromString(pathInfo.substring(1));
-        if (matchId != null && userId1 != null && userId2 != null && score1 != null && score2 != null) {
+        if (matchId != null && userId1 != null && userId2 != null) {
             UUID matchUUID = UUID.fromString(matchId);
-            UUID user1UUID = UUID.fromString(userId1);
-            UUID user2UUID = UUID.fromString(userId2);
-            int score1Int = Integer.parseInt(score1);
-            int score2Int = Integer.parseInt(score2);
-            tournamentService.updateMatchScore(matchUUID, user1UUID, user2UUID, score1Int, score2Int);
+            tournamentService.updateMatchScores(matchUUID, scoringRoundInMatch, score1, score2);
+            System.out.println(true);
         }
-        resp.sendRedirect(RouteConstants.TOURNAMENT_BY_ID.replace("*",tournamentId.toString()));
+        resp.sendRedirect(RouteConstants.TOURNAMENT_BY_ID.replace("*", tournamentId.toString()));
     }
 }

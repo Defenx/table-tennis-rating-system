@@ -2,6 +2,7 @@ package dao;
 
 import entity.Extension;
 import entity.Match;
+import entity.Round;
 import entity.Tournament;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
@@ -77,5 +78,12 @@ public class TournamentDao {
 
     public Match getMatchById(UUID matchId, Session session) {
         return session.get(Match.class, matchId);
+    }
+
+    public Round getRoundByNumberInMatch(UUID matchID, Session session, Integer roundNumber) {
+        return getMatchById(matchID, session).getRounds().stream()
+                .filter(round -> round.getRoundNumber().equals(roundNumber))
+                .findFirst()
+                .orElse(null);
     }
 }
