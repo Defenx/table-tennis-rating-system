@@ -18,11 +18,12 @@
         <c:forEach var="match" items="${requestScope.tournament.matches}">
             <h2><c:out value="Количество раундов матча: ${fn:length(match.rounds)}"/></h2>
             <div class="player-info">
-                <div class="column">
-                    <h2><c:out value="${match.user1.surname} ${match.user1.firstname}"/></h2>
-                </div>
-
-                <div class="column">
+                <h2><c:out value="${match.user1.surname} ${match.user1.firstname}"/></h2>
+                <span class="vs">vs</span>
+                <h2><c:out value="${match.user2.surname} ${match.user2.firstname}"/></h2>
+            </div>
+            <div>
+                <div>
                     <c:choose>
                         <c:when test="${user.role == 'ADMIN'}">
                             <form action="/tournament/watch/${requestScope.tournament.id}" method="post">
@@ -40,13 +41,16 @@
                                 </c:forEach>
                                 <c:set var="inputName1" value="score1"/>
                                 <c:set var="inputName2" value="score2"/>
-                                <c:if test="${fn:length(match.rounds) <= victoriesInTrainingMatches}">
-                                    <input type="number" name="${inputName1}" class="score-input" min="0"/>
-                                    <button class="button" id="changeScoreButton" type="submit">Внести</button>
-                                    <input type="number" name="${inputName2}" class="score-input" min="0"/>
-                                </c:if>
+                                <div class="current-round">
+                                    <c:if test="${fn:length(match.rounds) < victoriesInTrainingMatches}">
+                                        <h3>Раунд ${fn:length(match.rounds)+1}</h3>
+                                        <input type="number" name="${inputName1}" class="score-input" min="0"/>
+                                        <button class="button" id="changeScoreButton" type="submit">Внести</button>
+                                        <input type="number" name="${inputName2}" class="score-input" min="0"/>
+                                    </c:if>
+                                </div>
                             </form>
-
+                            <hr/>
                             <c:forEach var="round" items="${match.rounds}" varStatus="roundStatus">
                                 <form action="/tournament/watch/${requestScope.tournament.id}" method="post">
                                     <input type="hidden" name="matchId" value="${match.id}"/>
@@ -75,10 +79,6 @@
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
-                </div>
-
-                <div class="column">
-                    <h2><c:out value="${match.user2.surname} ${match.user2.firstname}"/></h2>
                 </div>
 
             </div>
