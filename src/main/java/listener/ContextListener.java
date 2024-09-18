@@ -3,6 +3,7 @@ package listener;
 import config.HibernateConfig;
 import config.LiquibaseConfig;
 import constant.RouteConstants;
+import dao.MatchDao;
 import dao.TournamentDao;
 import dao.TournamentParticipantDao;
 import dao.UserDao;
@@ -20,6 +21,7 @@ import org.hibernate.SessionFactory;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.tournament.TournamentService;
+import service.tournament.match.MatchService;
 import service.user.UserService;
 import service.extension.ExtensionService;
 import service.home.TournamentAttributeResolver;
@@ -43,9 +45,11 @@ public class ContextListener implements ServletContextListener {
     public static final String VALIDATION_SERVICE = "validationService";
     public static final String CREDENTIALS_EXTRACTOR = "credentialsExtractor";
     public static final String USER_SERVICE = "userService";
+    public static final String MATCH_SERVICE = "matchService";
     public static final String SESSION_FACTORY = "sessionFactory";
     public static final String USER_DAO = "userDao";
     public static final String TOURNAMENT_DAO = "tournamentDao";
+    public static final String MATCH_DAO = "matchDao";
     public static final String TOURNAMENT_CREATE_SERVICE = "tournamentCreateService";
     public static final String TOURNAMENT_CREATE_EXTRACTOR_SERVICE = "tournamentCreateExtractorService";
     public static final String TOURNAMENT_SERVICE = "tournamentService";
@@ -64,7 +68,9 @@ public class ContextListener implements ServletContextListener {
         var credentialsExtractor = new CredentialsExtractor();
         var userDao = new UserDao(sessionFactory);
         var tournamentDao = new TournamentDao(sessionFactory);
+        var matchDao = new MatchDao(sessionFactory);
         var userService = initUserService(userDao);
+        var matchService = initMatchService(matchDao, sessionFactory);
         var extensionService = new ExtensionService();
         var tournamentService = initTournamentService(tournamentDao, sessionFactory, extensionService);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
@@ -78,7 +84,9 @@ public class ContextListener implements ServletContextListener {
                 Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),
                 Map.entry(USER_DAO, userDao),
                 Map.entry(TOURNAMENT_DAO, tournamentDao),
+                Map.entry(MATCH_DAO, matchDao),
                 Map.entry(USER_SERVICE, userService),
+                Map.entry(MATCH_SERVICE, matchService),
                 Map.entry(TOURNAMENT_SERVICE, tournamentService),
                 Map.entry(TOURNAMENT_ATTRIBUTE_RESOLVER, tournamentAttributeResolver),
                 Map.entry(VALIDATION_SERVICE, validationService),
@@ -201,5 +209,10 @@ public class ContextListener implements ServletContextListener {
     private TournamentCreateService initTournamentCreateService(TournamentDao tournamentDao) {
         var tournamentMapper = Mappers.getMapper(TournamentMapper.class);
         return new TournamentCreateService(tournamentDao, tournamentMapper);
+    }
+
+    private MatchService initMatchService(MatchDao matchDao, SessionFactory sessionFactory) {
+        var transactionHandler = new TransactionHandler(sessionFactory);
+        return new MatchService(matchDao, transactionHandler);
     }
 }

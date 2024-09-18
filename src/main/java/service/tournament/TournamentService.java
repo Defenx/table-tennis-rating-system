@@ -107,33 +107,4 @@ public class TournamentService {
                 .stage(tournament.getStage())
                 .build();
     }
-
-    public List<Round> getRoundsByMatchId(UUID matchId, Session session) {
-        return tournamentDao.getRoundsByMatchId(matchId, session);
-    }
-
-    public void updateMatchScores(UUID matchId, Integer scoringRoundInMatch, Integer score1, Integer score2) {
-        transactionHandler.executeWithTransaction(session -> {
-            Match match = tournamentDao.getMatchById(matchId, session);
-            if (match == null) {
-                throw new IllegalArgumentException("Match with id " + matchId + " not found");
-            }
-
-            Round round = tournamentDao.getRoundByNumberInMatch(matchId, scoringRoundInMatch, session);
-            if (round == null) {
-                Round newRound = new Round();
-                newRound.setRoundNumber(match.getRounds().size() + 1);
-                newRound.setScore1(score1);
-                newRound.setScore2(score2);
-                newRound.setMatch(match);
-                match.getRounds().add(newRound);
-                session.persist(newRound);
-            } else {
-                round.setScore1(score1);
-                round.setScore2(score2);
-                session.merge(round);
-            }
-            session.merge(match);
-        });
-    }
 }

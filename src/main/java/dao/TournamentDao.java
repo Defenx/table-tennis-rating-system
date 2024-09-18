@@ -1,8 +1,6 @@
 package dao;
 
 import entity.Extension;
-import entity.Match;
-import entity.Round;
 import entity.Tournament;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
@@ -47,28 +45,5 @@ public class TournamentDao {
             session.remove(tournament);
             transaction.commit();
         }
-    }
-
-    public Match getMatchById(UUID matchId, Session session) {
-        return session.get(Match.class, matchId);
-    }
-
-    public List<Round> getRoundsByMatchId(UUID matchId, Session session) {
-        Match match = getMatchById(matchId, session);
-        if (match != null) {
-            return match.getRounds();
-        }
-        return null;
-    }
-
-    public Round getRoundByNumberInMatch(UUID matchId, Integer roundNumber, Session session) {
-        List<Round> rounds = getRoundsByMatchId(matchId, session);
-        if (rounds != null) {
-            return rounds.stream()
-                    .filter(round -> round.getRoundNumber().equals(roundNumber))
-                    .findFirst()
-                    .orElse(null);
-        }
-        return null;
     }
 }
