@@ -16,14 +16,13 @@
 
     <div class="container-table">
         <c:forEach var="match" items="${requestScope.tournament.matches}">
-            <h2><c:out value="Количество раундов матча: ${fn:length(match.rounds)}"/></h2>
-            <div class="player-info">
-                <h2><c:out value="${match.user1.surname} ${match.user1.firstname}"/></h2>
-                <span class="vs">vs</span>
-                <h2><c:out value="${match.user2.surname} ${match.user2.firstname}"/></h2>
-            </div>
-            <div>
-                <div>
+            <div class="match-row">
+                <div class="player-info">
+                    <h2><c:out value="${match.user1.surname} ${match.user1.firstname}"/></h2>
+                    <span class="vs">vs</span>
+                    <h2><c:out value="${match.user2.surname} ${match.user2.firstname}"/></h2>
+                </div>
+                <div class="round-info">
                     <c:choose>
                         <c:when test="${user.role == 'ADMIN'}">
                             <form action="/tournament/watch/${requestScope.tournament.id}" method="post">
@@ -69,18 +68,16 @@
                                 </form>
                             </c:forEach>
                         </c:when>
-
                         <c:otherwise>
                             <c:forEach var="round" items="${match.rounds}" varStatus="roundStatus">
                                 <div class="round-score">
                                     <h3>Раунд ${roundStatus.index + 1}</h3>
-                                    <span>${round.score1}: ${round.score2}</span>
+                                    <span class="score-text">${round.score1} : ${round.score2}</span>
                                 </div>
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
                 </div>
-
             </div>
         </c:forEach>
     </div>
