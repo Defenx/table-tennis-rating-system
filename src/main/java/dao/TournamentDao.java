@@ -60,19 +60,6 @@ public class TournamentDao {
             throw new RuntimeException(he);
         }
     }
-    public List<Object[]> findTournamentsAndCountParticipants(Status status) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Object[]> query = session.createQuery(
-                    "SELECT t.id, t.date, t.type, COUNT(tp.id) FROM Tournament t left JOIN TournamentParticipant tp ON t.id = tp.tournament.id WHERE t.status = :status  GROUP BY t.id, t.date,t.type",
-                                                              Object[].class
-            );
-            query.setParameter("status", status);
-            return query.getResultList();
-        } catch (HibernateException he) {
-            throw new RuntimeException(he);
-        }
-    }
-
     public void deleteTournament(Tournament tournament) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {

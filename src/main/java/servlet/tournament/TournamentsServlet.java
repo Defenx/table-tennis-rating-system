@@ -18,10 +18,10 @@ public class TournamentsServlet extends BaseTournamentServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Object[]> tournamentsList = tournamentService.getProcessingTournaments();
+        List<Tournament> tournamentsList = tournamentService.getProcessingTournaments();
         req.setAttribute("tournamentsList",tournamentsList);
 
-        tournamentsList.stream().forEach(System.out::println);
+
 
         req.getRequestDispatcher(Route.TOURNAMENTS.getJspPath()).forward(req, resp);
     }

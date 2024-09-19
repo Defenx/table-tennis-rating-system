@@ -17,19 +17,19 @@
                 <thead>
                 <tr>
                     <th>Дата начала турнира</th>
-                    <th>Количество участников</th>
                     <th>Тип турнира</th>
+                    <th>Количество участников</th>
                     <th>Действие</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="tournament" items="${tournamentsList}">
                     <tr>
-                        <td>${tournament[1]}</td>
-                        <td>${tournament[3]}</td>
-                        <td>${tournament[2]}</td>
+                        <td>${tournament.date}</td>
+                        <td>${tournament.type}</td>
+                        <td>${tournament.participants.size()}</td>
                         <td>
-                            <form action="/tournament/watch/${tournament[0]}" method="get">
+                            <form action="/tournament/watch/${tournament.id}" method="get">
                                 <button type="submit">Следить за турниром</button>
                             </form>
                         </td>
