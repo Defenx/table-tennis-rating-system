@@ -22,11 +22,9 @@
         <c:when test="${fn:length(tournamentsWithStatusNew) != 0}">
             <div class="tournament-navigation">
                 <c:set var="totalTournaments" value="${fn:length(tournamentsWithStatusNew)}"/>
-                <button id="prevTournament" class="arrow-button prev-button"></button>
-                <label for="prevTournament"> Предыдущий</label>
+                <button id="prevTournament" class="button prev-button">Предыдущий турнир</button>
                 <h2 class="page-title">Запись на турнир</h2>
-                <label for="nextTournament"> Следующий</label>
-                <button id="nextTournament" class="arrow-button next-button"></button>
+                <button id="nextTournament" class="button next-button">Следующий турнир</button>
             </div>
         </c:when>
         <c:otherwise>

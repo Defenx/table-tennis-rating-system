@@ -90,8 +90,9 @@ button:hover {
 }
 
 button.disabled {
-    background: #d3d3d3; /* Цвет для неактивной кнопки */
-    cursor: not-allowed; /* Указывает, что кнопка неактивна */
+    /*background: #d3d3d3; !* Цвет для неактивной кнопки *!*/
+    /*cursor: not-allowed; !* Указывает, что кнопка неактивна *!*/
+    visibility: hidden;  /* деалет кнопку невидимой*/
 }
 .delete-button {
     width: content-box;
@@ -145,39 +146,6 @@ button.disabled {
     background: linear-gradient(0deg, rgb(8, 185, 8) 0%, rgb(14, 241, 14) 100%);
 }
 
-.arrow-button {
-    width: 50px;
-    height: 50px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    position: relative;
-    outline: none;
-    transition: background-color 0.3s ease;
-}
-.arrow-button:hover:disabled {
-    background-color: #d3d3d3;
-    cursor: not-allowed;
-}
-
-.arrow-button:hover {
-    background-color: #0056b3;
-}
-
-.prev-button::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-top: 15px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-right: 20px solid white;
-    transform: translate(-50%, -50%);
-}
-
 .tournament-navigation{
     display: flex;
     justify-content: center;
@@ -187,18 +155,6 @@ button.disabled {
 
 }
 
-.next-button::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-top: 15px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-left: 20px solid white;
-    transform: translate(-50%, -50%);
-}
 
 .page-title{
     border: 1px solid black;
