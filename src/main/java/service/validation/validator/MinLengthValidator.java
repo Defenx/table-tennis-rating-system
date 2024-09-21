@@ -1,26 +1,28 @@
 package service.validation.validator;
 
-import java.util.Collections;
-import java.util.List;
+import enums.Error;
+import service.validation.chain.BaseValidator;
 
-public class MinLengthValidator implements Validator {
+public class MinLengthValidator extends BaseValidator {
 
-    private final List<String> errorMessages;
     private final int minLength;
 
-    public MinLengthValidator(int minLength) {
+    public MinLengthValidator(int minLength, int priority) {
+        super(priority);
         this.minLength = minLength;
-        this.errorMessages = List.of(
-                "Поле должно быть длиной не менее " + minLength + " символов"
-        );
     }
 
     @Override
-    public List<String> validate(String value) {
-        if (value == null || value.length() < minLength) {
-            return errorMessages;
+    public String validate(String value) {
+
+        if (value.length() < minLength) {
+            return Error.MIN_LENGTH_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 }

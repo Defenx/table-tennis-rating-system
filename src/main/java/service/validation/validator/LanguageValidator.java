@@ -1,37 +1,34 @@
 package service.validation.validator;
 
-import java.util.Collections;
-import java.util.List;
+import enums.Error;
+import service.validation.chain.BaseValidator;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LanguageValidator implements Validator {
-
-    private final List<String> errorMessages;
+public class LanguageValidator extends BaseValidator {
 
     private final String regularExpression;
 
-    public LanguageValidator() {
+    public LanguageValidator(int priority) {
+        super(priority);
         this.regularExpression = "[^а-яёА-ЯЁ]";
-        this.errorMessages = List.of(
-                "Разрешены только символы русского алфавита"
-        );
     }
 
     @Override
-    public List<String> validate(String value) {
-
-        if (value == null) {
-            return errorMessages;
-        }
+    public String validate(String value) {
 
         Pattern pattern = Pattern.compile(regularExpression);
         Matcher matcher = pattern.matcher(value);
 
         if (matcher.find()) {
-            return errorMessages;
+            return Error.LANGUAGE_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 }

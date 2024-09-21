@@ -1,25 +1,25 @@
 package service.validation.validator;
 
-import java.util.Collections;
-import java.util.List;
+import enums.Error;
+import service.validation.chain.BaseValidator;
 
-public class CapitalLetterValidator implements Validator {
+public class CapitalLetterValidator extends BaseValidator {
 
-    private final List<String> errorMessages;
-
-    public CapitalLetterValidator() {
-        this.errorMessages = List.of(
-                "Вводимые данные должны начинаться с заглавной буквы"
-        );
+    public CapitalLetterValidator(int priority) {
+        super(priority);
     }
 
     @Override
-    public List<String> validate(String value) {
+    public String validate(String value) {
 
         if (value.isBlank() || !Character.isUpperCase(value.charAt(0))) {
-            return errorMessages;
+            return Error.CAPITAL_LETTER_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 }

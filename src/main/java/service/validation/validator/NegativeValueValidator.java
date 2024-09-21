@@ -1,33 +1,27 @@
 package service.validation.validator;
 
-import service.utils.NumberTypeChecker;
+import enums.Error;
+import service.validation.chain.BaseValidator;
 
-import java.util.Collections;
-import java.util.List;
+public class NegativeValueValidator extends BaseValidator {
 
-public class NegativeValueValidator implements Validator {
-
-    private final List<String> errorMessages;
-
-    public NegativeValueValidator() {
-        this.errorMessages = List.of(
-                "Значение этого поля не может быть отрицательным"
-        );
+    public NegativeValueValidator(int priority) {
+        super(priority);
     }
 
     @Override
-    public List<String> validate(String value) {
-        if (value == null || !NumberTypeChecker.isNumber(value)) {
-            return errorMessages;
-        }
-
+    public String validate(String value) {
         int count = Integer.parseInt(value);
 
         if (count < 0) {
-            return errorMessages;
+            return Error.NEGATIVE_VALUE_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 
 }

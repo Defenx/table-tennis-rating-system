@@ -1,24 +1,25 @@
 package service.validation.validator;
 
-import java.util.Collections;
-import java.util.List;
+import enums.Error;
+import service.validation.chain.BaseValidator;
 
-public class SpaceSymbolsValidator implements Validator {
+public class SpaceSymbolsValidator extends BaseValidator {
 
-    private final List<String> errorMessages;
-
-    public SpaceSymbolsValidator() {
-        this.errorMessages = List.of(
-                "Поле не должно содержать пробельных символов"
-        );
+    public SpaceSymbolsValidator(int priority) {
+        super(priority);
     }
 
     @Override
-    public List<String> validate(String value) {
-        if (value == null || value.contains(" ")) {
-            return errorMessages;
+    public String validate(String value) {
+
+        if (value.contains(" ")) {
+            return Error.SPACE_SYMBOLS_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 }

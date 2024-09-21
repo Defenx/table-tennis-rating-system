@@ -1,27 +1,26 @@
 package service.validation.validator;
 
+import enums.Error;
 import service.utils.NumberTypeChecker;
+import service.validation.chain.BaseValidator;
 
-import java.util.Collections;
-import java.util.List;
+public class IsNumericValidator extends BaseValidator {
 
-public class IsNumericValidator implements Validator {
-
-    private final List<String> errorMessages;
-
-    public IsNumericValidator() {
-        this.errorMessages = List.of(
-                "Значение этого поля должно быть числом"
-        );
+    public IsNumericValidator(int priority) {
+        super(priority);
     }
 
     @Override
-    public List<String> validate(String value) {
+    public String validate(String value) {
 
-        if (value == null || !NumberTypeChecker.isNumber(value)) {
-            return errorMessages;
+        if (!NumberTypeChecker.isNumber(value)) {
+            return Error.IS_NUMERIC_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 }
