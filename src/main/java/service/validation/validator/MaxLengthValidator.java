@@ -1,26 +1,28 @@
 package service.validation.validator;
 
-import java.util.Collections;
-import java.util.List;
+import enums.Error;
+import service.validation.chain.BaseValidator;
 
-public class MaxLengthValidator implements Validator {
+public class MaxLengthValidator extends BaseValidator {
 
-    private final List<String> errorMessages;
     private final int maxLength;
 
-    public MaxLengthValidator(int maxLength) {
+    public MaxLengthValidator(int maxLength, int priority) {
+        super(priority);
         this.maxLength = maxLength;
-        this.errorMessages = List.of(
-                "Поле должно быть длиной не более " + maxLength + " символов"
-        );
     }
 
     @Override
-    public List<String> validate(String value) {
-        if (value == null || value.length() > maxLength) {
-            return errorMessages;
+    public String validate(String value) {
+
+        if (value.length() > maxLength) {
+            return Error.MAX_LENGTH_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 }

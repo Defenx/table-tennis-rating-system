@@ -1,43 +1,39 @@
 package service.validation;
 
 import jakarta.servlet.http.HttpServletRequest;
-import service.validation.validator.Validator;
+import service.validation.chain.ValidationManager;
 
-import java.util.List;
 
 public class ValidationService {
     public static final String IS_VALID_REQUEST = "isValidRequest";
     private final ValidationRegistry validationRegistry;
+    private final ValidationManager validationManager;
     private final String validationFieldSuffix;
 
-    public ValidationService(ValidationRegistry validationRegistry) {
+    public ValidationService(ValidationRegistry validationRegistry, ValidationManager validationManager) {
         this.validationRegistry = validationRegistry;
         this.validationFieldSuffix = "ValidationErrors";
+        this.validationManager = validationManager;
     }
 
     public HttpServletRequest validate(HttpServletRequest request) {
+
         var contextPath = request.getRequestURI();
         var fieldToValidatorsMap = validationRegistry.getValidationsByContextPath(contextPath);
         var isValidRequest = true;
 
         for (var entry : fieldToValidatorsMap.entrySet()) {
             var fieldName = entry.getKey();
-            var validators = entry.getValue();
+            validationManager.setValidators(entry.getValue());
             var fieldValue = request.getParameter(fieldName);
-            var errorMessages = validateValue(fieldValue, validators);
-            isValidRequest = isValidRequest && errorMessages.isEmpty();
-            request.setAttribute(createAttributeName(fieldName), errorMessages);
+            var errorMessage = validationManager.runValidation(fieldValue);
+            isValidRequest = isValidRequest && errorMessage.isEmpty();
+            request.setAttribute(createAttributeName(fieldName), errorMessage);
         }
 
         request.setAttribute(IS_VALID_REQUEST, isValidRequest);
 
         return request;
-    }
-
-    private List<String> validateValue(String fieldValue, List<Validator> validators) {
-        return validators.stream()
-                .flatMap(validator -> validator.validate(fieldValue).stream())
-                .toList();
     }
 
     private String createAttributeName(String fieldName) {

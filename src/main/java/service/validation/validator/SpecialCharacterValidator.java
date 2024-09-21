@@ -1,38 +1,34 @@
 package service.validation.validator;
 
-import java.util.Collections;
-import java.util.List;
+import enums.Error;
+import service.validation.chain.BaseValidator;
 
-public class SpecialCharacterValidator implements Validator {
+public class SpecialCharacterValidator extends BaseValidator {
+
     private final int requiredCount;
     private final String specialCharacters;
-    private final List<String> errorMessages;
 
-    public SpecialCharacterValidator(int requiredCount) {
+    public SpecialCharacterValidator(int requiredCount, int priority) {
+        super(priority);
         this.requiredCount = requiredCount;
         this.specialCharacters = "!@#$%^&*()";
-        this.errorMessages = List.of(
-                "Поле должно содержать как минимум %d %s (%s)".formatted(
-                        requiredCount,
-                        (requiredCount > 1 ? "специальных символов" : "специальный символ"),
-                        specialCharacters)
-        );
     }
 
     @Override
-    public List<String> validate(String value) {
-        if (value == null) {
-            return errorMessages;
-        }
+    public String validate(String value) {
 
         var specialCharacterCount = value.chars()
                 .filter(ch -> specialCharacters.indexOf(ch) >= 0)
                 .count();
 
         if (specialCharacterCount < requiredCount) {
-            return errorMessages;
+            return Error.SPECIAL_CHARACTERS_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 }

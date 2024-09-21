@@ -1,28 +1,29 @@
 package service.validation.validator;
 
+import enums.Error;
 import service.user.UserService;
+import service.validation.chain.BaseValidator;
 
-import java.util.Collections;
-import java.util.List;
-
-public class EmailRepeatValidator implements Validator{
+public class EmailRepeatValidator extends BaseValidator {
 
     private final UserService userService;
-    private final List<String> errorMessages;
 
-    public EmailRepeatValidator(UserService userService) {
+    public EmailRepeatValidator(UserService userService, int priority) {
+        super(priority);
         this.userService = userService;
-        this.errorMessages = List.of(
-                "Этот адрес электронной почты уже зарегистрирован"
-        );
     }
 
     @Override
-    public List<String> validate(String email) {
-        if (email == null || userService.findByEmail(email).isPresent()) {
-            return errorMessages;
+    public String validate(String email) {
+
+        if (userService.findByEmail(email).isPresent()) {
+            return Error.EMAIL_REPEAT_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(email);
+        }
+
+        return "";
     }
 }

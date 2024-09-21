@@ -1,33 +1,27 @@
 package service.validation.validator;
 
-import service.utils.NumberTypeChecker;
+import enums.Error;
+import service.validation.chain.BaseValidator;
 
-import java.util.Collections;
-import java.util.List;
+public class CountOfParticipantValidator extends BaseValidator {
 
-public class CountOfParticipantValidator implements Validator {
-
-    private final List<String> errorMessages;
-
-    public CountOfParticipantValidator() {
-        this.errorMessages = List.of(
-                "Число участников должно быть четным"
-        );
+    public CountOfParticipantValidator(int priority) {
+        super(priority);
     }
 
     @Override
-    public List<String> validate(String value) {
-        if (value == null || !NumberTypeChecker.isNumber(value)) {
-            return errorMessages;
-        }
-
+    public String validate(String value) {
         int count = Integer.parseInt(value);
 
         if (count % 2 != 0) {
-            return errorMessages;
+            return Error.COUNT_OF_PARTICIPANT_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 
 }

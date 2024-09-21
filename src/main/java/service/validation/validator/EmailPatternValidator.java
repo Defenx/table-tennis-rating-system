@@ -1,26 +1,27 @@
 package service.validation.validator;
 
-import java.util.Collections;
-import java.util.List;
+import enums.Error;
+import service.validation.chain.BaseValidator;
 
-public class EmailPatternValidator implements Validator {
+public class EmailPatternValidator extends BaseValidator {
     private final String emailPattern;
-    private final List<String> errorMessages;
 
-    public EmailPatternValidator() {
+    public EmailPatternValidator(int priority) {
+        super(priority);
         this.emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$";
-        this.errorMessages = List.of(
-                "Адрес электронной почты не соответствует формату",
-                "Пример правильного адреса электронной почты: mail@example.com"
-        );
     }
 
     @Override
-    public List<String> validate(String value) {
-        if (value == null || !value.matches(emailPattern)) {
-            return errorMessages;
+    public String validate(String value) {
+
+        if (!value.matches(emailPattern)) {
+            return Error.EMAIL_PATTERN_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 }

@@ -31,6 +31,8 @@ import service.tournament.create.TournamentMapper;
 import service.extension.ExtensionVariableTypeResolver;
 import service.validation.ValidationRegistry;
 import service.validation.ValidationService;
+import service.validation.chain.BaseValidator;
+import service.validation.chain.ValidationManager;
 import service.validation.validator.*;
 
 import javax.sql.DataSource;
@@ -117,80 +119,78 @@ public class ContextListener implements ServletContextListener {
     }
 
     private ValidationService initValidation(UserService userService) {
-        var emptinessValidator = new EmptinessValidator();
-        var languageValidator = new LanguageValidator();
-        var capitalLetterValidator = new CapitalLetterValidator();
-        var emailPatternValidator = new EmailPatternValidator();
-        var emailRepeatValidator = new EmailRepeatValidator(userService);
-        var minLengthValidator = new MinLengthValidator(5);
-        var maxLengthValidator = new MaxLengthValidator(16);
-        var specialCharacterValidator = new SpecialCharacterValidator(1);
-        var spaceSymbolsValidator = new SpaceSymbolsValidator();
-        var isNumericValidator = new IsNumericValidator();
-        var countOfParticipantValidator = new CountOfParticipantValidator();
-        var negativeValueValidator = new NegativeValueValidator();
+        List<BaseValidator> registrationFirstNameValidators = List.of(
+                new EmptinessValidator(1),
+                new LanguageValidator(3),
+                new CapitalLetterValidator(2)
+        );
+        List<BaseValidator> registrationSurnameValidators = List.of(
+                new EmptinessValidator(1),
+                new LanguageValidator(3),
+                new CapitalLetterValidator(2)
+        );
+        List<BaseValidator> registrationEmailValidators = List.of(
+                new EmptinessValidator(1),
+                new EmailRepeatValidator(userService, 3),
+                new EmailPatternValidator(2)
+        );
+        List<BaseValidator> registrationPasswordValidators = List.of(
+                new EmptinessValidator(1),
+                new MinLengthValidator(5, 2),
+                new MaxLengthValidator(16, 2),
+                new SpaceSymbolsValidator(1),
+                new SpecialCharacterValidator(1, 3)
+        );
+        List<BaseValidator> loginEmailValidators = List.of(
+                new EmptinessValidator(1)
+        );
+        List<BaseValidator> loginPasswordValidators = List.of(
+                new EmptinessValidator(1)
+        );
+        List<BaseValidator> adminTournamentCreateVictoriesOnTrainingMatchesValidators = List.of(
+                new EmptinessValidator(1)
+        );
+        List<BaseValidator> adminTournamentCreateVictoriesOnPlayoffMatchesValidators = List.of(
+                new EmptinessValidator(1)
+        );
+        List<BaseValidator> adminTournamentCreateNumberOfTrainingMatchesValidators = List.of(
+                new EmptinessValidator(1)
+        );
+        List<BaseValidator> adminTournamentCreateNumberOfParticipantValidators = List.of(
+                new EmptinessValidator(1),
+                new IsNumericValidator(2),
+                new NegativeValueValidator(3),
+                new CountOfParticipantValidator(4)
+        );
 
 
-        Map<String, Map<String, List<Validator>>> routesToValidationMap =
+        Map<String, Map<String, List<BaseValidator>>> routesToValidationMap =
                 Map.of(
                         RouteConstants.REGISTRATION, Map.of(
-                                "firstname", List.of(
-                                        emptinessValidator,
-                                        languageValidator,
-                                        capitalLetterValidator
-                                ),
+                                "firstname", registrationFirstNameValidators,
 
-                                "surname", List.of(
-                                        emptinessValidator,
-                                        languageValidator,
-                                        capitalLetterValidator
-                                ),
+                                "surname", registrationSurnameValidators,
 
-                                "email", List.of(
-                                        emptinessValidator,
-                                        emailPatternValidator,
-                                        emailRepeatValidator
-                                ),
+                                "email", registrationEmailValidators,
 
-                                "password", List.of(
-                                        emptinessValidator,
-                                        minLengthValidator,
-                                        maxLengthValidator,
-                                        specialCharacterValidator,
-                                        spaceSymbolsValidator
-                                )
+                                "password", registrationPasswordValidators
                         ),
                         RouteConstants.LOGIN, Map.of(
-                                "email", List.of(
-                                        emptinessValidator
-                                ),
-                                "password", List.of(
-                                        emptinessValidator
-                                )
-
+                                "email", loginEmailValidators,
+                                "password", loginPasswordValidators
                         ),
                         RouteConstants.ADMIN_TOURNAMENT_CREATE, Map.of(
-                                "victories_in_training_matches", List.of(
-                                        emptinessValidator
-                                ),
-                                "victories_in_playoff_matches", List.of(
-                                        emptinessValidator
-                                ),
-                                "number_of_training_matches", List.of(
-                                        emptinessValidator
-                                ),
-                                "number_of_participants", List.of(
-                                        emptinessValidator,
-                                        isNumericValidator,
-                                        countOfParticipantValidator,
-                                        negativeValueValidator
-                                )
-
+                                "victories_in_training_matches", adminTournamentCreateVictoriesOnTrainingMatchesValidators,
+                                "victories_in_playoff_matches", adminTournamentCreateVictoriesOnPlayoffMatchesValidators,
+                                "number_of_training_matches", adminTournamentCreateNumberOfTrainingMatchesValidators,
+                                "number_of_participants", adminTournamentCreateNumberOfParticipantValidators
                         )
                 );
 
-        var validationFactory = new ValidationRegistry(routesToValidationMap);
-        return new ValidationService(validationFactory);
+        var validationRegistry = new ValidationRegistry(routesToValidationMap);
+        var validationManager = new ValidationManager();
+
+        return new ValidationService(validationRegistry, validationManager);
     }
 
     private UserService initUserService(UserDao userDao){

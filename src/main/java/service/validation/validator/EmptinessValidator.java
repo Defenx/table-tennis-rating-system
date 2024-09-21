@@ -1,23 +1,25 @@
 package service.validation.validator;
 
-import java.util.Collections;
-import java.util.List;
+import enums.Error;
+import service.validation.chain.BaseValidator;
 
-public class EmptinessValidator implements Validator {
-    private final List<String> errorMessages;
+public class EmptinessValidator extends BaseValidator {
 
-    public EmptinessValidator() {
-        this.errorMessages = List.of(
-                "Поле не может быть пустым"
-        );
+    public EmptinessValidator(int priority) {
+        super(priority);
     }
 
     @Override
-    public List<String> validate(String value) {
+    public String validate(String value) {
+
         if (value == null || value.isEmpty()) {
-            return errorMessages;
+            return Error.EMPTINESS_ERROR.getMessage();
         }
 
-        return Collections.emptyList();
+        if (getNext() != null) {
+            return getNext().validate(value);
+        }
+
+        return "";
     }
 }
