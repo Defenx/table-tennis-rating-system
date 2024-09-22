@@ -3,7 +3,6 @@ package listener;
 import config.HibernateConfig;
 import config.LiquibaseConfig;
 import constant.RouteConstants;
-import dao.MatchDao;
 import dao.TournamentDao;
 import dao.TournamentParticipantDao;
 import dao.UserDao;
@@ -20,17 +19,18 @@ import lombok.SneakyThrows;
 import org.hibernate.SessionFactory;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import service.tournament.TournamentService;
-import service.tournament.match.MatchService;
-import service.user.UserService;
+import service.TransactionHandler;
 import service.extension.ExtensionService;
+import service.extension.ExtensionVariableTypeResolver;
 import service.home.TournamentAttributeResolver;
 import service.login.CredentialsExtractor;
-import service.TransactionHandler;
+import service.tournament.TournamentService;
 import service.tournament.create.TournamentCreateExtractorService;
 import service.tournament.create.TournamentCreateService;
 import service.tournament.create.TournamentMapper;
-import service.extension.ExtensionVariableTypeResolver;
+import service.tournament.match.MatchService;
+import service.tournament.round.RoundService;
+import service.user.UserService;
 import service.validation.ValidationRegistry;
 import service.validation.ValidationService;
 import service.validation.validator.*;
@@ -46,10 +46,10 @@ public class ContextListener implements ServletContextListener {
     public static final String CREDENTIALS_EXTRACTOR = "credentialsExtractor";
     public static final String USER_SERVICE = "userService";
     public static final String MATCH_SERVICE = "matchService";
+    public static final String ROUND_SERVICE = "roundService";
     public static final String SESSION_FACTORY = "sessionFactory";
     public static final String USER_DAO = "userDao";
     public static final String TOURNAMENT_DAO = "tournamentDao";
-    public static final String MATCH_DAO = "matchDao";
     public static final String TOURNAMENT_CREATE_SERVICE = "tournamentCreateService";
     public static final String TOURNAMENT_CREATE_EXTRACTOR_SERVICE = "tournamentCreateExtractorService";
     public static final String TOURNAMENT_SERVICE = "tournamentService";
@@ -68,9 +68,9 @@ public class ContextListener implements ServletContextListener {
         var credentialsExtractor = new CredentialsExtractor();
         var userDao = new UserDao(sessionFactory);
         var tournamentDao = new TournamentDao(sessionFactory);
-        var matchDao = new MatchDao(sessionFactory);
         var userService = initUserService(userDao);
-        var matchService = initMatchService(matchDao, sessionFactory);
+        var roundService = initRoundService(tournamentDao, sessionFactory);
+        var matchService = initMatchService(roundService, sessionFactory);
         var extensionService = new ExtensionService();
         var tournamentService = initTournamentService(tournamentDao, sessionFactory, extensionService);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
@@ -84,9 +84,9 @@ public class ContextListener implements ServletContextListener {
                 Map.entry(CREDENTIALS_EXTRACTOR, credentialsExtractor),
                 Map.entry(USER_DAO, userDao),
                 Map.entry(TOURNAMENT_DAO, tournamentDao),
-                Map.entry(MATCH_DAO, matchDao),
                 Map.entry(USER_SERVICE, userService),
                 Map.entry(MATCH_SERVICE, matchService),
+                Map.entry(ROUND_SERVICE, roundService),
                 Map.entry(TOURNAMENT_SERVICE, tournamentService),
                 Map.entry(TOURNAMENT_ATTRIBUTE_RESOLVER, tournamentAttributeResolver),
                 Map.entry(VALIDATION_SERVICE, validationService),
@@ -211,8 +211,13 @@ public class ContextListener implements ServletContextListener {
         return new TournamentCreateService(tournamentDao, tournamentMapper);
     }
 
-    private MatchService initMatchService(MatchDao matchDao, SessionFactory sessionFactory) {
+    private MatchService initMatchService(RoundService roundService, SessionFactory sessionFactory) {
         var transactionHandler = new TransactionHandler(sessionFactory);
-        return new MatchService(matchDao, transactionHandler);
+        return new MatchService(roundService, transactionHandler);
+    }
+
+    private RoundService initRoundService(TournamentDao tournamentDao, SessionFactory sessionFactory) {
+        var transactionHandler = new TransactionHandler(sessionFactory);
+        return new RoundService(transactionHandler, tournamentDao);
     }
 }
