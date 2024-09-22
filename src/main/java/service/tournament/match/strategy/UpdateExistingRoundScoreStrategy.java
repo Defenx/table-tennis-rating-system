@@ -1,48 +1,44 @@
 package service.tournament.match.strategy;
 
-import dao.MatchDao;
-import entity.Round;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
-import service.TransactionHandler;
+import service.tournament.round.RoundService;
 
-import java.util.Enumeration;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 public class UpdateExistingRoundScoreStrategy implements ScoreProcessingStrategy {
-
-    private final MatchDao matchDao;
-    private final TransactionHandler transactionHandler;
+    private final RoundService roundService;
 
     @Override
     public void processScores(UUID matchId, HttpServletRequest req) {
-        transactionHandler.executeWithTransaction(session -> {
-            Enumeration<String> parameterNames = req.getParameterNames();
-            while (parameterNames.hasMoreElements()) {
-                String paramName = parameterNames.nextElement();
-                if (paramName.startsWith("roundScore1_")) {
-                    String roundIndexStr = paramName.substring("roundScore1_".length());
-                    String roundScore1Param = req.getParameter("roundScore1_" + roundIndexStr);
-                    String roundScore2Param = req.getParameter("roundScore2_" + roundIndexStr);
-                    if (roundScore1Param != null && roundScore2Param != null) {
-                        Integer roundScore1 = Integer.parseInt(roundScore1Param);
-                        Integer roundScore2 = Integer.parseInt(roundScore2Param);
-                        int roundIndex = Integer.parseInt(roundIndexStr);
-                        updateMatchScores(matchId, roundIndex + 1, roundScore1, roundScore2, session);
-                    }
+        String formId = req.getParameter("formId");
+        if (formId == null) {
+            throw new IllegalArgumentException("formId is missing");
+        }
+
+        Map<String, String[]> parameterMap = req.getParameterMap();
+
+        Optional<Map.Entry<String, String[]>> optionalEntry = parameterMap.entrySet().stream()
+                .filter(entry -> entry.getKey().startsWith("roundScore1_"))
+                .findFirst();
+
+        optionalEntry.ifPresent(entry -> {
+            String paramName = entry.getKey();
+            String roundIndexStr = paramName.substring("roundScore1_".length());
+            String[] roundScore1Params = entry.getValue();
+            String[] roundScore2Params = parameterMap.get("roundScore2_" + roundIndexStr);
+
+            if (roundScore1Params != null && roundScore2Params != null && roundScore1Params.length > 0 && roundScore2Params.length > 0) {
+                Integer roundScore1 = Integer.parseInt(roundScore1Params[0]);
+                Integer roundScore2 = Integer.parseInt(roundScore2Params[0]);
+                int roundIndex = Integer.parseInt(roundIndexStr);
+                if (formId.equals("form_" + roundIndex)) {
+                    roundService.updateRoundScores(matchId, roundIndex + 1, roundScore1, roundScore2);
                 }
             }
         });
-    }
-
-    private void updateMatchScores(UUID matchId, Integer scoringRoundInMatch, Integer score1, Integer score2, Session session) {
-        Round round = matchDao.getRoundByNumberInMatch(matchId, scoringRoundInMatch);
-        if (round != null) {
-            round.setScore1(score1);
-            round.setScore2(score2);
-            session.merge(round);
-        }
     }
 }
