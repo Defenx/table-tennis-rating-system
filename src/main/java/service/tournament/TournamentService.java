@@ -5,6 +5,7 @@ import dao.TournamentParticipantDao;
 import entity.*;
 import enums.ExtensionName;
 import enums.Status;
+import enums.TournamentType;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.ListUtils;
 import service.TransactionHandler;
@@ -27,10 +28,18 @@ public class TournamentService {
     }
 
     public List<Tournament> getNewTournaments() {
-        return tournamentDao.findTournamentsWithTheDesiredStatus(Status.NEW);
+        return tournamentDao.findTournamentsWithStatus(Status.NEW);
     }
     public List<Tournament> getProcessingTournaments() {
-        return tournamentDao.findTournamentsWithTheDesiredStatus(Status.PROCESSING);
+        return tournamentDao.findTournamentsWithStatus(Status.PROCESSING);
+    }
+    public String translateTournamentType(String type) {
+        try {
+            TournamentType tournamentType = TournamentType.valueOf(type.toUpperCase());
+            return tournamentType.getDisplayName();
+        } catch (IllegalArgumentException e) {
+            return type;
+        }
     }
     public void participate(User user, Tournament tournament) {
         if (!isAlreadyParticipated(user, tournament)) {

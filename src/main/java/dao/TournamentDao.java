@@ -51,7 +51,7 @@ public class TournamentDao {
             throw e;
         }
     }
-    public List<Tournament> findTournamentsWithTheDesiredStatus(Status status) {
+    public List<Tournament> findTournamentsWithStatus(Status status) {
         try (Session session = sessionFactory.openSession()) {
             Query<Tournament> query = session.createQuery("FROM Tournament t WHERE t.status = :status", Tournament.class);
             query.setParameter("status", status);

@@ -21,8 +21,6 @@ public class TournamentsServlet extends BaseTournamentServlet{
         List<Tournament> tournamentsList = tournamentService.getProcessingTournaments();
         req.setAttribute("tournamentsList",tournamentsList);
 
-
-
         req.getRequestDispatcher(Route.TOURNAMENTS.getJspPath()).forward(req, resp);
     }
 }

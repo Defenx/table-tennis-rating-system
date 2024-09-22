@@ -26,7 +26,7 @@
                 <c:forEach var="tournament" items="${tournamentsList}">
                     <tr>
                         <td>${tournament.date}</td>
-                        <td>${tournament.type}</td>
+                        <td>${tournamentService.translateTournamentType(tournament.type)}</td>
                         <td>${tournament.participants.size()}</td>
                         <td>
                             <form action="/tournament/watch/${tournament.id}" method="get">
