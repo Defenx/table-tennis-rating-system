@@ -57,13 +57,14 @@
                                     <input type="hidden" name="userId2" value="${match.user2.id}"/>
                                     <input type="hidden" name="csrfToken" value="${csrfToken}"/>
                                     <input type="hidden" name="roundNumber" value="${roundStatus.index + 1}"/>
+                                    <input type="hidden" name="formId" value="form_${roundStatus.index}"/>
                                     <div class="round-inputs">
                                         <h3>Раунд ${roundStatus.index + 1}</h3>
                                         <input type="number" name="roundScore1_${roundStatus.index}" class="score-input"
-                                               min="0" />
+                                               min="0" placeholder="${round.score1}"/>
                                         <button class="button" type="submit">Изменить</button>
                                         <input type="number" name="roundScore2_${roundStatus.index}" class="score-input"
-                                               min="0" />
+                                               min="0" placeholder="${round.score2}"/>
                                     </div>
                                 </form>
                             </c:forEach>
