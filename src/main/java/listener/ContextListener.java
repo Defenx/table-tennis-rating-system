@@ -70,7 +70,7 @@ public class ContextListener implements ServletContextListener {
         var tournamentDao = new TournamentDao(sessionFactory);
         var userService = initUserService(userDao);
         var roundService = initRoundService(tournamentDao, sessionFactory);
-        var matchService = initMatchService(roundService, sessionFactory);
+        var matchService = new MatchService(roundService);
         var extensionService = new ExtensionService();
         var tournamentService = initTournamentService(tournamentDao, sessionFactory, extensionService);
         var tournamentAttributeResolver = new TournamentAttributeResolver(tournamentService);
@@ -211,10 +211,6 @@ public class ContextListener implements ServletContextListener {
         return new TournamentCreateService(tournamentDao, tournamentMapper);
     }
 
-    private MatchService initMatchService(RoundService roundService, SessionFactory sessionFactory) {
-        var transactionHandler = new TransactionHandler(sessionFactory);
-        return new MatchService(roundService, transactionHandler);
-    }
 
     private RoundService initRoundService(TournamentDao tournamentDao, SessionFactory sessionFactory) {
         var transactionHandler = new TransactionHandler(sessionFactory);
