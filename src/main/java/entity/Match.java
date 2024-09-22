@@ -46,6 +46,7 @@ public class Match {
 
     @OneToMany(mappedBy = "match", fetch = FetchType.EAGER)
     @ToString.Exclude
+    @OrderBy("roundNumber ASC")
     private List<Round> rounds;
 
     @Column(name = "tournament_stage")
