@@ -14,5 +14,6 @@ public final class RouteConstants {
     public static final String STATISTIC = "/statistic";
     public static final String PARTICIPATION_BY_TOURNAMENT_ID = "/tournament/participation/*";
     public static final String TOURNAMENT_BY_ID = "/tournament/watch/*";
+    public static final String TOURNAMENTS = "/tournaments";
 
 }
