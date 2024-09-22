@@ -7,6 +7,7 @@ import enums.ExtensionName;
 import enums.Status;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.ListUtils;
+import org.hibernate.Session;
 import service.TransactionHandler;
 import service.extension.ExtensionService;
 
@@ -20,7 +21,6 @@ public class TournamentService {
     private final TournamentParticipantDao tournamentParticipantDao;
     private final TransactionHandler transactionHandler;
     private final ExtensionService extensionService;
-
 
     public Tournament getTournamentById(UUID tournamentId) {
         return tournamentDao.getTournamentById(tournamentId);

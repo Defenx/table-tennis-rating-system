@@ -16,30 +16,70 @@
 
     <div class="container-table">
         <c:forEach var="match" items="${requestScope.tournament.matches}">
-
-            <div class="player-info">
-                <div class="column">
+            <div class="match-row">
+                <div class="player-info">
                     <h2><c:out value="${match.user1.surname} ${match.user1.firstname}"/></h2>
+                    <span class="vs">vs</span>
+                    <h2><c:out value="${match.user2.surname} ${match.user2.firstname}"/></h2>
                 </div>
-                <div class="column">
+                <div class="round-info">
                     <c:choose>
                         <c:when test="${user.role == 'ADMIN'}">
-                            <form action="/tournament/round" method="post">
-                                <input type="number" style="color: black;" class="score-input" min="0"/>
-                                <button class="button">Внести</button>
-                                <input type="number" style="color: black;" class="score-input" min="0"/>
+                            <form action="/tournament/watch/${requestScope.tournament.id}" method="post">
+                                <input type="hidden" name="matchId" value="${match.id}"/>
+                                <input type="hidden" name="userId1" value="${match.user1.id}"/>
+                                <input type="hidden" name="userId2" value="${match.user2.id}"/>
+                                <input type="hidden" name="csrfToken" value="${csrfToken}"/>
+                                <c:set var="victoriesInTrainingMatches" value="0"/>
+                                <c:forEach var="extension" items="${requestScope.tournament.extensions}">
+                                    <c:choose>
+                                        <c:when test="${extension.name == 'VICTORIES_IN_TRAINING_MATCHES'}">
+                                            <c:set var="victoriesInTrainingMatches" value="${extension.value}"/>
+                                        </c:when>
+                                    </c:choose>
+                                </c:forEach>
+                                <c:set var="inputName1" value="score1"/>
+                                <c:set var="inputName2" value="score2"/>
+                                <div class="current-round">
+                                    <c:if test="${fn:length(match.rounds) < victoriesInTrainingMatches}">
+                                        <h3>Раунд ${fn:length(match.rounds)+1}</h3>
+                                        <input type="number" name="${inputName1}" class="score-input" min="0"/>
+                                        <button class="button" id="changeScoreButton" type="submit">Внести</button>
+                                        <input type="number" name="${inputName2}" class="score-input" min="0"/>
+                                    </c:if>
+                                </div>
                             </form>
+                            <hr/>
+                            <c:forEach var="round" items="${match.rounds}" varStatus="roundStatus">
+                                <form action="/tournament/watch/${requestScope.tournament.id}" method="post">
+                                    <input type="hidden" name="matchId" value="${match.id}"/>
+                                    <input type="hidden" name="userId1" value="${match.user1.id}"/>
+                                    <input type="hidden" name="userId2" value="${match.user2.id}"/>
+                                    <input type="hidden" name="csrfToken" value="${csrfToken}"/>
+                                    <input type="hidden" name="roundNumber" value="${roundStatus.index + 1}"/>
+                                    <input type="hidden" name="formId" value="form_${roundStatus.index}"/>
+                                    <div class="round-inputs">
+                                        <h3>Раунд ${roundStatus.index + 1}</h3>
+                                        <input type="number" name="roundScore1_${roundStatus.index}" class="score-input"
+                                               min="0" placeholder="${round.score1}"/>
+                                        <button class="button" type="submit">Изменить</button>
+                                        <input type="number" name="roundScore2_${roundStatus.index}" class="score-input"
+                                               min="0" placeholder="${round.score2}"/>
+                                    </div>
+                                </form>
+                            </c:forEach>
                         </c:when>
                         <c:otherwise>
-                                <h2 class="static-score"><span>0</span><span>:</span><span>0</span></h2>
+                            <c:forEach var="round" items="${match.rounds}" varStatus="roundStatus">
+                                <div class="round-score">
+                                    <h3>Раунд ${roundStatus.index + 1}</h3>
+                                    <span class="score-text">${round.score1} : ${round.score2}</span>
+                                </div>
+                            </c:forEach>
                         </c:otherwise>
                     </c:choose>
                 </div>
-                <div class="column">
-                    <h2><c:out value="${match.user2.surname} ${match.user2.firstname}"/></h2>
-                </div>
             </div>
-
         </c:forEach>
     </div>
 
@@ -49,7 +89,7 @@
                 <button type="submit" class="run-button">Завершить раунд</button>
             </form>
         </c:if>
-        <button type="button" class="button" onclick="redirectToLogin()">Вернутся к турнирам</button>
+        <button type="button" class="button" onclick="redirectToLogin()">Вернуться к турнирам</button>
     </div>
 </div>
 
@@ -58,5 +98,6 @@
         window.location.href = '/tournaments';
     }
 </script>
+
 </body>
 </html>

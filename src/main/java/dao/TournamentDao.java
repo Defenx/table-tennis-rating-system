@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Extension;
+import entity.Match;
 import entity.Tournament;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
@@ -17,21 +18,9 @@ public class TournamentDao {
     private final SessionFactory sessionFactory;
 
     public Tournament getTournamentById(UUID tournamentId) {
-        Transaction transaction = null;
-        Tournament tournament;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            Query<Tournament> query = session.createQuery("FROM Tournament t WHERE t.id = :tournamentId", Tournament.class);
-            query.setParameter("tournamentId", tournamentId);
-            tournament = query.uniqueResult();
-            transaction.commit();
-        } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw e;
+            return session.get(Tournament.class, tournamentId);
         }
-        return tournament;
     }
 
     public void create(Tournament tournament) {
@@ -71,6 +60,12 @@ public class TournamentDao {
                 transaction.rollback();
             }
             throw e;
+        }
+    }
+
+    public Match getMatchById(UUID matchId) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(Match.class, matchId);
         }
     }
 }

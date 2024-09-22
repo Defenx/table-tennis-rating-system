@@ -53,8 +53,9 @@ public class Match {
     @JoinColumn(name = "next_match")
     private Match nextMatch;
 
-    @OneToMany(mappedBy = "match")
+    @OneToMany(mappedBy = "match", fetch = FetchType.EAGER)
     @ToString.Exclude
+    @OrderBy("roundNumber ASC")
     private List<Round> rounds;
 
     @Column(name = "tournament_stage")

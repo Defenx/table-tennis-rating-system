@@ -19,6 +19,8 @@ body {
     box-shadow: 16px 14px 9px 15px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     min-width: 450px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .container-table {
@@ -33,23 +35,41 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .player-info {
     width: 98%;
     display: flex;
-    justify-content: space-between;
+
+    justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
-.column{
-    width: 33%;
+.player-info h2 {
+    margin: 0 10px;
+}
+
+.player-info .vs {
+
+    font-size: 25px;
+    font-weight: bold;
+    color: #fc0000;
+}
+
+.column {
+    width: fit-content;
 }
 
 .score-input {
-    width: 70px;
-    color: black;
+    width: 100%;
+    max-width: 80px;
     padding: 5px;
+    margin: 5px;
+    text-align: center;
+    min-width: 60px;
 }
 
 .static-score {
@@ -58,9 +78,39 @@ body {
 }
 
 .container-buttons {
-    /*display: flex;*/
-    /*justify-content: space-around;*/
     margin-top: 20px;
+}
+
+.round-inputs {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.current-round{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-right: 30px;
+}
+.current-round h3 {
+    font-size: 20px;
+    color: #fc0000;
+    font-family: 'Verdana', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.current-round h3:hover {
+    transform: scale(1.1);
+    color: #ff4500;
+}
+
+#changeScoreButton{
+    width: 105px;
 }
 
 button {
@@ -82,6 +132,7 @@ button {
     outline: none;
     background: linear-gradient(0deg, rgba(6, 14, 131, 1) 0%, rgba(12, 25, 180, 1) 100%);
     border: none;
+    min-width: 80px;
 }
 
 button:hover {
@@ -96,4 +147,203 @@ button:hover {
 .run-button:hover {
     background: rgb(14, 190, 14);
     background: linear-gradient(0deg, rgb(8, 185, 8) 0%, rgb(14, 241, 14) 100%);
+}
+body {
+    font-family: "Times New Roman", serif;
+    background-image: url("../table-tennis.jpg");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container-main {
+    width: 70%;
+    padding: 20px;
+    text-align: center;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    min-width: 450px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.container-table {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+.match-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.player-info {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.player-info h2 {
+    margin: 0 10px;
+    font-size: 24px;
+    color: #333;
+}
+
+.player-info .vs {
+    font-size: 25px;
+    font-weight: bold;
+    color: #fc0000;
+}
+
+.round-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-input {
+    width: 80px;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.static-score {
+    font-size: 18px;
+    margin: 0 10px;
+    color: #555;
+}
+
+.container-buttons {
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.round-inputs {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.current-round {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-right: 30px;
+}
+
+.current-round h3 {
+    font-size: 20px;
+    color: #fc0000;
+    font-family: 'Verdana', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.current-round h3:hover {
+    transform: scale(1.1);
+    color: #ff4500;
+}
+
+#changeScoreButton {
+    width: 105px;
+}
+
+button {
+    width: content-box;
+    height: content-box;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+    7px 7px 20px 0px rgba(0, 0, 0, .1),
+    4px 4px 5px 0px rgba(0, 0, 0, .1);
+    outline: none;
+    background: linear-gradient(0deg, rgba(6, 14, 131, 1) 0%, rgba(12, 25, 180, 1) 100%);
+    border: none;
+    min-width: 80px;
+}
+
+button:hover {
+    background: rgb(0, 3, 255);
+    background: linear-gradient(0deg, rgba(0, 3, 255, 1) 0%, rgba(2, 126, 251, 1) 100%);
+}
+
+.run-button {
+    background: linear-gradient(0deg, rgb(10, 169, 10) 0%, rgb(13, 227, 13) 100%);
+}
+
+.run-button:hover {
+    background: rgb(14, 190, 14);
+    background: linear-gradient(0deg, rgb(8, 185, 8) 0%, rgb(14, 241, 14) 100%);
+}
+
+.round-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.round-score:hover {
+    background-color: #e0e0e0;
+}
+
+.round-score h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.score-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+hr {
+    border: none;
+    height: 2px;
+    background-color: #eaeaea;
+    width: 100%;
+    display: block;
 }
